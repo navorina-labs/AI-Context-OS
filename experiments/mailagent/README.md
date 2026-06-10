@@ -2,71 +2,56 @@
 
 First controlled experiment for AI Context OS hypothesis validation.
 
+**Live instance:** [Alex0nder/MailAgent](https://github.com/Alex0nder/MailAgent) → `context-os/`
+
+**Published results:** [results.md](./results.md)
+
 ---
 
 ## Subject
 
-**MailAgent** — an email automation / AI agent project used as the Phase 1 research subject.
-
-> Note: This directory contains the experiment **protocol and placeholders**. Cores are built when the actual MailAgent repository is connected. No product code lives here.
+**MailAgent** — temporary inboxes for AI agent signup QA (OTP, magic links, MCP).
 
 ---
 
 ## Goals
 
-1. Build four primary cores + billing/onboarding subcores for MailAgent
-2. Achieve routing accuracy ≥ 90% on [research/questions.md](../../research/questions.md) subset
-3. Run A/B: full MailAgent repo vs routed cores
-4. Measure accuracy, hallucination, CCR, latency
-5. Document failures for hypothesis refinement
+1. Build four primary cores + eight subcores
+2. Run A/B/C on the same question bank
+3. Measure accuracy, hallucination, CCR, latency, token cost
+4. Compare Context OS vs full repo vs Hermes-style graph
 
 ---
 
-## Expected Domains
+## Runs
 
-| Domain | Relevance | Notes |
-|--------|-----------|-------|
-| Business | Medium | If monetized; otherwise focus on usage metrics |
-| Product | High | Email workflows, agent behavior, user tasks |
-| Technical | High | Agent architecture, email providers, parsing |
-| Operational | High | Deploy, monitoring, email deliverability |
+| Run | N | Conditions | Link |
+|-----|---|------------|------|
+| run-1781074375223 | 10 | A, B | [runs/run-1781074375223](./runs/run-1781074375223/) |
+| **run-1781075014160** | **35** | **A, B, C** | [runs/run-1781075014160](./runs/run-1781075014160/) |
 
 ---
 
-## MailAgent-Specific Questions (add to gold set)
-
-| ID | Question | Expected Core |
-|----|----------|---------------|
-| MA01 | How does the agent process incoming email? | technical-core |
-| MA02 | What email providers are supported? | technical-core, product-core |
-| MA03 | Why are emails not being sent? | operational-core, technical-core |
-| MA04 | How do users configure automation rules? | product-core, onboarding-core |
-| MA05 | What is the agent's decision flow? | product-core, technical-core |
-
----
-
-## Status
+## Status (2026-06-10)
 
 | Milestone | Status |
 |-----------|--------|
-| Project map | Not started |
-| Cores drafted | Not started |
-| Routing validated | Not started |
-| Gold answers | Not started |
-| A/B experiment run | Not started |
-| Results published | Not started |
+| Project map | ✅ MailAgent `context-os/audit/` |
+| Cores drafted | ✅ 4 + 8 subcores |
+| Routing validated | ⚠️ Keyword F1 ~0.55; eval B uses gold cores |
+| Gold answers | ✅ 35 questions in MailAgent `eval/questions.json` |
+| A/B experiment | ✅ run-1781075014160 |
+| A/B/C + graph | ✅ run-1781075014160 |
+| Results published | ✅ [results.md](./results.md) |
 
 ---
 
-## Next Steps
+## Import new run from MailAgent
 
-1. Link MailAgent repository URL in project map
-2. Run [prompts/build-context-os.md](../../prompts/build-context-os.md)
-3. Add MailAgent-specific questions to `gold-answers.md`
-4. Execute [research/experiment-design.md](../../research/experiment-design.md)
+```bash
+cd MailAgent
+npm run eval:context-os:export -- context-os/eval/results/run-<id>
 
----
-
-## Results
-
-See `results.md` (create after experiment completes).
+cp -R context-os/eval/export/run-<id> \
+  ../AI-Context-OS/experiments/mailagent/runs/
+```
