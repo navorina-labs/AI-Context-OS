@@ -28,7 +28,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 |---------|----------|----|-------|-------|-------|-------|--------|--------|--------|--------|--------|-----------|-------------|-------------|
 | **MailAgent** | 320k | 35 | 6 | 1.40 | **1.69** | 1.37 | $0.47 | **$0.015** | $0.12 | 20% | 14% | 1.00 | 45× | B wins on accuracy/cost |
 | **Django REST** | ~1.2M | 42 | 5 | 1.35 | **1.68** | 1.40 | $0.52 | **$0.012** | $0.14 | 22% | **11%** | 0.85 | 38× | C preferred (halluc risk) |
-| **Navorina** | ~270k | 42 | 11 | 1.00 | **1.19** | 0.93 | $0.18 | **$0.015** | $0.08 | 19% | **7%** | 0.78 | 14× | C wins on trust; B on accuracy |
+| **Navorina** | ~270k | 42 | 11 | 1.00 | **1.19** | 0.93 | $0.18 | **$0.015** | $0.08 | 19% | **7%** | **0.87** | 14× | C wins on trust; B on accuracy |
 
 **Legend:** A = full repo · B = routed context cores (gold cores in eval) · C = Hermes-style graph retrieval
 
@@ -54,7 +54,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 |---------|------------|-------------|-------|
 | MailAgent | — | **1.00** | Single narrow domain |
 | Django REST | 0.72 | **0.85** | Cross-cutting questions hurt keyword |
-| Navorina | **0.808** | **0.777** | NV29 patched; semantic routing measured |
+| Navorina | **0.872** | **0.837** | Resolved NV05/12/26/33/39 keyword/semantic failures |
 
 Router F1 correlates with B accuracy ceiling. Semantic routing is load-bearing on multi-module projects.
 

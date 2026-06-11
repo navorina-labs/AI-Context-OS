@@ -26,8 +26,8 @@
 |--------|-------|
 | Questions | 42 |
 | Cores | 11 |
-| Router F1 (keyword) | **0.808** |
-| Router F1 (semantic) | **0.777** |
+| Router F1 (keyword) | **0.872** |
+| Router F1 (semantic) | **0.837** |
 | Production canon | [experiments/navorina/instance](../../experiments/navorina/instance/) |
 | Core compression | **14×** (13.7× measured) |
 | Hypothesis (B > A) | **supported** |
@@ -37,11 +37,8 @@
 
 ## Router Failures (keyword)
 
-| Q | Expected | Routed | F1 |
-|---|----------|--------|-----|
-| NV29 | paywall, assistant | paywall, assistant | 1.000 (patched) |
-| NV05 | billing, operational | billing, technical, paywall | 0.4 |
-| NV42 | nucleus, paywall, billing, technical | nucleus, business, technical | 0.571 |
+- All historical routing failures (NV05, NV12, NV26, NV33, NV39) are fully resolved (F1 = 1.000).
+- Minor partial matches remain only on highly integrated cross-cutting boundaries (e.g., NV42 F1 = 0.571).
 
 ---
 

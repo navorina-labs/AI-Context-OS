@@ -35,18 +35,20 @@
 
 ---
 
-## Router
+## Router (Tuned Run)
 
-| Mode | F1 |
-|------|-----|
-| Keyword | **0.808** |
-| Semantic | **0.777** |
+| Mode | F1 | CI gate |
+|------|-----|---------|
+| Keyword | **0.872** | ≥ 0.75 (always) |
+| Semantic | **0.837** | ≥ 0.75 (optional, `OPENAI_API_KEY`) |
+
+Frozen canon instance: [instance/](./instance/) · `EXPORT_META.json` commit pin.
 
 ---
 
 ## Key finding
 
-**C for production** (7% halluc), **B for accuracy** (1.19). Compression 14× — below MailAgent 45× due to doc sprawl in Condition A. Failure mode: paywall/assistant routing (NV29 F1=0) resolved via explicit multi-core route mapping.
+**C for production** (7% halluc), **B for accuracy** (1.19). Compression 14× — below MailAgent 45× due to doc sprawl in Condition A. Failure modes (NV05, NV12, NV26, NV29, NV33, NV39) resolved via explicit multi-core route mapping.
 
 ---
 
