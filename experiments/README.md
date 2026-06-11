@@ -8,21 +8,24 @@ Controlled experiments comparing Full Repository vs Context Core routing.
 
 ```
 experiments/
-├── README.md          # This file
-├── template/          # Blank experiment scaffold
-└── mailagent/         # Phase 1 subject
+├── README.md              # This file
+├── template/              # Blank experiment scaffold
+├── mailagent/             # Phase 1 — measured + raw runs
+├── django-rest-framework/ # Phase 2.1 — measured (summary only)
+└── navorina/              # Phase 2.1 — measured + raw runs
 ```
 
-Each experiment directory contains:
+---
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Experiment protocol and status |
-| `hypothesis.md` | Subject-specific hypotheses |
-| `cores/` | Filled core artifacts |
-| `routing-rules.md` | Project-specific routing |
-| `gold-answers.md` | Reference answers per question |
-| `results.md` | Scores and analysis (after run) |
+## Phase 2.1 Results (summary)
+
+| Project | Qs | B_acc | C_hall | CCR | Raw run |
+|---------|-----|-------|--------|-----|---------|
+| [MailAgent](mailagent/) | 35 | 1.69 | 14% | 45× | [run-1781075014160](mailagent/runs/run-1781075014160/) |
+| [Django REST](django-rest-framework/) | 42 | 1.68 | 11% | 38× | summary only |
+| [Navorina](navorina/) | 42 | 1.19 | **7%** | 14× | [run-1781143403051](navorina/runs/run-1781143403051/) |
+
+Full report: [context-os/evaluations/PHASE-2-RESULTS.md](../context-os/evaluations/PHASE-2-RESULTS.md)
 
 ---
 
@@ -30,11 +33,10 @@ Each experiment directory contains:
 
 1. Copy `template/` to `experiments/{your-project}/`
 2. Build cores using [prompts/build-context-os.md](../prompts/build-context-os.md)
-3. Write gold answers for question subset
-4. Validate routing (≥90% accuracy)
-5. Run A/B per [research/experiment-design.md](../research/experiment-design.md)
-6. Score per [research/evaluation-framework.md](../research/evaluation-framework.md)
-7. Publish results in `results.md`
+3. Adapt eval harness from [MailAgent/context-os/eval](https://github.com/Alex0nder/MailAgent/tree/main/context-os/eval)
+4. Run A/B/C per [research/evaluation-framework.md](../research/evaluation-framework.md)
+5. Export run → `experiments/{project}/runs/run-<id>/`
+6. Publish `results.md`
 
 ---
 
@@ -42,14 +44,8 @@ Each experiment directory contains:
 
 | Phase | Subject | Status |
 |-------|---------|--------|
-| 1 | MailAgent | Planned |
-| 2 | OSS SaaS #1–3 | Not started |
-| 3 | Private project | Not started |
+| 1 | MailAgent | ✅ Published |
+| 2.1 | Django REST, Navorina | ✅ Published |
+| 3 | Private project | Planned |
 
 See [docs/research-roadmap.md](../docs/research-roadmap.md).
-
----
-
-## No Code
-
-Experiments are **documentation and methodology only**. No experiment runner, API, or automation engine in this repository.
