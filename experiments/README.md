@@ -22,7 +22,7 @@ experiments/
 | Project | Qs | B_acc | C_hall | CCR | Raw run |
 |---------|-----|-------|--------|-----|---------|
 | [MailAgent](mailagent/) | 35 | 1.69 | 14% | 45× | [run-1781075014160](mailagent/runs/run-1781075014160/) |
-| [Django REST](django-rest-framework/) | 42 | 1.68 | 11% | 38× | summary only |
+| [Django REST](django-rest-framework/) | 42 | 1.68 | 11% | 38× | summary ([Oiloop workspace](../context-os/evaluations/applied-instances.md)) |
 | [Navorina](navorina/) | 42 | 1.19 | **7%** | 14× | [run-1781143403051](navorina/runs/run-1781143403051/) |
 
 Full report: [context-os/evaluations/PHASE-2-RESULTS.md](../context-os/evaluations/PHASE-2-RESULTS.md)

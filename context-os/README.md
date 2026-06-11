@@ -12,7 +12,7 @@ Reference implementation of AI Context OS as **documentation artifacts** — not
 | [subcores/](subcores/) | Refined subcore templates |
 | [router/](router/) | Routing rules and examples |
 | [audit/](audit/) | Project mapping, cleanup, risk templates |
-| [evaluations/](evaluations/) | Phase 2 cross-project results and per-project reports |
+| [evaluations/](evaluations/) | Phase 2 results, per-project reports, private applied instances |
 
 ---
 

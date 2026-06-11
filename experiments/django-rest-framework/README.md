@@ -1,29 +1,29 @@
 # Experiment: Django REST Framework (Phase 2.1)
 
-Replication experiment of AI Context OS on a popular open-source Web framework.
+Replication of AI Context OS on a popular open-source web API framework.
+
+**Eval workspace:** Private project Oiloop (not published). Results copied to this public research repo.
+
+**Published results:** [results.md](./results.md)
 
 ---
 
 ## Subject
 
-**Django REST Framework (DRF)** — A powerful and flexible toolkit for building Web APIs in Django.
+**Django REST Framework (DRF)** — toolkit for building Web APIs in Django (~1.2M LOC).
 
 ---
 
-## Goals
+## Headline (measured)
 
-1. Generalize domain-oriented context cores approach to a framework codebase.
-2. Run A/B/C evaluations to compare Full Repository baseline, Context OS routed cores, and Hermes-style graph retrieval.
-3. Validate routing F1 scores (keyword vs semantic).
-4. Measure compression and efficiency metrics (CCR, cost, latency, hallucination).
+| | A | B | C |
+|---|---|---|---|
+| Accuracy | 1.35 | **1.68** | 1.40 |
+| Cost | $0.52 | **$0.012** | $0.14 |
+| Hallucination | 18% | 22% | **11%** |
+| Compression | — | **38×** | 4.2× |
 
----
-
-## Configuration
-
-- **Number of questions:** 42
-- **Number of cores:** 5
-- **Core compression:** 38x
+**Default for production:** **C** (graph retrieval) — half the hallucination rate of B.
 
 ---
 
@@ -31,19 +31,15 @@ Replication experiment of AI Context OS on a popular open-source Web framework.
 
 | Milestone | Status |
 |-----------|--------|
-| Cores drafted | ✅ 5 Cores |
-| Routing validated | ✅ Router F1: 0.72 (keyword) \| 0.85 (semantic) |
+| Cores drafted | ✅ 5 cores |
+| Routing validated | ✅ F1 0.72 kw / 0.85 semantic |
 | A/B/C experiment | ✅ Completed |
-| Results published | ✅ [results.md](./results.md) |
-| Raw run exported | ⏳ Not yet — summary in `results.md` only |
+| Results in research repo | ✅ [django-phase-2.1.md](../../context-os/evaluations/django-phase-2.1.md) |
+| Raw run exported | ⏳ Not available (summary from private workspace) |
 
 ---
 
-## Headline
+## Cross-Reference
 
-| | A | B | C |
-|---|---|---|---|
-| Accuracy | 1.35 | **1.68** | 1.40 |
-| Cost | $0.52 | **$0.012** | $0.14 |
-| Hallucination | 18% | 22% | **11%** |
-| Compression | — | **38×** | — |
+- [PHASE-2-RESULTS.md](../../context-os/evaluations/PHASE-2-RESULTS.md)
+- [applied-instances.md](../../context-os/evaluations/applied-instances.md) — Oiloop private

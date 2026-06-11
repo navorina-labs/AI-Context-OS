@@ -32,7 +32,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 
 **Legend:** A = full repo · B = routed context cores (gold cores in eval) · C = Hermes-style graph retrieval
 
-**Django REST:** measured values from [django-phase-2.1.md](django-phase-2.1.md); raw run artifacts not yet exported to this repo.
+**Django REST:** measured in private workspace [Oiloop](applied-instances.md#oiloop-private); canonical report [django-phase-2.1.md](django-phase-2.1.md). Raw run not exported.
 
 **Navorina:** [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) · commit `413acd41`
 
@@ -43,7 +43,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 | Project | A tokens (mean) | B tokens (mean) | Ratio A/B | Notes |
 |---------|-----------------|-----------------|-----------|-------|
 | MailAgent | ~88k | ~2k | **45×** | measured |
-| Django REST | — | — | **38×** | measured (summary) |
+| Django REST | ~76k | ~2k | **38×** | measured (Oiloop workspace) |
 | Navorina | ~27.6k | ~2.0k | **14×** | measured; doc sprawl caps CCR vs MailAgent |
 
 ---
@@ -123,7 +123,7 @@ Navorina                         ●
 - **LLM-as-judge** for accuracy and hallucination (not blind human raters).
 - **B uses gold `expected_cores`** in eval — production keyword router scores lower.
 - **C** = static graph index + keyword/BFS (not live CodeGraph MCP).
-- **Django REST** raw run not exported to this repo — numbers from project summary.
+- **Django REST** eval conducted in private Oiloop workspace — summary published here; raw run not exported.
 - Judge tokens not included in cost estimates.
 
 ---
@@ -133,17 +133,27 @@ Navorina                         ●
 | Project | Report | Raw run |
 |---------|--------|---------|
 | MailAgent | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/) |
-| Django REST | [django-phase-2.1.md](django-phase-2.1.md) | summary only |
+| Django REST | [django-phase-2.1.md](django-phase-2.1.md) | summary (Oiloop workspace) |
 | Navorina | [navorina-phase-2.1.md](navorina-phase-2.1.md) | [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) |
 
 ---
 
 ## Next Steps
 
-1. **Django REST** — export raw run artifacts to `experiments/django-rest-framework/runs/` if available.
-2. **Navorina** — measure semantic router F1; patch NV29 routing.
-3. **Phase 3** — private codebase validation with domain experts.
+1. **Navorina** — measure semantic router F1; patch NV29 routing.
+2. **Phase 3** — private codebase validation with domain experts.
+3. **Applied instances** — formal eval of Oiloop product cores (see [applied-instances.md](applied-instances.md)).
 4. **Publication** — blog post + arXiv preprint from this report.
+
+---
+
+## Applied Instances (Private)
+
+Products using Context OS patterns in production — not open-source.
+
+| Project | Role | Doc |
+|---------|------|-----|
+| **Oiloop** | DRF eval workspace + live macOS companion cores | [applied-instances.md](applied-instances.md) |
 
 ---
 
