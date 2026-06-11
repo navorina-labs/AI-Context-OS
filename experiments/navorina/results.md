@@ -39,14 +39,14 @@
 
 | Mode | F1 |
 |------|-----|
-| Keyword | **0.784** |
-| Semantic | pending |
+| Keyword | **0.808** |
+| Semantic | **0.777** |
 
 ---
 
 ## Key finding
 
-**C for production** (7% halluc), **B for accuracy** (1.19). Compression 14× — below MailAgent 45× due to doc sprawl in Condition A. Failure mode: paywall/assistant routing (NV29 F1=0).
+**C for production** (7% halluc), **B for accuracy** (1.19). Compression 14× — below MailAgent 45× due to doc sprawl in Condition A. Failure mode: paywall/assistant routing (NV29 F1=0) resolved via explicit multi-core route mapping.
 
 ---
 
