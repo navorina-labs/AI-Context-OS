@@ -54,7 +54,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 |---------|------------|-------------|-------|
 | MailAgent | — | **1.00** | Single narrow domain |
 | Django REST | 0.72 | **0.85** | Cross-cutting questions hurt keyword |
-| Navorina | **0.784** | pending | NV29/NV42 worst failures; semantic not yet measured |
+| Navorina | **0.808** | **0.777** | NV29 patched; semantic routing measured |
 
 Router F1 correlates with B accuracy ceiling. Semantic routing is load-bearing on multi-module projects.
 

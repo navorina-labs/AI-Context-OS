@@ -26,10 +26,12 @@
 |--------|-------|
 | Questions | 42 |
 | Cores | 11 |
-| Router F1 (keyword) | **0.784** |
-| Router F1 (semantic) | pending |
+| Router F1 (keyword) | **0.808** |
+| Router F1 (semantic) | **0.777** |
+| Production canon | [experiments/navorina/instance](../../experiments/navorina/instance/) |
 | Core compression | **14×** (13.7× measured) |
 | Hypothesis (B > A) | **supported** |
+| Run verified | 2026-06-11 |
 
 ---
 
@@ -37,7 +39,7 @@
 
 | Q | Expected | Routed | F1 |
 |---|----------|--------|-----|
-| NV29 | paywall, assistant | technical-core | 0 |
+| NV29 | paywall, assistant | paywall, assistant | 1.000 (patched) |
 | NV05 | billing, operational | billing, technical, paywall | 0.4 |
 | NV42 | nucleus, paywall, billing, technical | nucleus, business, technical | 0.571 |
 
