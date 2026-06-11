@@ -12,6 +12,19 @@ Reference implementation of AI Context OS as **documentation artifacts** — not
 | [subcores/](subcores/) | Refined subcore templates |
 | [router/](router/) | Routing rules and examples |
 | [audit/](audit/) | Project mapping, cleanup, risk templates |
+| [evaluations/](evaluations/) | Phase 2 cross-project results and per-project reports |
+
+---
+
+## Phase 2 Results (2026-06-11)
+
+**[PHASE-2-RESULTS.md](evaluations/PHASE-2-RESULTS.md)** — 3 projects, 119 questions, A/B/C comparison.
+
+| Project | Status | Report |
+|---------|--------|--------|
+| MailAgent | Measured | [mailagent-phase-2.1.md](evaluations/mailagent-phase-2.1.md) |
+| Django REST | Measured | [django-phase-2.1.md](evaluations/django-phase-2.1.md) |
+| Navorina | Measured | [navorina-phase-2.1.md](evaluations/navorina-phase-2.1.md) |
 
 ---
 
