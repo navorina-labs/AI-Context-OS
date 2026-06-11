@@ -1,33 +1,51 @@
 # Django REST Framework Phase 2.1 — Published Results
 
----
-
-## Evaluation Results (42 questions)
-
-| Strategy | Accuracy | Cost | Hallucination Rate |
-|---|---|---|---|
-| **A (Full Repository)** | 1.35 | $0.52 | 18% |
-| **B (Routed Cores)** | **1.68** | **$0.012** | 22% |
-| **C (Graph Retrieval)** | 1.40 | $0.14 | **11%** |
+**Provenance:** Eval workspace — private project Oiloop (not public). See [applied-instances.md](../../context-os/evaluations/applied-instances.md).
 
 ---
 
-## Key Metrics
+## Evaluation Results (42 questions, gpt-4o-mini)
 
-- **Router F1 Score:** 0.72 (keyword) | 0.85 (semantic)
-- **Core Compression Ratio (CCR):** 38x
+| Condition | Strategy | Accuracy | Cost | Halluc. | CCR |
+|-----------|----------|----------|------|---------|-----|
+| **A** | Full repo baseline | 1.35 | $0.52 | 18% | 1× |
+| **B** | Context OS routed cores | **1.68** | **$0.012** | 22% | **38×** |
+| **C** | Hermes-style graph | 1.40 | $0.14 | **11%** | 4.2× |
+
+**Headline**
+
+- **B** wins accuracy (+24% vs A) and cost (−98%).
+- **C** wins trust — hallucination 11% vs 22% B.
+- **Hypothesis supported** on accuracy and compression.
 
 ---
 
-## Effort & Resource Allocation
+## Router
 
-- **Audit Hours:** 16 hours
-- **Core Writing Hours:** 24 hours
+| Mode | F1 |
+|------|-----|
+| Keyword | 0.72 |
+| Semantic | **0.85** |
 
 ---
 
-## Failure Modes & Insights
+## Effort
 
-> [!WARNING]
-> - **Cross-cutting questions:** Some queries required information from 2 cores simultaneously, suggesting a need for multi-core routing or dynamic prompt merge.
-> - **Non-obvious domain boundaries:** Defining clear separation lines between cores is challenging in highly integrated frameworks.
+40 hours total (16 audit + 24 core writing).
+
+---
+
+## Failure Modes
+
+- Cross-cutting questions need 2 cores (Views + Auth boundary).
+- Non-obvious domain boundaries in integrated frameworks.
+
+---
+
+## Links
+
+| What | Path |
+|------|------|
+| Full report | [django-phase-2.1.md](../../context-os/evaluations/django-phase-2.1.md) |
+| Phase 2 summary | [PHASE-2-RESULTS.md](../../context-os/evaluations/PHASE-2-RESULTS.md) |
+| Private applied instance | [applied-instances.md](../../context-os/evaluations/applied-instances.md) |

@@ -9,6 +9,7 @@ Published results from AI Context OS experiments.
 | File | Description |
 |------|-------------|
 | [PHASE-2-RESULTS.md](PHASE-2-RESULTS.md) | **Main report** — Table 1, patterns, decision matrix |
+| [applied-instances.md](applied-instances.md) | Private products (Oiloop) — provenance + live cores |
 | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | MailAgent (measured, 35 Q) |
 | [django-phase-2.1.md](django-phase-2.1.md) | Django REST (measured, 42 Q) |
 | [navorina-phase-2.1.md](navorina-phase-2.1.md) | Navorina (measured, 42 Q, run-1781143403051) |
