@@ -1,0 +1,42 @@
+{
+  "OL01": {
+    "option_1": "A",
+    "option_2": "B"
+  },
+  "OL02": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL03": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL04": {
+    "option_1": "A",
+    "option_2": "B"
+  },
+  "OL05": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL06": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL07": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL08": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL09": {
+    "option_1": "B",
+    "option_2": "A"
+  },
+  "OL10": {
+    "option_1": "A",
+    "option_2": "B"
+  }
+}
