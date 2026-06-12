@@ -62,9 +62,11 @@ Router F1 correlates with B accuracy ceiling. Semantic routing is load-bearing o
 
 ## Key Findings (4 Patterns)
 
-### 1. B always wins on accuracy vs A
+### 1. B wins on accuracy vs A (Phase 2 OSS — see Phase 3 exception)
 
-+19–24% mean accuracy (B vs A) across all three projects. Cost 12–45× lower than A.
++19–24% mean accuracy (B vs A) across all three Phase 2 projects. Cost 12–45× lower than A.
+
+**Phase 3 update (Oiloop):** first counterexample — B **−19%** vs A on integrated Swift/system codebase. See [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md).
 
 ### 2. B's tradeoff is hallucination
 
@@ -100,7 +102,7 @@ Navorina                         ●
 
 | Variant | When to use |
 |---------|-------------|
-| **B** | Narrow domain, router F1 ≥ 0.95, read-only Q&A |
+| **B** | Narrow domain, router F1 ≥ 0.95, read-only Q&A — **not** integrated system APIs (Oiloop Phase 3: F1=0.95 but B loses accuracy) |
 | **C** | Prod codegen/ops, B hallucination > 15%, cross-cutting questions |
 | **A** | Never default — dominated on cost |
 
@@ -141,9 +143,9 @@ Navorina                         ●
 ## Next Steps
 
 1. **Navorina** — measure semantic router F1; patch NV29 routing.
-2. **Phase 3** — private codebase validation with domain experts.
-3. **Applied instances** — formal eval of Oiloop product cores (see [applied-instances.md](applied-instances.md)).
-4. **Publication** — blog post + arXiv preprint from this report.
+2. ~~**Phase 3** — private codebase validation with domain experts.~~ **Done** — [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md) (Oiloop, 20 Q).
+3. **Multi-core routing** — re-run Oiloop cross-cutting subset after 2-core injection.
+4. **Publication** — blog post + arXiv preprint (Phase 2 + Phase 3 combined).
 
 ---
 
@@ -153,7 +155,7 @@ Products using Context OS patterns in production — not open-source.
 
 | Project | Role | Doc |
 |---------|------|-----|
-| **Oiloop** | DRF eval workspace + live macOS companion cores | [applied-instances.md](applied-instances.md) |
+| **Oiloop** | DRF eval workspace + Phase 3 measured (20 Q) + live macOS cores | [applied-instances.md](applied-instances.md) · [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md) |
 
 ---
 

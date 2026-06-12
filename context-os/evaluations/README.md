@@ -4,6 +4,15 @@ Published results from AI Context OS experiments.
 
 ---
 
+## Phase 3 (Private Validation)
+
+| File | Description |
+|------|-------------|
+| [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md) | **Main report** — Oiloop A/B/C + Phase 2 comparison |
+| [oiloop-phase-3.md](oiloop-phase-3.md) | Oiloop per-project report (20 Q, run-1781222450776) |
+
+---
+
 ## Phase 2.1 (Cross-Project)
 
 | File | Description |
