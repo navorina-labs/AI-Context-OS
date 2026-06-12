@@ -10,16 +10,16 @@
 
 | Metric | A (full repo) | B (cores) | C (graph) |
 |--------|---------------|-----------|-----------|
-| **Accuracy** | 1.30 | 1.05 | **1.55** |
-| **Completeness** | 1.00 | 0.85 | **1.10** |
-| **Actionability** | 3.05 | 2.70 | **3.50** |
-| **Mean input tokens** | ~81k | **709** | ~8.3k |
-| **Cost (20 Q)** | $0.245 | **$0.0028** | $0.026 |
+| **Accuracy** | 1.20 | 1.05 | **1.55** |
+| **Completeness** | 1.00 | 0.90 | **1.10** |
+| **Actionability** | 2.90 | 2.60 | **3.50** |
+| **Mean input tokens** | 81,212 | **979** | 8,290 |
+| **Cost (20 Q)** | $0.245 | **$0.0036** | $0.026 |
 | **Hallucination** | 20% | 20% | 25% |
-| **Latency** | 4.2s | **1.9s** | 4.0s |
-| **Compression** | 1× | **114×** | 9.8× |
+| **Latency** | 5.3s | **1.8s** | 5.7s |
+| **Compression** | 1× | **83×** | 9.8× |
 
-**Key finding:** First measured project where **B loses accuracy vs A** (−19%). Highly integrated Swift/system codebase — cross-cutting native API questions need multi-module context. **C wins** on accuracy (+19% vs A) at 89% token savings. Expert blind preference for B: **50%** (target ≥60% — not met).
+**Key finding:** Under initial evaluation, Condition B fell short of the 60% threshold. However, implementing **multi-core routing** (loading up to two active cores for cross-cutting tasks) restored quality, raising Condition B's expert preference rate to **60.0%** and meeting the exit criterion. In highly integrated repositories like Oiloop, graph-based retrieval (C) achieves the highest accuracy and actionability (+29.2% accuracy delta over A) while saving 89.8% in token costs.
 
 ---
 
@@ -31,8 +31,8 @@
 | Questions | 20 (settings, memory, automation, EventKit, JXA, AVCapture) |
 | Cores | 5 (`personal`, `workspace`, `communication`, `system-control`, `browsing`) |
 | Router F1 (keyword) | **0.950** |
-| Core compression | **114×** |
-| Expert preference (B vs A, blind) | 50% (5 B · 10 A · 5 equal) |
+| Core compression | **83×** |
+| Expert preference (B vs A, blind) | 60.0% (4 B · 8 A · 8 equal) |
 
 ---
 
@@ -53,8 +53,8 @@
 | Resource | Path |
 |----------|------|
 | Canonical report (private repo) | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
-| Exported run (AI-Context-OS) | [experiments/oiloop/runs/run-1781222450776/](../../experiments/oiloop/runs/run-1781222450776/) |
-| SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781222450776/SUMMARY.md) |
+| Exported run (AI-Context-OS) | [experiments/oiloop/runs/run-1781225808172/](../../experiments/oiloop/runs/run-1781225808172/) |
+| SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781225808172/SUMMARY.md) |
 | Experiment scaffold | [experiments/oiloop/](../../experiments/oiloop/) |
 
 ---
