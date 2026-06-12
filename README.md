@@ -124,7 +124,8 @@ ai-context-os/
 
 ## Results
 
-**[Phase 2 cross-project report](context-os/evaluations/PHASE-2-RESULTS.md)** — 3 projects measured (119 questions, A/B/C). B beats A on accuracy/cost; C beats B on hallucination for complex codebases.
+- **[Phase 2 cross-project report](context-os/evaluations/PHASE-2-RESULTS.md)** — 3 projects measured (119 questions, A/B/C). B beats A on accuracy/cost; C beats B on hallucination for complex codebases.
+- **[Phase 3 private codebase report](context-os/evaluations/PHASE-3-RESULTS.md)** — Evaluated on Oiloop macOS codebase with double-blind expert review. Routed Cores (B) achieved 83× context compression and 2.96× lower latency at 98.5% cost reduction. Graph retrieval (C) achieved highest accuracy.
 
 ---
 
@@ -134,8 +135,8 @@ ai-context-os/
 |-------|---------|------|--------|
 | 1 | [MailAgent](experiments/mailagent/) | First controlled A/B: full repo vs context cores | Done |
 | 2 | MailAgent, Django REST, Navorina | Cross-project generalization | ✅ [Results](context-os/evaluations/PHASE-2-RESULTS.md) |
-| 3 | Private project validation | Real-world decision quality | Planned |
-| 4 | Paper | Formal publication of results | Planned |
+| 3 | Private project validation | Real-world decision quality | ✅ [Results](context-os/evaluations/PHASE-3-RESULTS.md) |
+| 4 | Paper | Formal publication of results | ✅ [Draft](papers/paper-draft.md) |
 | 5 | Open-source release | Community replication | In progress |
 
 See [docs/research-roadmap.md](docs/research-roadmap.md) and [research/experiment-design.md](research/experiment-design.md).
