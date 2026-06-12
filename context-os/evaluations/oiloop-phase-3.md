@@ -4,6 +4,8 @@
 **Questions:** 20 · **Cores:** 5 · **Model:** gpt-4o-mini  
 **Date:** 2026-06-12
 
+**Canonical run:** [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) · keyword router · multi-core labels
+
 ---
 
 ## A/B/C Results
@@ -15,11 +17,11 @@
 | **Actionability** | 2.90 | 2.60 | **3.50** |
 | **Mean input tokens** | 81,212 | **979** | 8,290 |
 | **Cost (20 Q)** | $0.245 | **$0.0036** | $0.026 |
-| **Hallucination** | 20% | 20% | 25% |
+| **Hallucination** | 20% | 25% | **15%** |
 | **Latency** | 5.3s | **1.8s** | 5.7s |
 | **Compression** | 1× | **83×** | 9.8× |
 
-**Key finding:** Under initial evaluation, Condition B fell short of the 60% threshold. However, implementing **multi-core routing** (loading up to two active cores for cross-cutting tasks) restored quality, raising Condition B's expert preference rate to **60.0%** and meeting the exit criterion. In highly integrated repositories like Oiloop, graph-based retrieval (C) achieves the highest accuracy and actionability (+29.2% accuracy delta over A) while saving 89.8% in token costs.
+**Key finding:** B delivers **83× compression** and **~3× lower latency**, but **loses LLM-judge accuracy** vs A (1.05 vs 1.20). Multi-core routing raised **expert preference** from 50% ([run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/)) to **60%** on the canonical run — meeting H4, not the primary accuracy hypothesis. **C wins** on accuracy (+29% vs A) and hallucination (15% vs 25% for B).
 
 ---
 
@@ -32,7 +34,9 @@
 | Cores | 5 (`personal`, `workspace`, `communication`, `system-control`, `browsing`) |
 | Router F1 (keyword) | **0.950** |
 | Core compression | **83×** |
-| Expert preference (B vs A, blind) | 60.0% (4 B · 8 A · 8 equal) |
+| Expert preference (B vs A) | **60.0%** (4 B · 8 A · 8 equal) — decoded from canonical run answers |
+
+**Expert methodology:** preferences from [expert-validation-results.md](../../docs/expert-validation-results.md), derived via `autofill-survey.mjs` on eval outputs — not an independent second human blind round.
 
 ---
 
@@ -40,11 +44,11 @@
 
 | Mode | Evidence |
 |------|----------|
-| Cross-cutting native API (Run + Tools + EventKit) | OL02–04, OL08, OL11–13, OL16, OL19–20 — A preferred |
-| Single-core routing insufficient | B wins only on narrow domain Qs (OL05, OL09, OL15, OL17–18) |
-| C hallucination higher than B | 25% vs 20% — unlike Phase 2 OSS projects |
+| Cross-cutting native API (Run + Tools + EventKit) | OL02–04, OL08, OL11–13, OL16, OL19–20 — A preferred in expert decode |
+| B LLM accuracy below A | Mean 1.05 vs 1.20 despite multi-core routing |
+| Router fallback bug (fixed) | OL08 → `technical-core` (missing core); fallback now `personal-core` in Oiloop `router.mjs` |
 
-**Mitigation:** Multi-core routing (up to 2 cores per query).
+**Mitigation:** Multi-core routing (product + eval); graph retrieval (C) for hard questions; fix router fallback.
 
 ---
 
@@ -53,9 +57,9 @@
 | Resource | Path |
 |----------|------|
 | Canonical report (private repo) | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
-| Exported run (AI-Context-OS) | [experiments/oiloop/runs/run-1781225808172/](../../experiments/oiloop/runs/run-1781225808172/) |
+| Exported run (canonical) | [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) |
+| Prior run (superseded) | [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) |
 | SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781225808172/SUMMARY.md) |
-| Experiment scaffold | [experiments/oiloop/](../../experiments/oiloop/) |
 
 ---
 

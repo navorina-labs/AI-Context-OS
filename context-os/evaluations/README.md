@@ -10,6 +10,8 @@ Published results from AI Context OS experiments.
 |------|-------------|
 | [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md) | **Main report** — Oiloop A/B/C + Phase 2 comparison |
 | [oiloop-phase-3.md](oiloop-phase-3.md) | Oiloop per-project report (20 Q, run-1781225808172) |
+| [phase-3-twitter-card.html](phase-3-twitter-card.html) | Twitter card (4 projects) — export to PNG |
+| [phase-3-twitter-tradeoff.html](phase-3-twitter-tradeoff.html) | Twitter tradeoff matrix — export to PNG |
 
 ---
 

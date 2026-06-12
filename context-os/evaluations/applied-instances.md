@@ -49,9 +49,11 @@ Oiloop ships domain-oriented context cores in the chat orchestrator:
 | Metric | A | B | C |
 |--------|---|---|---|
 | Accuracy | 1.20 | 1.05 | **1.55** |
+| Hallucination | 20% | 25% | **15%** |
 | Input tokens | 81,212 | **979** | 8,290 |
 | Compression | 1× | **83×** | 9.8× |
 | Router F1 | — | **0.950** | — |
+| Expert preference (H4) | — | **60%** | — |
 
 - Report: [oiloop-phase-3.md](oiloop-phase-3.md) · summary: [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
 - Raw run: [experiments/oiloop/runs/run-1781225808172/](../../experiments/oiloop/runs/run-1781225808172/)
