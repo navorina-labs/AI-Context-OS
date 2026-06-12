@@ -64,13 +64,13 @@ Overall, Oiloop utilizes a combination of SQLite for persistent storage and Coda
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -97,13 +97,13 @@ This process helps manage the amount of data retained while ensuring that import
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Completeness (0-2):** [2]
+- **Option 2 Actionability (1-5):** [4]
 
 ---
 
@@ -120,13 +120,13 @@ The Oiloop assistant's system prompt is compiled and built in the `SystemPromptB
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -155,13 +155,13 @@ These presets are defined in the `TonePreset` enum within the `Core/Persona/Pers
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [3]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [4]
 
 ---
 
@@ -182,13 +182,13 @@ Oiloop handles sandboxed folder access on macOS through the following mechanisms
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [0]
+- **Option 1 Completeness (0-2):** [0]
+- **Option 1 Actionability (1-5):** [1]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -220,13 +220,13 @@ No files are moved without user confirmation, ensuring protection against accide
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [2]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Completeness (0-2):** [2]
+- **Option 2 Actionability (1-5):** [4]
 
 ---
 
@@ -257,13 +257,13 @@ This ensures that users have control over which files are protected from being a
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -280,13 +280,13 @@ The SwiftUI view that displays the preview of files to be moved is `FilePreviewS
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [0]
+- **Option 1 Completeness (0-2):** [0]
+- **Option 1 Actionability (1-5):** [1]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [2]
 
 ---
 
@@ -315,13 +315,13 @@ This process allows Oiloop to summarize and triage the inbox effectively.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -365,13 +365,13 @@ The custom IMAP/SMTP mail client implementation in Oiloop is referred to as `Cus
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -404,13 +404,13 @@ Both drafts include an identifier (`id`), which is a UUID, and a `dbID` that lin
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [0]
+- **Option 1 Completeness (0-2):** [0]
+- **Option 1 Actionability (1-5):** [1]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -431,13 +431,13 @@ Oiloop cannot directly send Apple Messages via an API because:
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [4]
 
 ---
 
@@ -468,13 +468,13 @@ Oiloop safely runs terminal shell commands through the following mechanisms:
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [2]
 
 ---
 
@@ -491,13 +491,13 @@ The Oiloop project uses the `CoreGraphics` framework to simulate keyboard and mo
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -520,13 +520,13 @@ This design allows Oiloop to maintain responsiveness while managing background t
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -550,13 +550,13 @@ These gestures are processed by the gesture engine, which interprets them and tr
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [0]
+- **Option 1 Completeness (0-2):** [0]
+- **Option 1 Actionability (1-5):** [1]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -573,13 +573,13 @@ The provided context does not include specific information about parsing natural
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [0]
+- **Option 2 Completeness (0-2):** [0]
+- **Option 2 Actionability (1-5):** [1]
 
 ---
 
@@ -599,13 +599,13 @@ Safari tab titles and URLs are fetched using:
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -636,13 +636,13 @@ This functionality is encapsulated in the `confirmGroupTabs` method within the `
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -665,13 +665,13 @@ These settings are part of the `SafariSettings` structure, which can be loaded a
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [ ]
-- **Option 1 Accuracy (0-3):** [ ]
-- **Option 1 Completeness (0-2):** [ ]
-- **Option 1 Actionability (1-5):** [ ]
-- **Option 2 Accuracy (0-3):** [ ]
-- **Option 2 Completeness (0-2):** [ ]
-- **Option 2 Actionability (1-5):** [ ]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [0]
+- **Option 1 Completeness (0-2):** [0]
+- **Option 1 Actionability (1-5):** [1]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
