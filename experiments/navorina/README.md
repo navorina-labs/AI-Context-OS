@@ -1,9 +1,9 @@
-# Experiment: Navorina (Phase 2.1)
+# Experiment: Navorina (Phase 2.1 + production canon)
 
-Third project in AI Context OS cross-project validation.
+Third project in AI Context OS cross-project validation. **First filled production instance** with canon pipeline (Pass 3–4, 2026-06-11).
 
-**Live instance:** [Navorina](https://github.com/Alex0nder/Navorina) → `context-os/eval/`
-
+**Live repo:** [Navorina](https://github.com/Alex0nder/Navorina) → `context-os/`  
+**Frozen snapshot:** [instance/](./instance/) (rsync from `npm run context-os:sync-framework`)  
 **Published results:** [results.md](./results.md)
 
 ---
@@ -19,11 +19,26 @@ Third project in AI Context OS cross-project validation.
 | Milestone | Status |
 |-----------|--------|
 | Question bank (42 Q + gold) | ✅ |
-| Harness | ✅ Adapted from MailAgent |
-| Router keyword F1 | ✅ **0.784** |
-| Router semantic F1 | ⏳ pending |
-| A/B/C LLM eval | ✅ [run-1781143403051](./runs/run-1781143403051/) |
-| Results published | ✅ [results.md](./results.md) |
+| Harness A/B/C | ✅ [run-1781143403051](./runs/run-1781143403051/) |
+| Router keyword F1 | ✅ **0.784** (CI gate ≥ 0.75) |
+| Router semantic F1 | ✅ **0.767** (CI optional, `OPENAI_API_KEY`) |
+| Canon (`CANON.md`, ops shards) | ✅ [instance/CANON.md](./instance/CANON.md) |
+| CI validate + router | ✅ `context-os-ci.yml` in Navorina |
+| Instance snapshot in framework | ✅ `instance/` |
+
+---
+
+## Canon pipeline (production)
+
+```
+CANON.md → question-router → core/subcore → Sources
+                              ↓
+                    context-os/ops/<shard>.md
+                              ↓ UI
+                    docs/agents/AGENT_HUB.md §2
+```
+
+Default eval lane: **Condition C + semantic router** (7% hallucination vs 19% for B).
 
 ---
 
@@ -46,7 +61,18 @@ Third project in AI Context OS cross-project validation.
 
 ---
 
+## Sync instance snapshot
+
+From Navorina repo (sibling checkout):
+
+```bash
+npm run context-os:sync-framework
+```
+
+---
+
 ## Cross-Reference
 
 - [PHASE-2-RESULTS.md](../../context-os/evaluations/PHASE-2-RESULTS.md)
 - [navorina-phase-2.1.md](../../context-os/evaluations/navorina-phase-2.1.md)
+- Live eval: [Navorina context-os/eval](https://github.com/Alex0nder/Navorina/tree/main/context-os/eval)

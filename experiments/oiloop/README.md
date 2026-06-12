@@ -11,7 +11,7 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 | Project | Oiloop |
 | Repository | `file:///Users/alex0nder/Projects/Oiloop` |
 | Phase | 3 |
-| Status | cores-built |
+| Status | measured |
 | Start date | 2026-06-12 |
 | Model used | `gpt-4o-mini` |
 
@@ -57,16 +57,17 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 ## Results Summary
 
-(To be filled after experiment)
+Run: [runs/run-1781222450776/](runs/run-1781222450776/) · Report: [context-os/evaluations/PHASE-3-RESULTS.md](../../context-os/evaluations/PHASE-3-RESULTS.md)
 
-| Metric | Condition A (Full) | Condition B (Cores) | Δ |
-|--------|-------------------|----------------------|---|
-| Accuracy | | | |
-| Hallucination rate | | | |
-| Reasoning quality | | | |
-| Latency p95 | | | |
+| Metric | Condition A (Full) | Condition B (Cores) | Condition C (Graph) |
+|--------|-------------------|----------------------|---------------------|
+| Accuracy | 1.30 | 1.05 | **1.55** |
+| Hallucination rate | 20% | 20% | 25% |
+| Mean input tokens | 81,228 | **709** | 8,270 |
+| Latency (mean ms) | 4,203 | **1,948** | 4,028 |
+| Compression | 1× | **114×** | 9.8× |
 
-**Hypothesis:** Planned
+**Hypothesis:** Partially supported (B: cost/latency win; C: accuracy win)
 
 ---
 

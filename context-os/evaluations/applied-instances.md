@@ -39,12 +39,28 @@ Oiloop ships domain-oriented context cores in the chat orchestrator:
 |--|----------------------------|----------------------|
 | Purpose | Validate hypothesis on OSS codebase | Reduce tokens + hallucination for companion |
 | Cores | 5 (Serializers, Views, Auth, Routing, Config) | 5 (personal, workspace, communication, systemControl, browsing) |
-| Eval | Formal A/B/C, 42 questions | Informal; no published run artifacts |
-| Default strategy | **C** (graph) for codegen safety | **B** (keyword router) — narrow macOS domains |
+| Eval | Formal A/B/C, 42 questions | Formal A/B/C, **20 questions** (Phase 3) |
+| Default strategy | **C** (graph) for codegen safety | **C** (graph) — Phase 3 measured; B loses accuracy on cross-cutting system Qs |
+
+---
+
+### Phase 3 eval (Oiloop product codebase)
+
+| Metric | A | B | C |
+|--------|---|---|---|
+| Accuracy | 1.30 | 1.05 | **1.55** |
+| Input tokens | ~81k | **709** | ~8.3k |
+| Compression | 1× | **114×** | 9.8× |
+| Router F1 | — | **0.950** | — |
+
+- Report: [oiloop-phase-3.md](oiloop-phase-3.md) · summary: [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
+- Raw run: [experiments/oiloop/runs/run-1781222450776/](../../experiments/oiloop/runs/run-1781222450776/)
+- Canonical (private): `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md`
 
 ---
 
 ## Cross-Reference
 
 - Phase 2 summary: [PHASE-2-RESULTS.md](PHASE-2-RESULTS.md)
+- Phase 3 summary: [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
 - DRF results: [django-phase-2.1.md](django-phase-2.1.md)

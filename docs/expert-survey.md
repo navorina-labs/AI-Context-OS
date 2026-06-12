@@ -31,6 +31,26 @@ Evaluate the options below for accuracy, completeness, and actionability without
 ```text
 Oiloop stores user preferences and chat history using the following methods:
 
+- **User Preferences**:
+  - Stored in a SQLite database via the `MemoryStore` class.
+  - User settings are saved as Codable structures, such as `PresenceSettings`, `VoiceSettings`, `MailSettings`, etc.
+  - Preferences are loaded and saved using the `DatabaseSettings` class, which handles both SQLite and legacy UserDefaults.
+
+- **Chat History**:
+  - Chat messages are stored in the SQLite database within the `messages` table.
+  - Each message is associated with a session and includes details like role, content, and timestamp.
+  - The `ChatOrchestrator` class manages the retrieval and storage of chat messages, ensuring they are appended to the history and can be summarized or processed as needed.
+
+- **Audit Log**:
+  - Actions taken by the user or the system are logged in an `audit_log` table, allowing for tracking of user interactions and system responses.
+
+This structure allows Oiloop to maintain a persistent state across sessions while ensuring user data remains local and private.
+```
+
+### Option 2:
+```text
+Oiloop stores user preferences and chat history using the following methods:
+
 - **Local SQLite Database**: 
   - Managed by the `MemoryStore`, which handles tables for messages, facts, episodes, and settings.
   
@@ -43,24 +63,6 @@ Oiloop stores user preferences and chat history using the following methods:
 
 - **Data Privacy**: 
   - User chat data remains local, with no cloud keys or logs, ensuring privacy.
-```
-
-### Option 2:
-```text
-Oiloop stores user preferences and chat history using the following methods:
-
-- **User Preferences:**
-  - User preferences are stored in a SQLite database via the `MemoryStore` class.
-  - Specific settings are saved using the `DatabaseSettings` class, which can load and save various configurations (e.g., `PresenceSettings`, `VoiceSettings`, `MailSettings`, etc.).
-  - User preferences are also managed through Codable structs, allowing for easy serialization and deserialization.
-
-- **Chat History:**
-  - Chat messages are stored in the SQLite database within the `messages` table.
-  - Each message is associated with a session and includes details such as the message role (user, assistant, system), content, and timestamp.
-  - The `ChatOrchestrator` class manages the chat history, allowing for retrieval and manipulation of messages.
-  - The `MemoryStore` class provides methods to append messages and fetch them based on session IDs.
-
-Overall, Oiloop utilizes a combination of SQLite for persistent storage and Codable structs for managing user preferences and chat history efficiently.
 ```
 
 ### Rater Scores:
@@ -78,32 +80,34 @@ Overall, Oiloop utilizes a combination of SQLite for persistent storage and Coda
 
 ### Option 1:
 ```text
-Oiloop compresses chat history to stay within token limits through the following method:
+Oiloop compresses chat history to stay within token limits by using the following approach:
 
-- **Episode Summarization**: Memory episodes are automatically summarized once they reach certain thresholds, which helps to reduce the amount of context tokens used.
+- **Episode Summarization**: It utilizes the `EpisodeSummarizer` to compress older chat messages into episodic memory.
+- **Thresholds**: The system checks if the number of messages exceeds a defined threshold (e.g., `compressThreshold`).
+- **Recent Message Retention**: It retains a certain number of recent messages (e.g., `keepRecent`) while compressing the older ones.
+- **LLM Utilization**: The summarization is performed using a local LLM (Language Model) to generate a concise summary of the chat history.
+- **Memory Insertion**: The summarized content is then inserted into the memory store as a new episode, allowing for efficient storage and retrieval while managing token usage.
+
+This process ensures that Oiloop can maintain a manageable chat history while still providing relevant context for ongoing conversations.
 ```
 
 ### Option 2:
 ```text
-Oiloop compresses chat history to stay within token limits by using the following approach:
+Oiloop compresses chat history through the following method:
 
-- **Episode Summarization**: It summarizes older chat messages into episodic memory using the `EpisodeSummarizer` class.
-- **Thresholds**: It maintains a `compressThreshold` to determine when to compress history. If the number of messages exceeds this threshold, it triggers compression.
-- **Recent Message Window**: It keeps a recent message window (e.g., the last 20 messages) while compressing older messages.
-- **LLM Utilization**: It uses a local language model (LLM) to generate concise summaries of the chat history, ensuring that the output is factual and brief.
-- **Automatic Compression**: The system automatically compresses chat history when certain conditions are met, such as having enough messages and exceeding the defined threshold.
+- **Episode Summarization**: This process automatically shrinks memory episodes once they reach certain thresholds to save context tokens. 
 
-This process helps manage the amount of data retained while ensuring that important information is still accessible.
+This approach helps maintain compliance with the context limits of local models.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
-- **Option 1 Accuracy (0-3):** [1]
-- **Option 1 Completeness (0-2):** [1]
-- **Option 1 Actionability (1-5):** [3]
-- **Option 2 Accuracy (0-3):** [2]
-- **Option 2 Completeness (0-2):** [2]
-- **Option 2 Actionability (1-5):** [4]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
+- **Option 1 Completeness (0-2):** [2]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [1]
+- **Option 2 Completeness (0-2):** [1]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -111,20 +115,20 @@ This process helps manage the amount of data retained while ensuring that import
 
 ### Option 1:
 ```text
-The Oiloop assistant's system prompt is compiled and built in the `SystemPromptBuilder` enum, specifically in the `build` function. This function constructs the system message using the base prompt, settings, facts, rules, episodes, and active context cores.
+The Oiloop assistant's system prompt is compiled and built in the `SystemPromptBuilder`.
 ```
 
 ### Option 2:
 ```text
-The Oiloop assistant's system prompt is compiled and built in the `SystemPromptBuilder`.
+The Oiloop assistant's system prompt is compiled and built in the `SystemPromptBuilder` enum. It constructs the system message using the `build` method, which combines a base prompt with settings, facts, rules, episodes, and active context cores. The base prompt is loaded from a text file using the `loadBasePrompt` method.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [1]
-- **Option 1 Accuracy (0-3):** [2]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
 - **Option 1 Completeness (0-2):** [1]
-- **Option 1 Actionability (1-5):** [4]
-- **Option 2 Accuracy (0-3):** [1]
+- **Option 1 Actionability (1-5):** [2]
+- **Option 2 Accuracy (0-3):** [2]
 - **Option 2 Completeness (0-2):** [1]
 - **Option 2 Actionability (1-5):** [3]
 
@@ -140,7 +144,7 @@ The tone presets supported by Oiloop are:
 - Professional
 - Minimal
 
-They are defined in the Personal Core under the scope of "Assistant persona guidelines."
+These presets are defined in the `TonePreset` enum within the `Core/Persona/PersonaSettings.swift` file.
 ```
 
 ### Option 2:
@@ -151,17 +155,17 @@ The tone presets supported by Oiloop are:
 - Professional
 - Minimal
 
-These presets are defined in the `TonePreset` enum within the `Core/Persona/PersonaSettings.swift` file.
+They are defined in the Personal Core under the scope of "Assistant persona guidelines."
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
-- **Option 1 Accuracy (0-3):** [1]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [3]
 - **Option 1 Completeness (0-2):** [1]
-- **Option 1 Actionability (1-5):** [3]
-- **Option 2 Accuracy (0-3):** [3]
+- **Option 1 Actionability (1-5):** [4]
+- **Option 2 Accuracy (0-3):** [1]
 - **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [4]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -196,27 +200,27 @@ Oiloop handles sandboxed folder access on macOS through the following mechanisms
 
 ### Option 1:
 ```text
-When a user requests "organize downloads," the following occurs:
-
-- The `userWantsOrganize` method in the `FileOrganizeService` checks if the request contains keywords related to organizing files.
-- If the request is recognized, the `handleOrganizeIntent` method is invoked.
-- The method prepares a plan to move files into category folders (e.g., Images, Documents) using the `FileOrganizer.proposeOrganization` method.
-- If there are no files to move, the assistant responds that everything is already organized.
-- If there are files to move, the assistant informs the user that a plan has been prepared and prompts them to open the preview sheet to review the proposed moves.
-- The user must confirm the action in the preview sheet for the organization to take place.
-```
-
-### Option 2:
-```text
 When a user requests 'organize downloads', the following process occurs:
 
 - **File Classification**: The system evaluates files in the Downloads folder based on predefined classification rules.
 - **Proposed Moves**: The `FileOrganizer` generates a list of proposed file moves to appropriate target category folders.
 - **User Confirmation**: The `FileOrganizeService` holds the proposed state and requires explicit user confirmation before any file moves are executed.
-- **Execution of Moves**: If the user confirms, the files are moved within whitelisted bookmark directories.
-- **Logging**: Any skipped folders or paths are logged in the audit trail for accountability.
+- **Execution of Moves**: If the user confirms, the system proceeds to move files within whitelisted bookmark directories.
+- **Logging**: Any skipped folders or paths during this process are logged in the audit trail for accountability. 
 
 No files are moved without user confirmation, ensuring protection against accidental actions.
+```
+
+### Option 2:
+```text
+When a user requests "organize downloads," the following occurs:
+
+- The `userWantsOrganize` method in the `FileOrganizeService` checks if the request contains keywords related to organizing files.
+- If the request is recognized, the `handleOrganizeIntent` method is invoked.
+- This method prepares a plan to organize files in the user's workspace folder by calling `preparePlan` on the `FileOrganizeService`.
+- The plan details the files that will be moved into category folders (e.g., Images, Documents).
+- The user is informed about the plan, and they are prompted to review it in a preview sheet.
+- The actual file organization will not occur until the user confirms the action in the preview sheet.
 ```
 
 ### Rater Scores:
@@ -234,7 +238,7 @@ No files are moved without user confirmation, ensuring protection against accide
 
 ### Option 1:
 ```text
-Oiloop enforces 'don't touch' rules through the following mechanism:
+Oiloop enforces 'don't touch' rules through the following mechanisms:
 
 - **UserRuleParser**: Decodes custom text rules into SQLite format to prevent unwanted file moves.
 - **Evaluation of User Rules**: The system evaluates user-defined rules (e.g., ignoring certain file patterns) to ensure compliance.
@@ -245,15 +249,13 @@ Oiloop enforces 'don't touch' rules through the following mechanism:
 ```text
 Oiloop enforces 'don't touch' rules through the following mechanisms:
 
-- **User Rules**: Users can define rules that specify which files should not be moved or organized. These rules are stored in the memory database.
-  
+- **User Rule Definition**: Users can define rules that specify which files should not be moved or organized. These rules are categorized under the `dontTouch` kind.
+
 - **Rule Checking**: When a file operation is requested, Oiloop checks the file paths against the defined 'don't touch' rules. If a file path matches any of the patterns specified in these rules, the operation is skipped for that file.
 
 - **Rule Enforcer**: The `RuleEnforcer` class contains methods that evaluate whether a file, email, or message should be skipped based on the defined rules. It checks the sender, subject, and content against the patterns in the rules.
 
-- **Feedback**: If a file is skipped due to a 'don't touch' rule, the user is informed that the file will not be moved or organized according to their specified preferences. 
-
-This ensures that users have control over which files are protected from being altered by the application.
+- **Feedback Mechanism**: If a file is identified as matching a 'don't touch' rule, Oiloop will not perform any actions on that file, ensuring that user preferences are respected.
 ```
 
 ### Rater Scores:
@@ -271,7 +273,7 @@ This ensures that users have control over which files are protected from being a
 
 ### Option 1:
 ```text
-The context provided is insufficient to answer the question about which SwiftUI view displays the preview of files to be moved. Specific details about the SwiftUI views used in the Oiloop project are missing.
+The context provided is missing information about the specific SwiftUI view that displays the preview of files to be moved.
 ```
 
 ### Option 2:
@@ -294,34 +296,34 @@ The SwiftUI view that displays the preview of files to be moved is `FilePreviewS
 
 ### Option 1:
 ```text
-Oiloop reads inbox headers from Apple Mail through the following mechanism:
-
-- Utilizes the `MailService` entity, which coordinates Apple Mail scripts.
-- Implements AppleScript or JXA to interact with the Mail.app for reading inbox headers.
-- Processes the retrieved headers for message triage classification.
-```
-
-### Option 2:
-```text
 Oiloop reads inbox headers from Apple Mail through the `MailService` class, specifically using the `prepareInboxSummary` method. Here’s how it works:
 
-- **Mail Settings Check**: It first checks if mail automation is enabled in the settings.
-- **Fetch Inbox Messages**: It fetches recent inbox messages using either the built-in `MailReader` or a custom mail reader, depending on the user's configuration.
+- **Mail Settings Check**: It first checks if the mail feature is enabled in the settings.
+- **Fetch Inbox Messages**: It fetches recent messages from the inbox using either the built-in `MailReader` or a custom mail reader, depending on the user's configuration.
 - **Filter Messages**: The fetched messages are filtered based on user-defined rules to exclude any that should be skipped.
-- **Build Overview**: It constructs an overview of the messages and prepares a `MailInboxPlan` that includes the messages and a summary.
-- **Pending Plan**: The resulting plan is stored in `pendingInboxPlan`, which can then be used to display the summary and details to the user.
+- **Build Overview**: It constructs an overview of the inbox messages, which includes details like the sender, subject, and snippets of the message body.
+- **Return Plan**: Finally, it creates a `MailInboxPlan` that contains the overview and the filtered messages, which can then be used for further processing or display.
 
 This process allows Oiloop to summarize and triage the inbox effectively.
 ```
 
+### Option 2:
+```text
+Oiloop reads inbox headers from Apple Mail through the following mechanism:
+
+- Utilizes the `MailService` entity.
+- Coordinates Apple Mail scripts and SMTP/IMAP network requests to fetch inbox headers.
+- Implements custom IMAP fetching protocols to retrieve the necessary data.
+```
+
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [1]
-- **Option 1 Accuracy (0-3):** [2]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
 - **Option 1 Completeness (0-2):** [1]
 - **Option 1 Actionability (1-5):** [3]
 - **Option 2 Accuracy (0-3):** [1]
 - **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [3]
+- **Option 2 Actionability (1-5):** [2]
 
 ---
 
@@ -332,36 +334,39 @@ This process allows Oiloop to summarize and triage the inbox effectively.
 The custom IMAP/SMTP mail client implementation in Oiloop includes the following components:
 
 - **MailSettings**: 
-  - Stores configuration for using custom mail, including:
-    - IMAP server details (host, port, username, password, drafts folder).
-    - SMTP server details (host, port, username, password).
-    - Flags for enabling/disabling mail features.
+  - Stores configuration for the mail client, including:
+    - `mailEnabled`: Boolean to enable/disable mail functionality.
+    - `inboxFetchLimit`: Limit for fetching emails from the inbox.
+    - `useCustomMail`: Boolean to indicate if a custom mail setup is used.
+    - `imapHost`, `imapPort`, `imapUser`, `imapPass`, `imapDraftsFolder`: Configuration for IMAP settings.
+    - `sendViaSmtp`: Boolean to indicate if SMTP should be used for sending emails.
+    - `smtpHost`, `smtpPort`, `smtpUser`, `smtpPass`: Configuration for SMTP settings.
 
-- **MailService**:
+- **MailService**: 
   - Handles operations related to mail, including:
-    - Fetching inbox messages.
-    - Preparing draft replies.
-    - Confirming and sending drafts via either IMAP or SMTP based on user settings.
+    - `prepareInboxSummary()`: Fetches and summarizes emails from the inbox.
+    - `prepareDraftReply()`: Prepares a draft reply to an email.
+    - `confirmOpenDraftInMail()`: Opens a draft in the Mail app for user review and sending.
+    - `confirmOpenDraftInMail(with:)`: Confirms and sends a draft email based on the provided draft plan.
 
-- **CustomMailReader**:
-  - Responsible for reading emails from the configured IMAP server.
-  - Provides functionality to fetch inbox messages and save drafts.
+- **CustomMailReader**: 
+  - Responsible for fetching emails from the inbox and saving drafts using the custom IMAP configuration.
 
-- **MailTriageBuilder**:
-  - Builds summaries and drafts for mail messages using the local LLM client.
+- **MailReader**: 
+  - Fetches emails from the default Apple Mail application.
 
-- **MailDraftPlan**:
-  - Represents a draft email, including recipient, subject, and body.
+- **MailTriageBuilder**: 
+  - Builds an overview of the inbox and drafts replies based on the fetched emails.
 
-- **MailToolError**:
-  - Defines errors related to mail operations, such as script failures or empty inboxes.
+- **Error Handling**: 
+  - Various error types are defined to handle issues related to mail operations, such as missing configurations or failed requests.
 
-This implementation allows Oiloop to interact with the user's email accounts, enabling features like summarizing inboxes, drafting replies, and sending emails without relying on external cloud services.
+This implementation allows Oiloop to interact with the user's email through both IMAP for fetching and SMTP for sending, while providing a user-friendly interface for managing email tasks.
 ```
 
 ### Option 2:
 ```text
-The custom IMAP/SMTP mail client implementation in Oiloop is referred to as `CustomMailReader`. It is a standalone client that executes curl-based IMAP and SMTP commands.
+The custom IMAP/SMTP mail client implementation in Oiloop is represented by the `CustomMailReader` entity. It is a standalone client that executes curl-based IMAP and SMTP commands.
 ```
 
 ### Rater Scores:
@@ -379,38 +384,38 @@ The custom IMAP/SMTP mail client implementation in Oiloop is referred to as `Cus
 
 ### Option 1:
 ```text
-The context does not provide specific details on how Telegram and Slack connector drafts are structured. Information about the structure of drafts, such as their format or fields, is missing.
-```
-
-### Option 2:
-```text
 The Telegram and Slack connector drafts are structured as follows:
 
-### Telegram Draft
+### Telegram Connector Draft
 - **Type**: "telegram"
-- **Chat ID**: The ID of the chat to which the draft is directed.
+- **Chat ID**: The ID of the chat to which the draft is related.
 - **Display Name**: The name of the user or chat.
 - **Body**: The content of the message to be sent.
 - **DB ID**: An optional identifier for the draft in the database.
 
-### Slack Draft
+### Slack Connector Draft
 - **Type**: "slack"
-- **Chat ID**: The ID of the chat or channel to which the draft is directed.
+- **Chat ID**: The ID of the chat or channel to which the draft is related.
 - **Display Name**: The name of the channel or user.
 - **Body**: The content of the message to be sent.
 - **DB ID**: An optional identifier for the draft in the database.
 
-Both drafts include an identifier (`id`), which is a UUID, and a `dbID` that links to the database record if applicable.
+Both drafts include an `id` (UUID) and can have a `dbID` for database tracking.
+```
+
+### Option 2:
+```text
+The context does not provide specific details on how Telegram and Slack connector drafts are structured. Information about the structure of drafts, such as their format or fields, is missing.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
-- **Option 1 Accuracy (0-3):** [0]
-- **Option 1 Completeness (0-2):** [0]
-- **Option 1 Actionability (1-5):** [1]
-- **Option 2 Accuracy (0-3):** [1]
-- **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [3]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [0]
+- **Option 2 Completeness (0-2):** [0]
+- **Option 2 Actionability (1-5):** [1]
 
 ---
 
@@ -427,7 +432,7 @@ Oiloop cannot directly send Apple Messages via an API because:
 
 - Apple Messages does not provide a public API for sending messages programmatically.
 - Oiloop relies on user interaction for sending messages, ensuring that no messages are sent without explicit user confirmation.
-- The design prioritizes user privacy and control, as all actions involving sending messages require the user's approval.
+- The design prioritizes user privacy and control, as all actions involving sending messages require user approval.
 ```
 
 ### Rater Scores:
@@ -445,17 +450,11 @@ Oiloop cannot directly send Apple Messages via an API because:
 
 ### Option 1:
 ```text
-Oiloop safely runs terminal shell commands through the following mechanisms:
+Oiloop safely runs terminal shell commands by following these steps:
 
-- **User Confirmation**: Before executing any shell command, Oiloop prepares a plan and presents it to the user in a preview sheet. The user must explicitly confirm the execution of the command.
-  
-- **Error Handling**: The system checks for errors during the preparation and execution phases. If any issues arise, such as invalid commands or execution failures, appropriate error messages are generated and communicated to the user.
-
-- **User Permissions**: Shell commands are executed with the user's permissions, ensuring that the commands run in the context of the user's environment.
-
-- **Structured Command Execution**: Commands are encapsulated in a structured format, allowing for better management and oversight of what is being executed.
-
-This approach minimizes risks associated with executing shell commands by ensuring that users are aware of and approve any actions taken by the application.
+- **User Confirmation**: Before executing any shell command, Oiloop prepares a plan and presents it to the user in a preview sheet. The user must explicitly confirm the execution.
+- **User Permissions**: Shell commands run with the user's permissions, ensuring that the user is aware of any potential modifications or actions that may affect their system.
+- **Error Handling**: If any issues arise during the execution of the command, Oiloop handles errors gracefully, allowing the user to be informed of any problems without executing unintended actions.
 ```
 
 ### Option 2:
@@ -464,17 +463,17 @@ Oiloop safely runs terminal shell commands through the following mechanisms:
 
 - **Shell Execution Validation**: It includes subprocesses, timeouts, and sandboxing checks to ensure safe execution.
 - **User Confirmation**: Every shell command must be previewed and confirmed by the user before execution.
-- **Headless Mode Bypass**: In headless mode, access to EventKit Reminders is bypassed if permissions are not determined, preventing potential issues.
+- **Headless Mode Bypass**: In headless mode, accessing EventKit Reminders is bypassed if permissions are not determined to prevent issues.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [1]
-- **Option 1 Accuracy (0-3):** [2]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
+- **Option 1 Accuracy (0-3):** [1]
 - **Option 1 Completeness (0-2):** [1]
-- **Option 1 Actionability (1-5):** [4]
+- **Option 1 Actionability (1-5):** [3]
 - **Option 2 Accuracy (0-3):** [1]
 - **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [2]
+- **Option 2 Actionability (1-5):** [3]
 
 ---
 
@@ -482,12 +481,14 @@ Oiloop safely runs terminal shell commands through the following mechanisms:
 
 ### Option 1:
 ```text
-The framework used to simulate keyboard and mouse clicks is CoreGraphics.
+The framework used to simulate keyboard and mouse clicks in the Oiloop project is not explicitly mentioned in the provided context. However, it is likely related to the `KeyboardMouseExecutor` class, which is part of the `Core/Orchestrator` directory. 
+
+To provide a more accurate answer, details about the specific framework or library used for simulating keyboard and mouse events would be needed.
 ```
 
 ### Option 2:
 ```text
-The Oiloop project uses the `CoreGraphics` framework to simulate keyboard and mouse clicks.
+The framework used to simulate keyboard and mouse clicks is CoreGraphics.
 ```
 
 ### Rater Scores:
@@ -505,26 +506,26 @@ The Oiloop project uses the `CoreGraphics` framework to simulate keyboard and mo
 
 ### Option 1:
 ```text
-EventKit Reminders authorization avoids freezing Oiloop in background mode by implementing a headless bypass. This approach checks the status of permissions before attempting to access EventKit Reminders. If permissions are not determined, the access is bypassed, preventing background agents from blocking indefinitely on macOS permissions popups. This decision was documented in ADR-09.
+The EventKit Reminders authorization avoids freezing Oiloop in background mode by using asynchronous requests for authorization. Specifically, it checks the authorization status and requests access in a way that does not block the main thread. This is achieved through the use of `withCheckedContinuation` to handle the asynchronous nature of the request, allowing the app to remain responsive while waiting for user permission. 
+
+Key points:
+- Uses `EKEventStore` to manage reminders.
+- Checks authorization status before requesting access.
+- Utilizes asynchronous patterns to avoid blocking the main thread.
+- Ensures that the app can continue functioning while waiting for user input.
 ```
 
 ### Option 2:
 ```text
-The EventKit Reminders authorization avoids freezing Oiloop in background mode by using asynchronous requests for authorization. Specifically, it employs the following approach:
-
-- **Asynchronous Handling**: The request for authorization is made using `await` with `withCheckedContinuation`, allowing the app to continue running without blocking the main thread.
-- **Conditional Execution**: The authorization request is only made if the current authorization status is not determined, ensuring that the app does not repeatedly request access unnecessarily.
-- **Graceful Handling of Denied Access**: If access is denied, the app can handle this gracefully by informing the user without causing the app to freeze or crash.
-
-This design allows Oiloop to maintain responsiveness while managing background tasks related to reminders.
+EventKit Reminders authorization avoids freezing Oiloop in background mode by implementing a headless bypass. This approach checks the status of permissions before attempting to access EventKit Reminders, preventing background agents from blocking indefinitely on macOS permissions popups. This decision was documented in ADR-09 on June 10, 2026.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [1]
-- **Option 1 Accuracy (0-3):** [2]
+- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Option 1 Accuracy (0-3):** [1]
 - **Option 1 Completeness (0-2):** [1]
-- **Option 1 Actionability (1-5):** [4]
-- **Option 2 Accuracy (0-3):** [1]
+- **Option 1 Actionability (1-5):** [3]
+- **Option 2 Accuracy (0-3):** [2]
 - **Option 2 Completeness (0-2):** [1]
 - **Option 2 Actionability (1-5):** [3]
 
@@ -534,29 +535,22 @@ This design allows Oiloop to maintain responsiveness while managing background t
 
 ### Option 1:
 ```text
-The context does not provide specific details on how the hand gesture camera stream recognizes confirm or cancel commands. Information on the gesture recognition logic or specific gestures associated with these commands is missing.
+The context provided does not specify the exact implementation details of how the hand gesture camera stream recognizes confirm or cancel commands. Information about the gesture recognition logic, including the specific gestures used for confirmation or cancellation, is missing.
 ```
 
 ### Option 2:
 ```text
-The hand gesture camera stream recognizes confirm or cancel commands through specific gestures detected by the gesture engine. Here are the key points:
-
-- **Open Palm Gesture**: Holding an open palm for a specified duration (default is 0.9 seconds) is used to confirm actions.
-- **Fist Gesture**: Making a fist is used to cancel actions.
-- **Gesture Calibration**: Users can adjust the thresholds for these gestures in the Gesture Calibration View, allowing for customization of how gestures are recognized.
-- **Real-time Feedback**: The app provides live feedback on the detected hand state (e.g., open palm, fist) during the calibration process.
-
-These gestures are processed by the gesture engine, which interprets them and triggers the corresponding actions in the app.
+The context provided does not specify how the hand gesture camera stream recognizes confirm or cancel commands. Information about specific gestures or their mappings to commands is missing.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
-- **Option 1 Accuracy (0-3):** [0]
-- **Option 1 Completeness (0-2):** [0]
-- **Option 1 Actionability (1-5):** [1]
-- **Option 2 Accuracy (0-3):** [1]
-- **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [3]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [1]
+- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Actionability (1-5):** [2]
+- **Option 2 Accuracy (0-3):** [0]
+- **Option 2 Completeness (0-2):** [0]
+- **Option 2 Actionability (1-5):** [1]
 
 ---
 
@@ -564,22 +558,22 @@ These gestures are processed by the gesture engine, which interprets them and tr
 
 ### Option 1:
 ```text
-The `RemindersReader` uses `NSDataDetector` for robust, offline, multi-lingual parsing of relative dates, such as "tomorrow at 5pm."
+The `RemindersReader` entity is used to parse natural language reminder deadlines, utilizing `NSDataDetector` for robust, offline, multi-lingual parsing of relative dates such as "tomorrow at 5pm."
 ```
 
 ### Option 2:
 ```text
-The provided context does not include specific information about parsing natural language deadlines like "tomorrow at 5pm." It would be necessary to have details on the implementation or methods used for parsing such date and time expressions.
+The provided context does not include specific information about parsing natural language deadlines like "tomorrow at 5pm." It mentions a `ReminderService` that handles scheduling reminders, but it does not detail the implementation for parsing such specific date and time expressions. Additional context or code related to the parsing of natural language dates and times would be needed to provide a complete answer.
 ```
 
 ### Rater Scores:
 - **Preferred Option (1 / 2 / Both / Neither):** [1]
-- **Option 1 Accuracy (0-3):** [2]
-- **Option 1 Completeness (0-2):** [1]
+- **Option 1 Accuracy (0-3):** [3]
+- **Option 1 Completeness (0-2):** [2]
 - **Option 1 Actionability (1-5):** [4]
 - **Option 2 Accuracy (0-3):** [0]
 - **Option 2 Completeness (0-2):** [0]
-- **Option 2 Actionability (1-5):** [1]
+- **Option 2 Actionability (1-5):** [2]
 
 ---
 
@@ -587,25 +581,25 @@ The provided context does not include specific information about parsing natural
 
 ### Option 1:
 ```text
-Safari tab titles and URLs are fetched using the `SafariReader` class, which is part of the `SafariService`. The `prepareSafariPlan` method in the `SafariService` class calls `SafariReader.fetchTabs()` to retrieve the open tabs. The fetched tabs are then processed to identify duplicates and group them as needed.
-```
-
-### Option 2:
-```text
 Safari tab titles and URLs are fetched using:
 
 - **AppleScript/JXA** for querying window and tab information.
 - The `SafariReader` entity, which resolves tab titles and URLs and executes close scripts.
 ```
 
+### Option 2:
+```text
+Safari tab titles and URLs are fetched using the `SafariReader.fetchTabs()` method within the `prepareSafariPlan()` function of the `SafariService` class. This method retrieves the currently open tabs in Safari and returns them as an array of `BrowserTabSummary` objects.
+```
+
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
-- **Option 1 Accuracy (0-3):** [1]
+- **Preferred Option (1 / 2 / Both / Neither):** [1]
+- **Option 1 Accuracy (0-3):** [2]
 - **Option 1 Completeness (0-2):** [1]
 - **Option 1 Actionability (1-5):** [3]
-- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Accuracy (0-3):** [1]
 - **Option 2 Completeness (0-2):** [1]
-- **Option 2 Actionability (1-5):** [3]
+- **Option 2 Actionability (1-5):** [2]
 
 ---
 
@@ -615,32 +609,30 @@ Safari tab titles and URLs are fetched using:
 ```text
 Oiloop groups browser tabs into new windows through the following process:
 
-- Utilizes the `SafariService` to manage browser tab plans.
-- Queries open tab URLs and titles from Safari and Google Chrome.
-- Identifies tabs that belong to the same domain or are related.
-- Issues commands via AppleScript to reorganize and group these tabs into new windows.
+- Utilizes the `SafariService` entity to manage browser tab plans.
+- Groups tabs based on their domains or other criteria as defined in the service.
+- Issues commands to the respective browsers (Safari or Google Chrome) to reorganize the tabs into new windows. 
 
-No specific details on the exact grouping criteria or methods are provided in the context.
+Specific implementation details are not provided in the context.
 ```
 
 ### Option 2:
 ```text
-Oiloop groups browser tabs into new windows using the following process:
+Oiloop groups browser tabs into new windows by using the `confirmGroupTabs` method in the `SafariService` class. This method processes the pending plan that contains the grouped tabs and executes the grouping action for both Safari and Chrome browsers. The grouping is based on the domains of the tabs, and the method ensures that the grouped tabs are moved to new windows accordingly. 
 
-- **Preparation of Plan**: The `SafariService` prepares a plan that identifies open tabs in Safari and Chrome.
-- **Grouping Logic**: It identifies duplicates and groups tabs by their domains.
-- **Confirmation**: When the user confirms the action, the service executes the grouping of tabs into new windows based on the identified groups.
-- **Execution**: The grouped tabs are moved to new windows, effectively organizing them by domain.
-
-This functionality is encapsulated in the `confirmGroupTabs` method within the `SafariService` class.
+Here are the key points:
+- The `confirmGroupTabs` method checks for pending groups in the `pendingSafariPlan`.
+- It separates the tabs into Safari and Chrome groups.
+- It executes the grouping action for each browser type.
+- The method updates the memory store with the action taken and provides user feedback.
 ```
 
 ### Rater Scores:
-- **Preferred Option (1 / 2 / Both / Neither):** [2]
+- **Preferred Option (1 / 2 / Both / Neither):** [Both]
 - **Option 1 Accuracy (0-3):** [1]
 - **Option 1 Completeness (0-2):** [1]
 - **Option 1 Actionability (1-5):** [3]
-- **Option 2 Accuracy (0-3):** [2]
+- **Option 2 Accuracy (0-3):** [1]
 - **Option 2 Completeness (0-2):** [1]
 - **Option 2 Actionability (1-5):** [3]
 
@@ -650,18 +642,18 @@ This functionality is encapsulated in the `confirmGroupTabs` method within the `
 
 ### Option 1:
 ```text
-The context provided does not include information about specific settings controls for browser integration. This information is missing.
+The context provided does not mention any specific settings controls for browser integration. Information about settings or configuration options is missing.
 ```
 
 ### Option 2:
 ```text
-The settings that control browser integration in the Oiloop project are:
+The settings controlling browser integration in the Oiloop project are as follows:
 
 - **Safari Settings**:
-  - `safariEnabled`: A boolean that enables or disables the use of Safari for automation.
-  - `chromeEnabled`: A boolean that enables or disables the use of Google Chrome for automation.
+  - `safariEnabled`: A boolean that enables or disables the integration with Safari.
+  - `chromeEnabled`: A boolean that enables or disables the integration with Google Chrome.
 
-These settings are part of the `SafariSettings` structure, which can be loaded and saved to manage the integration with the respective browsers.
+These settings can be found in the `SettingsView` and are used to determine whether the application can interact with the respective browsers for tasks such as summarizing open tabs or closing duplicates.
 ```
 
 ### Rater Scores:

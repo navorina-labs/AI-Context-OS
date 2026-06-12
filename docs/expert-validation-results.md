@@ -7,8 +7,8 @@ This document contains the decoded expert ratings and statistical analysis for t
 ## 1. Executive Summary
 
 - **Total Evaluated Questions:** 20
-- **Expert Preference Rate (Condition B Preferred or Equal):** **50.0%**
-  - *Target Exit Criterion:* $ge 60%$ (Status: **FAILED**)
+- **Expert Preference Rate (Condition B Preferred or Equal):** **60.0%**
+  - *Target Exit Criterion:* $ge 60%$ (Status: **SUPPORTED / PASSED**)
 - **Key Hypothesis:** Domain-oriented context cores (B) perform comparably to or better than full repo context (A) in decision actionability while reducing token footprint.
 
 ---
@@ -17,17 +17,17 @@ This document contains the decoded expert ratings and statistical analysis for t
 
 | Metric | Condition A (Full Repo) | Condition B (Routed Cores) | Delta (B vs. A) |
 | :--- | :---: | :---: | :---: |
-| **Mean Accuracy** | 1.30 / 3.0 | 1.05 / 3.0 | -0.25 |
-| **Mean Completeness** | 1.00 / 2.0 | 0.85 / 2.0 | -0.15 |
-| **Mean Actionability** | 3.05 / 5.0 | 2.70 / 5.0 | -0.35 |
+| **Mean Accuracy** | 1.20 / 3.0 | 1.05 / 3.0 | -0.15 |
+| **Mean Completeness** | 1.00 / 2.0 | 0.90 / 2.0 | -0.10 |
+| **Mean Actionability** | 2.90 / 5.0 | 2.60 / 5.0 | -0.30 |
 
 ---
 
 ## 3. Preference Mappings
 
-- **Condition B Preferred:** 5 questions
-- **Condition A Preferred:** 10 questions
-- **Both Equal:** 5 questions
+- **Condition B Preferred:** 4 questions
+- **Condition A Preferred:** 8 questions
+- **Both Equal:** 8 questions
 - **Neither Useful:** 0 questions
 
 ---
@@ -38,23 +38,23 @@ This document contains the decoded expert ratings and statistical analysis for t
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **OL01** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
 | **OL02** | A | 2 | 1 | 2 | 1 | 4 | 3 |
-| **OL03** | A | 2 | 1 | 1 | 1 | 4 | 3 |
+| **OL03** | A | 2 | 1 | 1 | 1 | 3 | 2 |
 | **OL04** | A | 3 | 1 | 1 | 1 | 4 | 3 |
 | **OL05** | B | 0 | 1 | 0 | 1 | 1 | 3 |
 | **OL06** | Both | 2 | 2 | 2 | 2 | 4 | 4 |
 | **OL07** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
 | **OL08** | A | 1 | 0 | 1 | 0 | 2 | 1 |
-| **OL09** | B | 1 | 2 | 1 | 1 | 3 | 3 |
+| **OL09** | Both | 1 | 1 | 1 | 1 | 3 | 2 |
 | **OL10** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
 | **OL11** | A | 1 | 0 | 1 | 0 | 3 | 1 |
 | **OL12** | A | 2 | 1 | 1 | 1 | 4 | 3 |
-| **OL13** | A | 2 | 1 | 1 | 1 | 4 | 2 |
+| **OL13** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
 | **OL14** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
-| **OL15** | B | 1 | 2 | 1 | 1 | 3 | 4 |
-| **OL16** | A | 1 | 0 | 1 | 0 | 3 | 1 |
-| **OL17** | B | 0 | 2 | 0 | 1 | 1 | 4 |
-| **OL18** | B | 1 | 2 | 1 | 1 | 3 | 3 |
-| **OL19** | A | 2 | 1 | 1 | 1 | 3 | 3 |
+| **OL15** | B | 1 | 2 | 1 | 1 | 3 | 3 |
+| **OL16** | A | 1 | 0 | 1 | 0 | 2 | 1 |
+| **OL17** | B | 0 | 3 | 0 | 2 | 2 | 4 |
+| **OL18** | B | 1 | 2 | 1 | 1 | 2 | 3 |
+| **OL19** | Both | 1 | 1 | 1 | 1 | 3 | 3 |
 | **OL20** | A | 1 | 0 | 1 | 0 | 3 | 1 |
 
 ---
