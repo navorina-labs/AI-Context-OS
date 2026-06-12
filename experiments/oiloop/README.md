@@ -26,13 +26,13 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 ## Cores Built
 
-| Core | Version | Tokens | Validation pass rate |
-|------|---------|--------|----------------------|
-| [personal-core](cores/personal-core.md) | 1.0.0 | ~500 | 100% (7/7) |
-| [workspace-core](cores/workspace-core.md) | 1.0.0 | ~470 | 83.3% (5/6) |
-| [communication-core](cores/communication-core.md) | 1.0.0 | ~520 | 100% (4/4) |
-| [system-control-core](cores/system-control-core.md) | 1.0.0 | ~550 | 100% (8/8) |
-| [browsing-core](cores/browsing-core.md) | 1.0.0 | ~430 | 100% (3/3) |
+| Core | Version | Token estimate |
+|------|---------|----------------|
+| [personal-core](cores/personal-core.md) | 1.0.0 | ~800 |
+| [workspace-core](cores/workspace-core.md) | 1.0.0 | ~900 |
+| [communication-core](cores/communication-core.md) | 1.0.0 | ~1000 |
+| [system-control-core](cores/system-control-core.md) | 1.0.0 | ~950 |
+| [browsing-core](cores/browsing-core.md) | 1.0.0 | ~750 |
 
 ---
 
@@ -64,11 +64,14 @@ Run: [runs/run-1781225808172/](runs/run-1781225808172/) · Report: [docs/expert-
 | Accuracy | 1.20 | 1.05 | **1.55** |
 | Completeness | 1.00 | 0.90 | **1.10** |
 | Actionability | 2.90 | 2.60 | **3.50** |
+| Hallucination | 20% | 25% | **15%** |
 | Mean input tokens | 81,212 | **979** | 8,290 |
 | Latency (mean ms) | 5,288 | **1,787** | 5,671 |
 | Compression | 1× | **83×** | 9.8× |
 
-**Hypothesis:** Supported (B meets the 60.0% expert preference threshold; C achieves highest quality while saving 89.8% tokens)
+**Hypothesis:** Partially supported — primary accuracy (B ≥ A): **no** (`hypothesis_supported: false`). Expert preference H4 (≥60%): **yes** (60.0%, multi-core run). C: best accuracy and lowest hallucination.
+
+Superseded run: [run-1781222450776](runs/run-1781222450776/) (single-core labels, 709-token B mean, 50% expert preference).
 
 ---
 

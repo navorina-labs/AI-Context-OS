@@ -8,8 +8,10 @@ This document contains the decoded expert ratings and statistical analysis for t
 
 - **Total Evaluated Questions:** 20
 - **Expert Preference Rate (Condition B Preferred or Equal):** **60.0%**
-  - *Target Exit Criterion:* $ge 60%$ (Status: **SUPPORTED / PASSED**)
-- **Key Hypothesis:** Domain-oriented context cores (B) perform comparably to or better than full repo context (A) in decision actionability while reducing token footprint.
+  - *Target Exit Criterion (H4):* ≥ 60% (Status: **PASSED**)
+  - *Primary hypothesis (B accuracy ≥ A):* **FAILED** (1.05 vs 1.20 on [run-1781225808172](../experiments/oiloop/runs/run-1781225808172/))
+- **Source run:** `run-1781225808172` (keyword router, multi-core `expected_cores`)
+- **Methodology:** Preferences decoded via `autofill-survey.mjs` from eval answers — not an independent second human blind round. Prior run `run-1781222450776`: **50%** preference.
 
 ---
 
