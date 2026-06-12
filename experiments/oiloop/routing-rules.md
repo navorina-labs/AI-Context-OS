@@ -2,6 +2,17 @@
 
 This document outlines the score-based routing rules used to map user queries in Oiloop to the appropriate Context Core.
 
+**Canonical implementation (private repo):** `Core/Persona/ContextRouter.swift` in [Oiloop](https://github.com/Alex0nder/Oiloop) (local: `~/Projects/Oiloop`).
+
+| Artifact | Commit | Date |
+|----------|--------|------|
+| Oiloop `ContextRouter.swift` | [`605c917`](https://github.com/Alex0nder/Oiloop/commit/605c9177854e31650619b73a750140dec6a69d4a) | 2026-06-12 |
+| This doc (`routing-rules.md`) | [`ba384a9`](https://github.com/Alex0nder/AI-Context-OS/commit/ba384a92255c2c7d339d856e61e1e6ddd45a509c) | 2026-06-12 |
+
+When changing keywords or scoring in Oiloop, update this file in the same PR/commit window so eval F1 and paper stay aligned.
+
+**Tests:** `Tests/OiloopTests/ContextRouterTests.swift` (`testQueryOverlapMultiRouting` covers multi-core + screenshot overlap).
+
 ---
 
 ## 1. Context Core Routing Map
@@ -40,8 +51,8 @@ To handle overlap (e.g. "create note" vs "delete reminder"), the router scores e
 ## 3. Dynamic Screenshot Routing Rule
 
 To optimize target scoping, `screenshot` or `скриншот` triggers are routed dynamically:
-* If the query contains file operations (e.g., `move`, `archive`, `clean`, `organize`, `sort`, `перенести`, `архивировать`, `убрать`, `навести порядок`, `очисти`), the trigger routes $+2$ points to **Workspace** to handle desktop cleaning chores.
-* Otherwise, the trigger routes $+2$ points to **System Control** to handle screen capture tool execution.
+* If the query contains file operations (e.g., `move`, `archive`, `clean`, `organize`, `sort`, `перенести`, `архивировать`, `убрать`, `наведи порядок`, `навести порядок`, `очисти`), the trigger routes +2 points to **Workspace** to handle desktop cleaning chores.
+* Otherwise, the trigger routes +2 points to **System Control** to handle screen capture tool execution.
 
 ---
 
