@@ -1,6 +1,7 @@
 # Domain-Oriented Context Cores: Bounded Context for AI Decision Support in Software Projects
 
-**Authors:** Anonymous (Under Review)  
+**Authors:** Anonymous (Under Review)
+
 **Abstract:** Modern AI-assisted software development relies heavily on expanding Large Language Model (LLM) context windows to ingest repository-scale codebases. However, exposing the entire codebase to the LLM increases token costs, increases response latency, and degrades accuracy due to attention dilution—especially on questions concerning localized business rules, settings configurations, and target boundary interfaces. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*: domain-oriented, minimal sufficient context partitions, coupled with a lightweight multi-core routing mechanism. We validate this approach through A/B/C within-subjects experiments across four software repositories: MailAgent (320k LOC), Django REST Framework (~1.2M LOC), Navorina (~270k LOC), and Oiloop (a proprietary macOS companion). Testing 139 questions under a double-blind expert review protocol, Context Cores (B) achieved **14× to 114× context compression** and **2.96× lower latency**, saving **98.5% in token costs** compared to full-repository baselines (A). On queries covering cross-cutting targets, multi-core routing achieved a **60.0% expert preference rate**. In complex, highly integrated repositories, graph-based retrieval (C) halves the hallucination rate (7–11%) compared to Context Cores (19–22%) while retaining 89% cost savings. We provide our prompt compilation architecture, router implementations, and evaluation dataset as a replication package.
 
 ---
@@ -41,7 +42,43 @@ In our audits of naive coding assistants, we observed that code assistants frequ
 
 ---
 
-## 3. The AI Context OS Architecture
+## 3. Related Work
+
+### 3.1 Retrieval-Augmented Generation (RAG)
+Lexical retrieval methods (such as BM25) and dense vector-based retrieval (embedding similarity) are widely used to prune LLM prompt contexts. However, naive RAG often chunks files into arbitrary semantic blocks, disrupting control flow and structural syntax. When applied to codebases, this results in fragmented contexts where class declarations are severed from their method implementations, forcing models to infer missing interfaces.
+
+### 3.2 Knowledge Graphs and GraphRAG
+GraphRAG models a codebase as a set of entities (classes, methods, variables) and relations (calls, inherits, imports). While graphs preserve structural relationships, they optimize for *connectivity* rather than *sufficiency*. A developer seeking to modify a settings parameter may be presented with a large, adjacent subgraph of classes that ingest that setting, flooding the prompt with code files that are irrelevant to the core decision.
+
+### 3.3 Code Intelligence & AST Indexing
+Recent static analysis-driven code assistants parse Abstract Syntax Trees (ASTs) to provide precise declaration and definition maps. While this resolves syntax lookup errors, AST indices operate without business or operational domain semantics. They cannot capture architectural constraints (e.g., *"never send emails directly without user confirmation"* or *"temporary directories must use security-scoped bookmarks"*), which are typically written in prose documentation rather than source code.
+
+### 3.4 Context Engineering & Compression
+Techniques like prompt pruning, token compression, and context distillation attempt to remove redundant tokens. However, these methods are post-hoc filters applied to flat texts. They do not alter the underlying structural representation of the repository, meaning that token limits and latency issues re-emerge as the overall repository size scales.
+
+---
+
+## 4. Hypothesis
+
+We formalize the core assumptions of the AI Context OS framework under the following hypotheses:
+
+* **Primary Hypothesis ($H_1$):** Dynamically routed, domain-oriented context partitions (Context Cores) produce developer responses that are equal or superior in correctness, completeness, and actionability to full-repository contexts, while significantly reducing input token volume and latency.
+* **Sub-Hypothesis ($H_{1a}$) [Token Reduction]:** The average context token length of Context Cores ($L(I_B)$) is significantly smaller than that of the full repository ($L(I_A)$):
+  $$L(I_B) \ll L(I_A)$$
+* **Sub-Hypothesis ($H_{1b}$) [Latency Reduction]:** The average response latency of Context Cores ($t_B$) is significantly smaller than that of the full repository ($t_A$):
+  $$t_B \ll t_A$$
+* **Sub-Hypothesis ($H_{1c}$) [Domain Accuracy]:** On questions scoped to business rules, settings, and domain logic, Context Cores maintain or exceed the accuracy of the baseline ($Acc_B \ge Acc_A$).
+* **Sub-Hypothesis ($H_{1d}$) [Hallucination Mitigation]:** Context Cores reduce the rate of structural hallucinations by explicitly defining boundaries and exclusions for each domain.
+* **Sub-Hypothesis ($H_{1e}$) [Expert Preference]:** Under a double-blind rating protocol, domain experts prefer or grade as equal Condition B answers in at least 60% of cases compared to Condition A.
+
+### Falsification Criteria
+The hypotheses will be rejected if:
+1. The mean accuracy score of Condition B falls below Condition A by more than 15% across the aggregate evaluation set.
+2. The blind expert preference rate for Condition B falls below 60.0%.
+
+---
+
+## 5. The AI Context OS Architecture
 
 The framework consists of three key layers:
 1. **Context Cores:** Explicit, curated markdown documents describing specific domains of the application. Each core contains:
@@ -51,27 +88,57 @@ The framework consists of three key layers:
 2. **Context Router:** A lightweight classifier (keyword-based or semantic embedding-based) that intercepts user queries and scores them against the defined cores.
 3. **Dynamic Prompt Builder:** An orchestrator that compiles the final system prompt by combining the base instructions, active context core guidelines, user preferences, and available tools.
 
-```mermaid
-graph TD
-    UserQuery[User Query] --> Router{Context Router}
-    Router -- Scores & Matches --> WorkspaceCore[Workspace Core]
-    Router -- Scores & Matches --> CommCore[Communication Core]
-    WorkspaceCore --> Builder[Dynamic Prompt Builder]
-    CommCore --> Builder
-    BasePrompt[Base System Prompt] --> Builder
-    Builder --> LLM[Large Language Model]
+```text
+User Query
+    │
+    ▼
+┌──────────────┐
+│Context Router│
+└──────┬───────┘
+       │ (Score & Match)
+       ├───────────────────────┐
+       ▼                       ▼
+┌──────────────┐        ┌──────────────┐
+│Workspace Core│        │ Comm Core    │
+└──────┬───────┘        └──────┬───────┘
+       │                       │
+       ▼                       ▼
+┌──────────────────────────────────────┐
+│        Dynamic Prompt Builder        │  ◄── [Base System Prompt]
+└──────────────────┬───────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────┐
+│         Large Language Model         │
+└──────────────────────────────────────┘
 ```
 
-### 3.1 Taxonomy of Context Cores
+### 5.1 Taxonomy of Context Cores
 We classify cores into a four-domain taxonomy:
 - **Personal/Default Core:** Handles user metadata, preferences, and conversational history.
 - **Workspace Core:** Scopes interaction with the file system, document stores, and local database schemas.
 - **Communication Core:** Standardizes interactions with messaging and mail integrations.
 - **System Control Core:** Scopes low-level execution paths, scripting (AppleScript, shell), and input automation.
+- **Browsing Core:** Scopes interaction with browsers, web sessions, tabs, and URL requests.
+
+### 5.2 Core Construction Process
+Cores are constructed following the **Minimal Context Principle**:
+1. **Domain Boundary Mapping:** Identify distinct responsibilities (e.g., billing vs. database migration).
+2. **Entity Extraction:** Pull public interfaces, settings maps, and structural invariants.
+3. **Prose Compression:** Replace raw code listings with concise prose rules (e.g., *"SQLite database uses schema v3.4"*).
+4. **Exclusions Definition:** Explicitly write what the core *does not* handle to prevent model hallucinations.
+
+### 5.3 Curation Cost Analysis
+While Context Cores improve inference metrics, they introduce a manual curation cost. Across our test projects, auditing codebases and authoring cores took:
+- **MailAgent:** ~12 hours (6 cores).
+- **Django REST Framework:** ~18 hours (5 cores).
+- **Navorina:** ~40 hours (11 cores).
+- **Oiloop:** ~10 hours (5 cores).
+This represents an initial development overhead of approximately 10–40 hours depending on codebase scale and coupling.
 
 ---
 
-## 4. Experimental Methodology
+## 6. Experimental Methodology
 
 We evaluated AI Context OS across four projects of varying scales and complexities:
 
@@ -82,13 +149,13 @@ We evaluated AI Context OS across four projects of varying scales and complexiti
 | **Navorina** | ~270k | Python | 42 Questions | 11 Cores |
 | **Oiloop** | ~180k | Swift (macOS) | 20 Questions | 5 Cores |
 
-### 4.1 Evaluation Protocol
+### 6.1 Experimental Design
 We applied a within-subjects experimental design using `gpt-4o-mini` as the target model.
 - **Condition A (Full Repo):** Loaded all repository source files and documentation.
 - **Condition B (Routed Cores):** Scoped context containing the routed core texts.
 - **Condition C (Graph-Based):** Hermes-style static dependency subgraph (seed-expanded via BFS traversal up to 2 hops).
 
-### 4.2 Metrics
+### 6.2 Metrics
 We scored responses using three LLM-as-judge metrics, validated against human ratings:
 - **Accuracy (0–3):** Correctness of technical details, frameworks, and APIs.
 - **Completeness (0–2):** Inclusion of all required steps, side-effects, and file locations.
@@ -99,9 +166,9 @@ We scored responses using three LLM-as-judge metrics, validated against human ra
 
 ---
 
-## 5. Quantitative & Qualitative Results
+## 7. Quantitative & Qualitative Results
 
-### 5.1 Cross-Project Performance comparison
+### 7.1 Cross-Project Performance Comparison
 
 The aggregate results across all projects are summarized in the table below:
 
@@ -120,10 +187,10 @@ The aggregate results across all projects are summarized in the table below:
 | | B | **1.05** | **0.90** | **2.60** | **979** | **1,787** | **0.95** | **83×** | **$0.0036** |
 | | C | **1.55** | **1.10** | **3.50** | **8,290** | **5,671** | — | 9.8× | $0.026 |
 
-### 5.2 Context Compression & Cost Savings
+### 7.2 Context Compression & Cost Savings
 Condition B (Routed Cores) consistently achieved superior context compression. In Oiloop, input tokens dropped from **81,212** to **979**, corresponding to an **83× Core Compression Ratio (CCR)** and **98.5% cost reduction** per query. Response latencies in Condition B dropped by **2.96× (3x faster)** compared to Condition A, providing an immediate performance benefit.
 
-### 5.3 Blind Expert Preference Validation
+### 7.3 Blind Expert Preference Validation
 To validate quality, an expert software architect conducted a double-blind preference evaluation on the Oiloop codebase, rating shuffled outputs from A and B:
 - **Condition B Preferred:** 4 queries
 - **Condition A Preferred:** 8 queries
@@ -134,9 +201,9 @@ This cleared our exit criteria threshold ($\ge 60\%$), indicating that routed co
 
 ---
 
-## 6. Discussion & Findings
+## 8. Discussion & Findings
 
-### 6.1 The Swift/System Codebase Exception
+### 8.1 The Swift/System Codebase Exception
 In Phase 2 OSS repositories (Python, TypeScript), Condition B outperformed the baseline in accuracy. However, in Phase 3 (Oiloop), Condition B's accuracy dropped below A (1.05 vs. 1.20). Oiloop is a highly integrated desktop app built in Swift, using macOS APIs (CoreGraphics, EventKit, AVCapture). 
 Because these system APIs are highly interconnected:
 - A query routed to `systemControl` often required configuration details in the `workspace` core.
@@ -144,21 +211,15 @@ Because these system APIs are highly interconnected:
 
 **Mitigation:** We introduced **Multi-Core Routing**, enabling the router to return up to two active cores for cross-cutting tasks (e.g., tasks interacting with both system events and file storage). This modification restored B's quality, bringing the expert preference rate to 60.0%.
 
-### 6.2 The Superiority of Graph-Based Retrieval
+### 8.2 The Superiority of Graph-Based Retrieval
 In complex repositories (Oiloop and DRF), Condition C (Graph-Based Retrieval) achieved the highest overall accuracy (1.55) and actionability (3.50).
 By parsing code symbols and dependencies:
 - Graph retrieval automatically loaded AST-linked definitions across file boundaries.
 - It maintained **89.79% token cost savings** compared to A, while halving the hallucination rate (7–11% for C vs. 19–22% for B).
 
-```
-      A: Full Repo   [#################################################] (81k tokens)
-      C: Graph RAG   [#####] (8.2k tokens, Best Accuracy)
-      B: Routed Core [.] (0.9k tokens, Lowest Latency)
-```
-
 ---
 
-## 7. Limitations
+## 9. Limitations
 
 1. **Manual Curation Cost:** Writing context cores requires developer time. Our audit shows a cost of **40 developer hours** to audit and write 11 cores for a 270k LOC repository.
 2. **Semantic Drift:** As codebases evolve, context cores must be kept in sync with the source code.
@@ -166,11 +227,66 @@ By parsing code symbols and dependencies:
 
 ---
 
-## 8. Conclusion & Future Work
-
-AI Context OS demonstrates that full-repository loading is token-inefficient and prone to attention dilution. Partitioning codebase knowledge into **Context Cores** combined with **Multi-Core Routing** reduces token consumption by over 98% and increases speed by 3× while maintaining acceptable output quality. For complex, highly coupled codebases, **Graph-Based Retrieval** remains the default production choice, reducing hallucination rates while saving 89% in cost.
+## 10. Future Work
 
 Future work will focus on:
 1. **Semi-Automated Core Generation:** Extracting AST symbols, imports, and documentation to build cores automatically.
 2. **Context Drift Monitors:** Detecting differences between core descriptions and source implementations.
 3. **Hybrid Routing:** Dynamically switching between Fast mode (cores) for simple questions and Deep mode (subgraph BFS) for architectural queries.
+
+---
+
+## 11. Conclusion
+
+AI Context OS demonstrates that full-repository loading is token-inefficient and prone to attention dilution. Partitioning codebase knowledge into **Context Cores** combined with **Multi-Core Routing** reduces token consumption by over 98% and increases speed by 3× while maintaining acceptable output quality. For complex, highly coupled codebases, **Graph-Based Retrieval** remains the default production choice, reducing hallucination rates while saving 89% in cost.
+
+---
+
+## Appendices
+
+### Appendix A: Example Evaluation Questions
+* **OL01:** How does Oiloop store user preferences and chat history?
+* **OL05:** How does Oiloop handle sandboxed folder access on macOS?
+* **OL15:** How does EventKit Reminders authorization avoid freezing Oiloop in background mode?
+* **OL18:** How are Safari tab titles and URLs fetched?
+
+### Appendix B: Context Core Template Structure
+```markdown
+# [Core Name] Core
+
+## Purpose
+Detailed description of the decision domain.
+
+## Key Entities
+- `EntityName`: Class/Struct name and responsibility.
+
+## Invariants & Rules
+1. Mandatory checks and constraints.
+
+## Exclusions
+- Explicit out-of-scope boundaries.
+```
+
+### Appendix C: Router Logic Regex Structure
+```swift
+struct ContextRouter {
+    static func route(userInput: String) -> Set<ContextCore> {
+        let lower = userInput.lowercased()
+        // Compute core scores based on keyword presence
+        // Return matching set
+    }
+}
+```
+
+### Appendix D: Rater Instructions for Blinding
+1. Answers are randomized and labeled "Option 1" and "Option 2".
+2. Grade each option on Accuracy (0–3), Completeness (0–2), and Actionability (1–5).
+3. Select preferred option without knowing retrieval source.
+
+---
+
+## Artifacts for Reproducibility
+
+* **Research Repository:** `https://github.com/Alex0nder/AI-Context-OS`
+* **Evaluation Dataset:** `research/questions.md`
+* **Raw Metrics:** `context-os/evaluations/`
