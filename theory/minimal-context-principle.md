@@ -34,7 +34,7 @@ A sufficient context for "why did revenue drop?" does not need to be complete re
 CCR = tokens(FullRepository) / tokens(ContextCore)
 ```
 
-Target for scoped questions: CCR ≥ 5× (hypothesis; empirically validated in Phase 1).
+Target for scoped questions: CCR ≥ 5× (hypothesis; measured 14–83× across Phase 2–3 projects — see [experiments/README.md](../experiments/README.md)).
 
 ### Ablation Test
 

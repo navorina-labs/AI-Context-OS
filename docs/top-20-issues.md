@@ -3,6 +3,8 @@
 Harsh audit of AI Context OS as it exists today. No new concepts. No architecture extensions. Only gaps, contradictions, and unearned claims found by reading every file in the repository.
 
 **Audit date:** 2026-06-10  
+**Superseded in part by:** [research/CRITICAL-REVIEW.md](../research/CRITICAL-REVIEW.md) (2026-06-12) — Issues #1, #4 largely resolved after Phase 2+3 runs. Use CRITICAL-REVIEW for current go/no-go; this file remains the original gap catalog.
+
 **Method:** Full-file review of 46 content files across `docs/`, `theory/`, `research/`, `context-os/`, `experiments/`, `examples/`, `prompts/`, `schemas/`, `papers/`.
 
 ---

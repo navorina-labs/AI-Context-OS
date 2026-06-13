@@ -1,5 +1,7 @@
 # Repository Health Score
 
+> **Note (2026-06-12):** Scores below reflect the pre-measurement audit (2026-06-10). Phase 2+3 runs now exist — see [research/CRITICAL-REVIEW.md](../research/CRITICAL-REVIEW.md) and [research/validity-audit.md](../research/validity-audit.md) for updated evidence quality and paper go/no-go. Re-score after claims hygiene + MailAgent router re-run.
+
 Reviewer-style assessment of AI Context OS **as it exists today** (2026-06-10). Scores are 1–10 where 10 = publication-ready / production-grade for that dimension. **No optimism.** Evidence = what is in the repo, not what the roadmap promises.
 
 ---
