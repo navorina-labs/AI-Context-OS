@@ -129,11 +129,18 @@ Primary comparison: **A vs B**.
 
 ### 7. Context Compression Ratio (CCR)
 
-**Definition:** `tokens(Full Repository) / tokens(Context Core)`
+Report **both** metrics — they answer different questions:
 
-**Target (hypothesis):** CCR ≥ 5× for scoped questions with no accuracy loss.
+| Metric | Symbol | Formula | Use in claims |
+|--------|--------|---------|---------------|
+| **CCR (API tokens)** | `CCR_tokens` | `mean(tokens_in_A) / mean(tokens_in_B)` per run | Primary headline; matches real API cost |
+| **CCR (core chars)** | `CCR_core` | `mean(baseline_chars / context_chars_B)` per question | Harness field `ccr_tokens_est_b`; core text vs declared baseline |
 
-**Report:** Mean, median, per-domain breakdown.
+**Target (hypothesis):** `CCR_tokens` ≥ 5× for scoped questions with no accuracy loss.
+
+**Report:** Mean `CCR_tokens` in tables and Twitter; `CCR_core` in appendix or footnote when higher (e.g. Oiloop 112× core vs 80× API).
+
+**Do not** interchange the two — mixing them overstates compression when B includes prompts, questions, and multi-core overhead.
 
 ---
 

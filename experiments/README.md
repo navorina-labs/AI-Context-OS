@@ -20,12 +20,14 @@ experiments/
 
 ## Phase 2.1 & 3 Results (summary)
 
-| Project | Qs | B_acc | B_hall | C_hall | CCR | Raw run |
-|---------|-----|-------|--------|--------|-----|---------|
-| [MailAgent](mailagent/) | 45 | 1.67 | 17.8% | 22.2% | 12× | [run-1781319187610](mailagent/runs/run-1781319187610/) |
-| [Django REST](django-rest-framework/) | 42 | 1.68 | 22% | 11% | 38× | summary ([Oiloop workspace](../context-os/evaluations/applied-instances.md)) |
-| [Navorina](navorina/) | 42 | 1.19 | 19% | **7%** | 14× | [run-1781143403051](navorina/runs/run-1781143403051/) |
-| [Oiloop](oiloop/) | 20 | 1.05 | 25% | 30% | **112×** | [run-1781344390027](oiloop/runs/run-1781344390027/) |
+| Project | Qs | B_acc | B_hall | C_hall | CCR_tokens | CCR_core | Raw run | Verified |
+|---------|-----|-------|--------|--------|------------|----------|---------|----------|
+| [MailAgent](mailagent/) | 45 | 1.67 | 17.8% | 22.2% | **8.3×** | 12.1× | [run-1781319187610](mailagent/runs/run-1781319187610/) | ✅ |
+| [Django REST](django-rest-framework/) | 42 | 1.68 | 22% | 11% | **38×**† | — | summary only | ⚠️ |
+| [Navorina](navorina/) | 42 | 1.19 | 19% | **7%** | **13.7×** | 14.6× | [run-1781143403051](navorina/runs/run-1781143403051/) | ✅ |
+| [Oiloop](oiloop/) | 20 | 1.05 | 25% | 30% | **80×** | 112× | [run-1781344390027](oiloop/runs/run-1781344390027/) | ✅ |
+
+† Django: measured in private workspace; export raw run pending.
 
 Full reports: [context-os/evaluations/PHASE-2-RESULTS.md](../context-os/evaluations/PHASE-2-RESULTS.md), [context-os/evaluations/PHASE-3-RESULTS.md](../context-os/evaluations/PHASE-3-RESULTS.md)
 

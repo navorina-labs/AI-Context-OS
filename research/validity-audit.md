@@ -1,6 +1,6 @@
 # Validity Audit — AI Context OS (Phase 2 + 3)
 
-**Date:** 2026-06-13 (updated)  
+**Date:** 2026-06-13 (updated post adversarial audit)  
 **Scope:** MailAgent, Django REST, Navorina (Phase 2.1) · Oiloop (Phase 3)  
 **Canonical reports:** [PHASE-2-RESULTS.md](../context-os/evaluations/PHASE-2-RESULTS.md) · [PHASE-3-RESULTS.md](../context-os/evaluations/PHASE-3-RESULTS.md)
 
@@ -30,11 +30,13 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 |--------|-----------|-------------|----------|--------|
 | B uses **production router** vs gold labels | ✅ Keyword F1 1.0 | ✅ Keyword F1 0.85 | ✅ Keyword F1 0.87 | ✅ Keyword F1 1.0 |
 | Same question bank across projects | ❌ Project-specific | ❌ | ❌ | ❌ |
-| Raw run exported to this repo | ✅ run-1781319187610 | ⚠️ Summary only | ✅ run-1781143403051 | ✅ run-1781344390027 |
+| Raw run exported to this repo | ✅ run-1781319187610 | ⚠️ **Summary only — unverifiable** | ✅ run-1781143403051 | ✅ run-1781344390027 |
 | Cohen's κ (2 human raters) | ❌ | ❌ | ❌ | ❌ |
 | Independent expert blind round | ❌ | ❌ | ❌ | ⚠️ Decode only (75%) |
 
 **MailAgent:** Gold run `run-1781075014160` retained as oracle baseline only — do not cite for production routing claims.
+
+**Django REST:** 42/149 questions (28%) — cite as measured summary, not independently reproducible from this repo.
 
 ---
 
@@ -44,9 +46,19 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 |--------|-------------------|--------|
 | LLM-as-judge accuracy | Factual correctness | Judge bias, same model family; **run-to-run variance** (Oiloop A: 1.20 → 1.00 between runs) |
 | Hallucination rate | Fabricated facts | Binary LLM judgment; Oiloop C **30%** > B **25%** in canonical run |
-| Expert preference 75% (Oiloop) | Human decision usefulness | **Not independent humans** — derived from eval answers via decode |
+| Masked decode preference 75% (Oiloop) | Human decision usefulness | **Not independent humans** — derived from eval answers via decode |
 | Router F1 | Routing quality | Adjudication table published — [routing-adjudication.md](routing-adjudication.md) |
-| CCR / compression | Minimality | Measured; MailAgent 12× (multi-core B), Oiloop 112× |
+| CCR_tokens | API input minimality | `mean(tokens_A)/mean(tokens_B)` — canonical per [evaluation-framework.md](evaluation-framework.md) |
+| CCR_core | Core text vs baseline chars | Harness `ccr_tokens_est_b`; **higher** than CCR_tokens when B includes prompt overhead |
+
+### CCR (dual metric — do not mix)
+
+| Project | CCR_tokens (API) | CCR_core (harness) | Source |
+|---------|------------------|--------------------|--------|
+| MailAgent | **8.3×** | 12.1× | run-1781319187610 `summary.json` |
+| Django REST | **38×** (summary) | — | django-phase-2.1.md; raw run missing |
+| Navorina | **13.7×** | 14.6× | run-1781143403051 |
+| Oiloop | **80×** | 112× | run-1781344390027 |
 
 ---
 
@@ -54,13 +66,22 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 
 | Claim | Supported? | Notes |
 |-------|------------|-------|
-| Cores reduce tokens vs full repo | ✅ Strong | 12–112× across projects |
+| Cores reduce API tokens vs full repo | ✅ Strong | CCR_tokens 8–80× across verified runs |
 | Cores reduce latency vs full repo | ✅ Strong | Oiloop B ~3.9× faster than A |
-| Cores improve accuracy vs full repo (all 4 projects) | ✅ Directional | B ≥ A on all 4; Oiloop margin **+0.05** only |
+| Cores improve accuracy vs full repo (all 4 projects) | ✅ Directional | B ≥ A on all 4; Oiloop margin **+0.05**, N=20, not tested |
 | Cores improve accuracy on OSS SaaS | ✅ Directional | +19–24% Django/Navorina; MailAgent +21% keyword |
-| Graph beats cores on hallucination | ⚠️ Mixed | True on Django/Navorina; **false on Oiloop** (C 30% vs B 25%) |
+| Graph beats cores on hallucination | ⚠️ **2/4 only** | True on Django, Navorina; **false** on MailAgent, Oiloop |
 | Routing fix improved Oiloop B accuracy | ❌ Not shown | B stayed 1.05; A dropped 1.20→1.00 between runs |
-| OL08 content gap | ⚠️ Open | Routing fixed; `workspace-core` lacked `FilePreviewSheet` (patched 2026-06-13) |
+| OL08 content gap | ⚠️ Open | Routing fixed (F1=1); B accuracy still 0 in canonical run — core content patch pending re-run |
+
+### Oiloop run stability (critical)
+
+| Run | A_acc | B_acc | Δ B vs A | hypothesis_supported | Notes |
+|-----|-------|-------|----------|-------------------|-------|
+| run-1781225808172 (superseded) | **1.20** | 1.05 | −0.15 | **false** | OL08 routing bug |
+| run-1781344390027 (canonical) | **1.00** | 1.05 | +0.05 | true | B **unchanged**; H₁ flip = A variance |
+
+**Interpretation:** Canonical Oiloop B≥A claim is **descriptively true** but **fragile** — same B score fails or passes depending on A baseline (likely LLM judge / run variance). Do not attribute improvement to routing fix.
 
 ---
 
@@ -80,21 +101,22 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 
 ### Safe to publish
 
-- All **4 projects**: B mean accuracy **≥** A (Oiloop +5%, thin margin).
-- Routed cores achieve **12–112×** input compression vs full-repo baselines.
+- All **4 projects**: B mean accuracy **≥** A descriptively (Oiloop +0.05, thin margin, N=20).
+- Routed cores achieve **CCR_tokens 8–80×** (verified runs); **CCR_core up to 112×** on Oiloop — label metric explicitly.
 - **Graph retrieval (C)** is production default on **3/4** projects (Django, Navorina, Oiloop).
-- **MailAgent** default **B** — narrow domain, keyword F1=1.0.
+- **MailAgent** default **B** — narrow domain, keyword F1=1.0 (per-question routing in `run-meta.json`).
 - Routing adjudication published for ops vs tech boundaries.
 - Primary H₁ met on all projects **descriptively** — not statistically confirmed.
 
 ### Do not publish without qualification
 
-- "Statistically significant" / "fully validated"
-- "Double-blind expert study" (use **masked preference decode**)
+- "Statistically significant" / "fully validated" / "hypothesis fully supported"
+- "Double-blind expert study" (use **masked decode preference**)
 - Gold-run MailAgent numbers (45×, B 1.69) as production routing
-- "C always lower hallucination than B" (Oiloop exception)
+- "C always lower hallucination than B" (false on MailAgent, Oiloop)
 - "Routing fix improved B accuracy" (A baseline moved, B unchanged)
-- Statistical significance (not computed)
+- Single "compression" number without CCR_tokens vs CCR_core
+- Django numbers as independently reproducible (raw run not exported)
 
 ---
 
@@ -105,8 +127,10 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 | P0 | MailAgent keyword re-run | ✅ run-1781319187610 |
 | P0 | Oiloop re-run after routing fix | ✅ run-1781344390027 |
 | P0 | Routing adjudication table | ✅ routing-adjudication.md |
-| P1 | Sync PHASE-2/3 + validity docs | ✅ this file |
-| P1 | `workspace-core` FilePreviewSheet content | ✅ 2026-06-13 |
+| P0 | Dual CCR labels in reports + twitter | ✅ 2026-06-13 |
+| P0 | Oiloop run-stability table | ✅ this file + PHASE-3 |
+| P1 | `workspace-core` FilePreviewSheet + Oiloop re-run | ⚠️ patch done; re-run pending |
+| P1 | Export Django raw run | ❌ |
 | P2 | Oiloop 10-Q human blind pilot | ❌ |
 | P2 | Bootstrap CI on paired deltas | ❌ |
 | P2 | Paper Results + Limitations draft | ❌ |

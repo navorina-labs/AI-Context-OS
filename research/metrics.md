@@ -14,7 +14,8 @@ Quick reference for all metrics used in AI Context OS evaluation.
 | Reasoning Quality | RQ | 1–5 mean | B > A |
 | Hallucination Rate | HR | % answers with hallucination | B < A |
 | Answer Completeness | AC | 0–2 mean | B ≥ A |
-| Context Compression Ratio | CCR | tokens(A) / tokens(B) | ≥ 5× |
+| Context Compression Ratio (API) | CCR_tokens | mean(tokens_in_A) / mean(tokens_in_B) | ≥ 5× |
+| Core-char compression (harness) | CCR_core | mean(baseline_chars / context_chars_B) | informational only |
 
 ---
 
