@@ -6,6 +6,8 @@ AI Context OS is an open-source research framework for testing whether AI system
 
 This is not a product. There is no SaaS, UI, API, or runtime engine here — only theory, schemas, experiments, and evaluation methodology.
 
+**New here?** Start with [How to use this repository](#how-to-use-this-repository) — a 15-minute path to the measured results (no need to read every folder).
+
 ---
 
 ## Why This Project Exists
@@ -124,8 +126,57 @@ ai-context-os/
 
 ## Results
 
-- **[Phase 2 cross-project report](context-os/evaluations/PHASE-2-RESULTS.md)** — 3 projects measured (119 questions, A/B/C). B beats A on accuracy/cost; C beats B on hallucination for complex codebases.
-- **[Phase 3 private codebase report](context-os/evaluations/PHASE-3-RESULTS.md)** — Evaluated on Oiloop macOS codebase with double-blind expert review. Routed Cores (B) achieved 83× context compression and 2.96× lower latency at 98.5% cost reduction. Graph retrieval (C) achieved highest accuracy.
+- **[Phase 2 cross-project report](context-os/evaluations/PHASE-2-RESULTS.md)** — 3 OSS projects (129 questions, A/B/C). B ≥ A on accuracy; **8–38×** fewer API input tokens vs full repo; C preferred on hallucination for 2/3 projects.
+- **[Phase 3 private codebase report](context-os/evaluations/PHASE-3-RESULTS.md)** — Oiloop macOS app (20 questions). B **+0.20** vs A after content fix; **78×** fewer API tokens; C best accuracy. Masked decode preference 75% (not independent human raters).
+- **One-page summary:** [phase-3-twitter-card.png](context-os/evaluations/phase-3-twitter-card.png) — all 4 projects, 149 questions.
+- **Honest limitations:** [research/validity-audit.md](research/validity-audit.md)
+
+---
+
+## How to use this repository
+
+This repo is **research output**, not an app. You do not need to read every file in `context-os/` in order.
+
+### Read the results (~15 minutes)
+
+| Step | File | Why |
+|------|------|-----|
+| 1 | [context-os/evaluations/PHASE-2-RESULTS.md](context-os/evaluations/PHASE-2-RESULTS.md) | Main table — 3 OSS projects, when **B** (routed cores) vs **C** (graph) |
+| 2 | [context-os/evaluations/PHASE-3-RESULTS.md](context-os/evaluations/PHASE-3-RESULTS.md) | Private integrated codebase (Oiloop) |
+| 3 | [context-os/evaluations/phase-3-twitter-card.png](context-os/evaluations/phase-3-twitter-card.png) | Visual summary — 149 questions, 4 codebases |
+| 4 | [research/validity-audit.md](research/validity-audit.md) | What we can and cannot claim (LLM-as-judge, sample sizes) |
+| 5 | [experiments/README.md](experiments/README.md) → `runs/run-*/summary.json` | Raw numbers if you want to verify |
+
+**Skip on first pass:** `papers/`, `prompts/`, per-instance core markdown, JSON schemas — those are for replication, not for understanding the findings.
+
+### Decision cheat sheet
+
+| Your situation | Default |
+|----------------|---------|
+| Narrow domain, cost/latency matter | **B** — keyword-routed domain cores |
+| Cross-cutting deps, hallucination risk | **C** — graph retrieval |
+| Dump entire repo into the prompt | **A** — baseline only; not recommended for production |
+
+Variants: **A** = full repo · **B** = routed cores · **C** = Hermes-style graph retrieval.
+
+### Use with an AI coding assistant
+
+Clone the repo, then paste:
+
+```
+Read in order:
+1. context-os/evaluations/PHASE-2-RESULTS.md
+2. context-os/evaluations/PHASE-3-RESULTS.md
+3. research/validity-audit.md
+
+Then answer: for a codebase like [yours], should we use A (full repo),
+B (routed cores), or C (graph retrieval)? Cite table rows only.
+Do not invent metrics not in those files.
+```
+
+### Replicate on your codebase
+
+See [Getting started (replication)](#getting-started-replication) below and [experiments/README.md](experiments/README.md).
 
 ---
 
@@ -143,13 +194,16 @@ See [docs/research-roadmap.md](docs/research-roadmap.md) and [research/experimen
 
 ---
 
-## Getting Started
+## Getting started (replication)
+
+To run your own A/B/C eval — not required to understand the published results.
 
 1. Read [docs/overview.md](docs/overview.md) for the system model.
 2. Read [docs/hypothesis.md](docs/hypothesis.md) and [docs/principles.md](docs/principles.md).
 3. Study [context-os/cores/](context-os/cores/) templates.
-4. Run experiment design from [research/experiment-design.md](research/experiment-design.md).
-5. Use [research/questions.md](research/questions.md) as the evaluation question bank.
+4. Copy [experiments/template/](experiments/template/) and follow [experiments/README.md](experiments/README.md).
+5. Run per [research/evaluation-framework.md](research/evaluation-framework.md).
+6. Use [research/questions.md](research/questions.md) as the evaluation question bank.
 
 ---
 
