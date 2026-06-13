@@ -4,21 +4,21 @@
 
 ---
 
-## MailAgent Phase 1 eval (35 questions, gpt-4o-mini)
+## Canonical eval (45 questions, keyword router, gpt-4o-mini)
 
 | Condition | Strategy | Mean input tokens | Accuracy | Halluc. | Latency |
 |-----------|----------|-------------------|----------|---------|---------|
-| **A** | Full repo baseline | ~88k | 1.40 | 20% | ~10.8s |
-| **B** | Context OS routed cores | ~2k | **1.69** | 23% | **~5.4s** |
-| **C** | Hermes-style graph retrieval | ~21k | 1.37 | **14%** | ~11.1s |
+| **A** | Full repo baseline | ~88k | 1.38 | 20% | ~6.1s |
+| **B** | Keyword-routed cores | **~10.6k** | **1.67** | **17.8%** | ~6.1s |
+| **C** | Hermes-style graph retrieval | ~21k | 1.24 | 22.2% | ~10.1s |
 
-**Cost (answer phase):** A=$0.47 · **B=$0.015** · C=$0.12
+**Canonical run:** [run-1781319187610](runs/run-1781319187610/) · `router_mode: keyword` · `router_mean_f1: 1.0`
 
 **Headline**
 
-- **B** wins on accuracy + tokens (~45× CCR vs A, ~97% cheaper).
-- **C** lowest hallucination (14%) but **11× more tokens than B**; accuracy ≈ A.
-- **Hypothesis** (domain cores beat full repo on scoped questions): **supported** (`hypothesis_supported: true` in summary).
+- **B** wins on accuracy (+0.29 vs A) with **12× compression** (production keyword router, not gold labels).
+- **C** does not beat B on accuracy or hallucination on this narrow domain — **B is the production default** for MailAgent.
+- **Hypothesis supported** (`hypothesis_supported: true` in summary).
 
 ---
 
@@ -27,28 +27,29 @@
 | What | URL |
 |------|-----|
 | This summary | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/results.md |
-| Full run (35 Q, A/B/C) | https://github.com/Alex0nder/AI-Context-OS/tree/main/experiments/mailagent/runs/run-1781075014160 |
-| A/B/C comparison | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781075014160/ABC-COMPARE.md |
-| Metrics | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781075014160/summary.json |
-| Tokens & cost | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781075014160/tokens-summary.json |
+| **Canonical run (45 Q)** | https://github.com/Alex0nder/AI-Context-OS/tree/main/experiments/mailagent/runs/run-1781319187610 |
+| Metrics | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781319187610/summary.json |
+| Gold-router baseline (35 Q) | [run-1781075014160](runs/run-1781075014160/) — optimistic B; superseded for claims |
 | Eval harness | https://github.com/Alex0nder/MailAgent/tree/main/context-os/eval |
 
 ---
 
 ## Runs in this repo
 
-| Run | Questions | Conditions | Notes |
-|-----|-----------|------------|-------|
-| [run-1781074375223](runs/run-1781074375223/) | 10 (pilot) | A, B | B +0.40 accuracy vs A |
-| **[run-1781075014160](runs/run-1781075014160/)** | **35 (full)** | **A, B, C** | Primary result; see `ABC-COMPARE.md` |
+| Run | Questions | Router | Notes |
+|-----|-----------|--------|-------|
+| [run-1781074375223](runs/run-1781074375223/) | 10 (pilot) | gold | Early pilot |
+| [run-1781075014160](runs/run-1781075014160/) | 35 | **gold** | Oracle B; 45× CCR; do not cite as production routing |
+| **[run-1781319187610](runs/run-1781319187610/)** | **45** | **keyword** | **Canonical** |
 
 ---
 
-## Limitations (from ABC-COMPARE)
+## Limitations
 
 - **C** = static graph index + keyword/BFS retrieval (not live CodeGraph MCP).
-- **B** uses gold `expected_cores` (ideal router, not production keyword router).
+- **LLM-as-judge** — not blind human raters.
 - Judge tokens not included in cost estimates.
+- B loads multiple cores per question → CCR ~12× (not 45× from gold single-core run).
 
 ---
 
@@ -58,20 +59,20 @@
 git clone https://github.com/Alex0nder/MailAgent.git
 cd MailAgent
 npm run eval:context-os:graph-build
-npm run eval:context-os
+node context-os/eval/run-eval.mjs --condition all --router keyword
 npm run eval:context-os:aggregate -- context-os/eval/results/run-<id>
 npm run eval:context-os:export -- context-os/eval/results/run-<id>
 ```
 
 ---
 
-## Status (2026-06-10)
+## Status (2026-06-13)
 
 | Milestone | Status |
 |-----------|--------|
-| Project map | Done (MailAgent `context-os/audit/`) |
-| Cores drafted | Done (4 + 8 subcores) |
-| Routing validated | Partial (keyword F1 ~0.55; eval B uses gold cores) |
-| Gold answers | Done (`questions.json`, 35 Q) |
-| A/B/C experiment | Done ([run-1781075014160](runs/run-1781075014160/)) |
-| Results published | Done (this file) |
+| Project map | ✅ |
+| Cores drafted | ✅ 4 + 8 subcores |
+| Routing validated | ✅ Keyword F1 1.0 (45 Q) |
+| Gold answers | ✅ 45 questions in `questions.json` |
+| A/B/C experiment | ✅ [run-1781319187610](runs/run-1781319187610/) |
+| Results published | ✅ (this file) |

@@ -1,7 +1,6 @@
 # Critical Review — Go/No-Go (Phase 4 Paper)
 
-**Date:** 2026-06-12  
-**Reviewer stance:** Harsh internal audit after Phase 2 + 3 measurement  
+**Date:** 2026-06-13 (updated)  
 **Detail:** [validity-audit.md](validity-audit.md)
 
 ---
@@ -10,92 +9,61 @@
 
 | Output | Status | Recommendation |
 |--------|--------|----------------|
-| **Twitter / blog post** | ✅ GO | Use Phase 3 assets; "partially supported" framing |
-| **Methods + replication repo** | ✅ GO | Raw runs, protocols, honest limitations |
-| **arXiv empirical paper (current draft)** | ⛔ NO-GO | Abstract overclaims; fix before submission |
-| **Conference empirical paper** | ⛔ NO-GO | Need human raters + MailAgent router re-run + stats |
+| **Twitter / blog** | ✅ GO | Use updated `phase-3-twitter-card` (149 Q, B≥A on 4/4) |
+| **Methods + replication repo** | ✅ GO | All 4 projects keyword-router canonical runs |
+| **arXiv methods preprint** | ⚠️ GO with caveats | LLM judge, decode expert, no stats |
+| **Conference empirical paper** | ⛔ NO-GO | Need human raters + bootstrap CI |
 
-**One-line:** Credible **exploratory** result with a real counterexample — not yet a confirmatory paper.
-
----
-
-## What changed since `top-20-issues.md` (2026-06-10)
-
-### Resolved or substantially improved
-
-| Old issue | Current state |
-|-----------|---------------|
-| #1 Zero experimental evidence | **Closed** — 4 projects, 139 Q, raw runs in `experiments/` |
-| #4 MailAgent no experiment | **Closed** — run-1781075014160 published |
-| Phase 1 false CCR claim | **Open** — text still in `minimal-context-principle.md` (fix pending) |
-| No results.md | **Closed** — PHASE-2/3-RESULTS + per-project reports |
-
-### Still open (top risks)
-
-| Issue | Severity | Notes |
-|-------|----------|-------|
-| LLM-as-judge only | **9** | Framework promises 2 raters + κ ≥ 0.7 — not done |
-| MailAgent B uses gold cores | **8** | Inflates B vs real routing |
-| Expert "double-blind" wording | **8** | Oiloop 60% = decode, not new humans |
-| Routing gold-label conflicts | **7** | Deploy / ops-vs-tech ambiguity |
-| `paper-draft.md` abstract | **9** | 114×, double-blind, implies universal H₁ win |
-| `repository-health-score.md` | **6** | Scores from pre-measurement era |
-| No statistical tests | **7** | Means only; N small per project |
-| Question bank not cross-project comparable | **6** | Different Q per codebase by design |
+**One-line:** Credible **exploratory** multi-case study — H₁ holds descriptively on 4/4 projects; Oiloop margin is thin (+0.05).
 
 ---
 
-## Phase exit criteria vs actual
+## Resolved since 2026-06-12
 
-| Phase | Criterion | Met? |
-|-------|-----------|------|
-| 2 | B wins on ≥2/3 OSS | ✅ 3/3 on LLM accuracy |
-| 2 | CCR ≥5× | ✅ 14–45× |
-| 3 | Expert preference ≥60% | ⚠️ 60% arithmetically; methodology weak |
-| 3 | No regression on critical ops Q | ⚠️ Not separately scored |
-| H₁ primary (B ≥ A aggregate) | — | ❌ Oiloop breaks pattern |
-| Falsification (>15% B below A) | — | Oiloop −12.5% on 20 Q only — borderline on aggregate |
+| Issue | Status |
+|-------|--------|
+| MailAgent gold cores in eval B | ✅ `run-1781319187610` keyword F1=1.0 |
+| Oiloop OL08 routing bug | ✅ F1=1.0; re-run `run-1781344390027` |
+| Routing gold-label conflicts | ✅ `routing-adjudication.md` |
+| `minimal-context-principle.md` false claim | ✅ fixed |
+| Paper abstract overclaim | ✅ rewritten (partial → check body) |
+| Cores eval ≠ production (Oiloop) | ✅ files identical; router aligned |
 
----
+## Still open
 
-## Recommended next work (ordered)
-
-### Week 1 — credibility (no new eval)
-
-1. ✅ `research/validity-audit.md` + this file
-2. Fix `minimal-context-principle.md` false validation line
-3. Rewrite `papers/paper-draft.md` abstract (honest partial H₁)
-4. Addendum on `docs/repository-health-score.md` pointing here
-5. Sync private `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` with canonical run
-
-### Week 2 — close biggest validity gaps
-
-6. **MailAgent:** re-run B with keyword router (not gold cores)
-7. **Oiloop:** 10-question human blind pilot (A vs B)
-8. **Routing:** publish ops-vs-tech adjudication table
-
-### Week 3 — Phase 4 draft
-
-9. Fill Results from PHASE-2/3-RESULTS (tables only, no new claims)
-10. Limitations section copy from validity-audit §4–5
-11. Open-source anonymized `questions.json` per project
+| Issue | Severity |
+|-------|----------|
+| LLM-as-judge only | **9** |
+| Expert 75% = decode, not humans | **8** |
+| No statistical tests | **7** |
+| Oiloop B +0.05 margin; A baseline variance | **7** |
+| OL08 B accuracy still 0 until core content fix + re-run | **6** |
+| `PHASE-2-RESULTS` / twitter assets sync | ✅ in progress this commit |
 
 ---
 
-## Oiloop product vs eval (corrected)
+## Canonical runs (2026-06-13)
 
-Earlier notes said cores are not injected in production. **Current code:**
-
-- `ContextCoreLoader.loadCore` reads `Resources/cores/*.md`
-- `SystemPromptBuilder.build` injects active cores in **`.fast`** routing mode
-- **`.hybrid` / `.deep`** uses `GraphContextLoader` for codebase queries (C-like path)
-
-**Remaining gap:** eval harness uses `experiments/oiloop/cores/` in AI-Context-OS repo; production uses Oiloop bundle cores — keep in sync on re-run.
+| Project | Run | Router | B vs A |
+|---------|-----|--------|--------|
+| MailAgent | run-1781319187610 | keyword F1=1.0 | +21% |
+| Django REST | summary only | keyword F1=0.85 | +24% |
+| Navorina | run-1781143403051 | keyword F1=0.87 | +19% |
+| Oiloop | run-1781344390027 | keyword F1=1.0 | +5% |
 
 ---
 
-## Safe paper title angle (when ready)
+## Next work
 
-> *Domain-Oriented Context Cores: When Minimal Context Wins, and When Graph Retrieval Must Default*
+1. Re-export twitter PNGs from updated HTML
+2. Optional: re-run Oiloop pilot after `workspace-core` FilePreviewSheet patch
+3. Human blind pilot 10 Q (Oiloop)
+4. Fill paper Results + Limitations from PHASE-2/3 + validity-audit §6
 
-Lead with **counterexample + decision matrix**, not universal victory.
+---
+
+## Safe paper title angle
+
+> *Domain-Oriented Context Cores: Compression and Routing Across Four Codebases — When Graph Retrieval Must Default*
+
+Lead with **4-project table + decision matrix**, not universal victory.

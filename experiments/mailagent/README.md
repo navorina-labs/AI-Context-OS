@@ -30,20 +30,20 @@ First controlled experiment for AI Context OS hypothesis validation.
 | run-1781074375223 | 10 | A, B | [runs/run-1781074375223](./runs/run-1781074375223/) |
 | run-1781075014160 | 35 | A, B, C | [runs/run-1781075014160](./runs/run-1781075014160/) |
 | run-1781300479278 | 45 | A, B, C | [runs/run-1781300479278](./runs/run-1781300479278/) |
-| **run-1781319187610** | **45** | **A, B, C** | [runs/run-1781319187610](./runs/run-1781319187610/) |
+| **run-1781319187610** | **45** | **A, B, C** | **Canonical** — keyword router, F1=1.0 |
+| run-1781075014160 | 35 | A, B, C | Superseded — gold cores (oracle B) |
 
 ---
 
-## Status (2026-06-10)
+## Status (2026-06-13)
 
 | Milestone | Status |
 |-----------|--------|
 | Project map | ✅ MailAgent `context-os/audit/` |
 | Cores drafted | ✅ 4 + 8 subcores |
-| Routing validated | ⚠️ Keyword F1 ~0.55; eval B uses gold cores |
-| Gold answers | ✅ 35 questions in MailAgent `eval/questions.json` |
-| A/B experiment | ✅ run-1781075014160 |
-| A/B/C + graph | ✅ run-1781075014160 |
+| Routing validated | ✅ Keyword F1 1.0 (45 Q) |
+| Gold answers | ✅ 45 questions in MailAgent `eval/questions.json` |
+| A/B/C experiment | ✅ [run-1781319187610](runs/run-1781319187610/) |
 | Results published | ✅ [results.md](./results.md) |
 
 ---
