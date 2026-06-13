@@ -1,7 +1,7 @@
 # MailAgent — Phase 2.1 Results
 
-**Status:** Measured (Phase 1 eval, included in Phase 2 cross-project validation)  
-**Questions:** 35 · **Cores:** 6 · **Model:** gpt-4o-mini
+**Status:** Measured · **Canonical:** keyword router  
+**Questions:** 45 · **Cores:** 6 · **Model:** gpt-4o-mini
 
 ---
 
@@ -9,25 +9,22 @@
 
 | Metric | A (full repo) | B (cores) | C (graph) |
 |--------|---------------|-----------|-----------|
-| **Accuracy** | 1.40 | **1.69** | 1.37 |
-| **Mean input tokens** | ~88k | **~2k** | ~21k |
-| **Cost** | $0.47 | **$0.015** | $0.12 |
-| **Hallucination** | 20% | 20% | **14%** |
-| **Latency** | ~10.8s | **~5.4s** | ~11.1s |
+| **Accuracy** | 1.38 | **1.67** | 1.24 |
+| **Mean input tokens** | ~88k | **~10.6k** | ~21k |
+| **Hallucination** | 20% | **17.8%** | 22.2% |
+| **Latency** | ~6.1s | ~6.1s | ~10.1s |
+| **Router F1** | — | **1.00** (keyword) | — |
+| **Compression** | 1× | **12×** | 4.1× |
 
-**Key finding:** B wins on accuracy and cost with ideal router (F1=1.0) and moderate hallucination (20%). Narrow domain — C does not improve trust enough to justify 11× token overhead vs B.
+**Key finding:** B wins on accuracy (+21% vs A) with production keyword router (F1=1.0). Narrow domain — **B is the default** (C does not improve trust).
 
 ---
 
-## Generalization
+## Superseded baseline
 
-| Metric | Value |
-|--------|-------|
-| Codebase | ~320k LOC |
-| Questions | 35 |
-| Cores | 6 |
-| Router F1 (semantic) | **1.00** |
-| Core compression | **45×** |
+| Run | Router | B_acc | CCR | Notes |
+|-----|--------|-------|-----|-------|
+| run-1781075014160 | gold | 1.69 | 45× | Oracle cores — optimistic |
 
 ---
 
@@ -36,8 +33,8 @@
 | Resource | Path |
 |----------|------|
 | Published summary | [experiments/mailagent/results.md](../../experiments/mailagent/results.md) |
-| Full run | [experiments/mailagent/runs/run-1781075014160/](../../experiments/mailagent/runs/run-1781075014160/) |
-| A/B/C comparison | [ABC-COMPARE.md](../../experiments/mailagent/runs/run-1781075014160/ABC-COMPARE.md) |
+| **Canonical run** | [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) |
+| Gold baseline | [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/) |
 | Eval harness | [MailAgent/context-os/eval](https://github.com/Alex0nder/MailAgent/tree/main/context-os/eval) |
 
 ---

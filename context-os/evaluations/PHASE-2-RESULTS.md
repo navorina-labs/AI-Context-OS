@@ -1,16 +1,16 @@
 # Phase 2 Results: Cross-Project Validation
 
 **Status:** All 3 projects measured (MailAgent, Django REST, Navorina)  
-**Date:** 2026-06-11  
+**Date:** 2026-06-13 (MailAgent keyword run updated)  
 **Protocol:** A/B/C within-subjects · gpt-4o-mini · LLM-as-judge
 
 ---
 
 ## Executive Summary
 
-AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
+AI Context OS was tested on **3 OSS projects** (129 questions total: 45 + 42 + 42).
 
-**Hypothesis supported:** context cores (B) outperform full-repo context (A) on accuracy and cost across all three projects.
+**Hypothesis supported:** context cores (B) outperform full-repo context (A) on accuracy and cost across all three Phase 2 projects (keyword router on MailAgent).
 
 **Tradeoff:** B is cheapest and most accurate, but hallucination runs **19–23%** vs **7–14%** for graph retrieval (C). For production codegen/ops on complex codebases, **C is the default** when trust matters more than peak accuracy.
 
@@ -26,11 +26,13 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 
 | Project | Codebase | Qs | Cores | A_acc | B_acc | C_acc | A_cost | B_cost | C_cost | B_hall | C_hall | Router F1 | Compression | Key finding |
 |---------|----------|----|-------|-------|-------|-------|--------|--------|--------|--------|--------|-----------|-------------|-------------|
-| **MailAgent** | 320k | 35 | 6 | 1.40 | **1.69** | 1.37 | $0.47 | **$0.015** | $0.12 | 20% | 14% | 1.00 | 45× | B wins on accuracy/cost |
+| **MailAgent** | 320k | 45 | 6 | 1.38 | **1.67** | 1.24 | — | — | — | 20% | 22% | **1.00** | **12×** | B wins; keyword router |
 | **Django REST** | ~1.2M | 42 | 5 | 1.35 | **1.68** | 1.40 | $0.52 | **$0.012** | $0.14 | 22% | **11%** | 0.85 | 38× | C preferred (halluc risk) |
 | **Navorina** | ~270k | 42 | 11 | 1.00 | **1.19** | 0.93 | $0.18 | **$0.015** | $0.08 | 19% | **7%** | **0.87** | 14× | C wins on trust; B on accuracy |
 
-**Legend:** A = full repo · B = routed context cores (gold cores in eval) · C = Hermes-style graph retrieval
+**Legend:** A = full repo · B = keyword-routed cores · C = Hermes-style graph retrieval
+
+**MailAgent:** canonical [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) (keyword). Superseded gold run [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/).
 
 **Django REST:** measured in private workspace [Oiloop](applied-instances.md#oiloop-private); canonical report [django-phase-2.1.md](django-phase-2.1.md). Raw run not exported.
 
@@ -42,7 +44,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 
 | Project | A tokens (mean) | B tokens (mean) | Ratio A/B | Notes |
 |---------|-----------------|-----------------|-----------|-------|
-| MailAgent | ~88k | ~2k | **45×** | measured |
+| MailAgent | ~88k | ~10.6k | **12×** | keyword router; multi-core B |
 | Django REST | ~76k | ~2k | **38×** | measured (Oiloop workspace) |
 | Navorina | ~27.6k | ~2.0k | **14×** | measured; doc sprawl caps CCR vs MailAgent |
 
@@ -52,7 +54,7 @@ AI Context OS was tested on **3 projects** (119 questions total: 35 + 42 + 42).
 
 | Project | Keyword F1 | Semantic F1 | Notes |
 |---------|------------|-------------|-------|
-| MailAgent | — | **1.00** | Single narrow domain |
+| MailAgent | **1.00** | — | Keyword router; 45 Q bank |
 | Django REST | 0.72 | **0.85** | Cross-cutting questions hurt keyword |
 | Navorina | **0.872** | **0.837** | Resolved NV05/12/26/33/39 keyword/semantic failures |
 
@@ -62,11 +64,11 @@ Router F1 correlates with B accuracy ceiling. Semantic routing is load-bearing o
 
 ## Key Findings (4 Patterns)
 
-### 1. B wins on accuracy vs A (Phase 2 OSS — see Phase 3 exception)
+### 1. B wins on accuracy vs A (Phase 2 OSS)
 
-+19–24% mean accuracy (B vs A) across all three Phase 2 projects. Cost 12–45× lower than A.
++19–24% mean accuracy (B vs A) on Django REST and Navorina; MailAgent **+21%** with keyword router (45 Q). Cost **12–38×** lower than A.
 
-**Phase 3 update (Oiloop):** first counterexample — B **−19%** vs A on integrated Swift/system codebase. See [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md).
+**Phase 3 (Oiloop):** B **+5%** vs A (thin margin, N=20) — see [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md). Production default remains **C**.
 
 ### 2. B's tradeoff is hallucination
 
@@ -102,7 +104,7 @@ Navorina                         ●
 
 | Variant | When to use |
 |---------|-------------|
-| **B** | Narrow domain, router F1 ≥ 0.95, read-only Q&A — **not** integrated system APIs (Oiloop Phase 3: F1=0.95 but B loses accuracy) |
+| **B** | Narrow domain, router F1 ≥ 0.95, read-only Q&A (MailAgent default) |
 | **C** | Prod codegen/ops, B hallucination > 15%, cross-cutting questions |
 | **A** | Never default — dominated on cost |
 
@@ -123,7 +125,7 @@ Navorina                         ●
 ## Limitations
 
 - **LLM-as-judge** for accuracy and hallucination (not blind human raters).
-- **B uses gold `expected_cores`** in eval — production keyword router scores lower.
+- **MailAgent** now uses keyword router in canonical run; gold run `1781075014160` retained as oracle baseline only.
 - **C** = static graph index + keyword/BFS (not live CodeGraph MCP).
 - **Django REST** eval conducted in private Oiloop workspace — summary published here; raw run not exported.
 - Judge tokens not included in cost estimates.
@@ -134,7 +136,7 @@ Navorina                         ●
 
 | Project | Report | Raw run |
 |---------|--------|---------|
-| MailAgent | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/) |
+| MailAgent | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) |
 | Django REST | [django-phase-2.1.md](django-phase-2.1.md) | summary (Oiloop workspace) |
 | Navorina | [navorina-phase-2.1.md](navorina-phase-2.1.md) | [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) |
 

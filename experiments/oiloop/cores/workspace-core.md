@@ -8,7 +8,7 @@
 | version | 1.0.0 |
 | parent_core | null |
 | project | Oiloop |
-| last_updated | 2026-06-12 |
+| last_updated | 2026-06-13 |
 | token_estimate | 900 |
 
 ---
@@ -28,6 +28,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 - Resolving security-scoped folder bookmarks (`URL.startAccessingSecurityScopedResource`)
 - Evaluating user rules (e.g. ignoring certain file patterns)
 - Confirm/Cancel visual previews for folder organization
+- **`FilePreviewSheet`** (SwiftUI) — table of proposed moves (source → target, skipped items); **Apply** / **Cancel** call `confirmPendingOrganize` / `cancelPendingOrganize` on `ChatOrchestrator`
 
 ### Out of Scope
 
@@ -41,6 +42,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 
 | Entity | Description |
 |--------|-------------|
+| `FilePreviewSheet` | SwiftUI sheet listing pending file moves; user confirms or cancels organize plan. |
 | `FileOrganizer` | Handles path calculations, duplicate checks, and generating layout proposals. |
 | `WorkspaceAccess` | Persists and resolves sandbox bookmark security data. |
 | `FileOrganizeService` | Holds proposed state and coordinates confirmations. |
@@ -69,6 +71,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 
 | Type | Reference | Description |
 |------|-----------|-------------|
+| File | [FilePreviewSheet.swift](file:///Users/alex0nder/Projects/Oiloop/App/FilePreviewSheet.swift) | Move preview UI (Apply / Cancel) |
 | File | [FileOrganizer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/FileOrganizer.swift) | Main sorting logic |
 | File | [WorkspaceAccess.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/WorkspaceAccess.swift) | macOS sandbox bookmark resolver |
 | File | [FileOrganizeService.swift](file:///Users/alex0nder/Projects/Oiloop/Core/Orchestrator/FileOrganizeService.swift) | In-memory plan tracker |
