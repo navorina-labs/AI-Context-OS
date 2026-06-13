@@ -23,7 +23,7 @@
 | Issue | Status |
 |-------|--------|
 | MailAgent gold cores in eval B | ✅ `run-1781319187610` keyword F1=1.0 (`run-meta.json`) |
-| Oiloop OL08 routing bug | ✅ F1=1.0; re-run `run-1781344390027` |
+| Oiloop OL08 routing bug | ✅ F1=1.0; re-run `run-1781354424217` |
 | Routing gold-label conflicts | ✅ `routing-adjudication.md` |
 | CCR metric conflation (12× vs 8.3×) | ✅ dual metric: CCR_tokens + CCR_core |
 | Expert section mislabeled | ✅ renamed masked decode preference |
@@ -39,7 +39,7 @@
 | No statistical tests | **7** |
 | Oiloop A 1.20→1.00 between runs; B unchanged | **8** |
 | Django raw run missing (28% of N) | **7** |
-| OL08 B accuracy 0 — core content + re-run | **6** |
+| OL08 B accuracy 0 — core content + re-run | ✅ Resolved |
 
 ---
 
@@ -50,13 +50,13 @@
 | MailAgent | run-1781319187610 | keyword F1=1.0 | +21% | 8.3× |
 | Django REST | summary only | keyword F1=0.85 | +24% | 38× |
 | Navorina | run-1781143403051 | keyword F1=0.87 | +19% | 13.7× |
-| Oiloop | run-1781344390027 | keyword F1=1.0 | +5% | 80× |
+| Oiloop | run-1781354424217 | keyword F1=1.0 | +20% | 78× |
 
 ---
 
 ## Next work
 
-1. Re-run Oiloop after `workspace-core` FilePreviewSheet patch (OL08 check)
+1. Re-run Oiloop after `workspace-core` FilePreviewSheet patch (OL08 check) (✅ Done)
 2. Export Django `summary.json` + `paired.csv` to this repo
 3. Human blind pilot 10 Q (Oiloop)
 4. Bootstrap CI on paired deltas

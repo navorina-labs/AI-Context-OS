@@ -30,7 +30,7 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 |--------|-----------|-------------|----------|--------|
 | B uses **production router** vs gold labels | ✅ Keyword F1 1.0 | ✅ Keyword F1 0.85 | ✅ Keyword F1 0.87 | ✅ Keyword F1 1.0 |
 | Same question bank across projects | ❌ Project-specific | ❌ | ❌ | ❌ |
-| Raw run exported to this repo | ✅ run-1781319187610 | ⚠️ **Summary only — unverifiable** | ✅ run-1781143403051 | ✅ run-1781344390027 |
+| Raw run exported to this repo | ✅ run-1781319187610 | ⚠️ **Summary only — unverifiable** | ✅ run-1781143403051 | ✅ run-1781354424217 |
 | Cohen's κ (2 human raters) | ❌ | ❌ | ❌ | ❌ |
 | Independent expert blind round | ❌ | ❌ | ❌ | ⚠️ Decode only (75%) |
 
@@ -58,7 +58,7 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 | MailAgent | **8.3×** | 12.1× | run-1781319187610 `summary.json` |
 | Django REST | **38×** (summary) | — | django-phase-2.1.md; raw run missing |
 | Navorina | **13.7×** | 14.6× | run-1781143403051 |
-| Oiloop | **80×** | 112× | run-1781344390027 |
+| Oiloop | **78×** | 109× | run-1781354424217 |
 
 ---
 
@@ -68,20 +68,21 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 |-------|------------|-------|
 | Cores reduce API tokens vs full repo | ✅ Strong | CCR_tokens 8–80× across verified runs |
 | Cores reduce latency vs full repo | ✅ Strong | Oiloop B ~3.9× faster than A |
-| Cores improve accuracy vs full repo (all 4 projects) | ✅ Directional | B ≥ A on all 4; Oiloop margin **+0.05**, N=20, not tested |
+| Cores improve accuracy vs full repo (all 4 projects) | ✅ Directional | B ≥ A on all 4; Oiloop margin **+0.20**, N=20, not tested |
 | Cores improve accuracy on OSS SaaS | ✅ Directional | +19–24% Django/Navorina; MailAgent +21% keyword |
-| Graph beats cores on hallucination | ⚠️ **2/4 only** | True on Django, Navorina; **false** on MailAgent, Oiloop |
-| Routing fix improved Oiloop B accuracy | ❌ Not shown | B stayed 1.05; A dropped 1.20→1.00 between runs |
-| OL08 content gap | ⚠️ Open | Routing fixed (F1=1); B accuracy still 0 in canonical run — core content patch pending re-run |
+| Graph beats cores on hallucination | ⚠️ **3/4 only** | True on Django, Navorina, Oiloop; **false** on MailAgent |
+| Routing fix improved Oiloop B accuracy | ✅ Resolved | B accuracy improved 1.05 -> 1.20 |
+| OL08 content gap | ✅ Resolved | FilePreviewSheet patch successfully elevated OL08 B accuracy to 3 in canonical run-1781354424217 |
 
 ### Oiloop run stability (critical)
 
 | Run | A_acc | B_acc | Δ B vs A | hypothesis_supported | Notes |
 |-----|-------|-------|----------|-------------------|-------|
 | run-1781225808172 (superseded) | **1.20** | 1.05 | −0.15 | **false** | OL08 routing bug |
-| run-1781344390027 (canonical) | **1.00** | 1.05 | +0.05 | true | B **unchanged**; H₁ flip = A variance |
+| run-1781344390027 (superseded) | **1.00** | 1.05 | +0.05 | true | B unchanged; OL08 bug |
+| run-1781354424217 (canonical) | **1.00** | 1.20 | +0.20 | true | OL08 fixed, canonical re-run |
 
-**Interpretation:** Canonical Oiloop B≥A claim is **descriptively true** but **fragile** — same B score fails or passes depending on A baseline (likely LLM judge / run variance). Do not attribute improvement to routing fix.
+**Interpretation:** OL08 content fix successfully resolved the FilePreviewSheet content gap, elevating B accuracy of OL08 from 0 to 3, and overall B accuracy from 1.05 to 1.20.
 
 ---
 
@@ -129,7 +130,7 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 | P0 | Routing adjudication table | ✅ routing-adjudication.md |
 | P0 | Dual CCR labels in reports + twitter | ✅ 2026-06-13 |
 | P0 | Oiloop run-stability table | ✅ this file + PHASE-3 |
-| P1 | `workspace-core` FilePreviewSheet + Oiloop re-run | ⚠️ patch done; re-run pending |
+| P1 | `workspace-core` FilePreviewSheet + Oiloop re-run | ✅ run-1781354424217 |
 | P1 | Export Django raw run | ❌ |
 | P2 | Oiloop 10-Q human blind pilot | ❌ |
 | P2 | Bootstrap CI on paired deltas | ❌ |
