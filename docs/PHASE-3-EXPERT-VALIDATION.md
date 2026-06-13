@@ -7,7 +7,7 @@ This document details the research protocol for **Phase 3 (Private Project Valid
 ## 1. Objectives
 
 1. **Verify Accuracy & Utility:** Assess whether Context Core routing (Condition B) maintains or improves output quality compared to Full Repository context (Condition A).
-2. **Double-Blind Preference:** Measure the rate at which domain experts prefer core-routed outputs over full-repository outputs under blind conditions.
+2. **Masked Preference Pilot:** Measure the rate at which domain experts prefer core-routed outputs over full-repository outputs under masked conditions.
 3. **Quantify Operational Actionability:** Grade the decision usefulness of responses on a standardized 1-5 scale.
 
 ---
@@ -16,7 +16,7 @@ This document details the research protocol for **Phase 3 (Private Project Valid
 
 - **Subject Project:** `Oiloop` (Private macOS AI Companion ecosystem).
 - **Domain Experts:** Project founders, lead developers, or domain architects who know the Oiloop architecture and requirements.
-- **Evaluation Coordinator:** Handles running the A/B test pipeline, generating the blind survey, and decoding results.
+- **Evaluation Coordinator:** Handles running the A/B test pipeline, generating the masked survey, and decoding results.
 
 ---
 
@@ -40,7 +40,7 @@ Experts evaluate every shuffled option on the following criteria:
 - **3 (Informative):** Contextually correct but requires significant lookup/refactoring.
 - **1 (Useless/Misleading):** Cannot be used to make decisions.
 
-### D. Blind Preference
+### D. Masked Preference
 - Forced choice of: **Option 1 Preferred**, **Option 2 Preferred**, **Both Equal**, or **Neither Useful**.
 
 ---
@@ -61,7 +61,7 @@ This writes:
 - `docs/expert-survey.md` — Shuffled questions with hidden source identifiers.
 - `research/survey-key.json` — The secret key decoding mappings.
 
-### Step 3: Blind Expert Rating
+### Step 3: Masked Expert Rating
 Domain experts read `docs/expert-survey.md` and complete the scores without knowing which option corresponds to A or B.
 
 ### Step 4: Decode and Aggregate
