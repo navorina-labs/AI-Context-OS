@@ -42,6 +42,8 @@ Primary comparison: **A vs B**.
 
 **Raters:** Two independent raters; Cohen's kappa ≥ 0.7 required.
 
+> **Phase 2–3 actual:** LLM-as-judge (gpt-4o-mini) on all published runs. Human κ not computed. Oiloop expert preference from decode pipeline — see [validity-audit.md](validity-audit.md).
+
 ---
 
 ### 2. Latency

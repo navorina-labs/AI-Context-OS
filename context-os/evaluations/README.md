@@ -28,7 +28,10 @@ Published results from AI Context OS experiments.
 
 ---
 
-## Status Legend
+## Cross-Reference
+
+- Validity audit: [research/validity-audit.md](../../research/validity-audit.md)
+- Paper go/no-go: [research/CRITICAL-REVIEW.md](../../research/CRITICAL-REVIEW.md)
 
 | Label | Meaning |
 |-------|---------|

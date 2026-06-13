@@ -2,7 +2,7 @@
 
 **Authors:** Anonymous (Under Review)
 
-**Abstract:** Modern AI-assisted software development relies heavily on expanding Large Language Model (LLM) context windows to ingest repository-scale codebases. However, exposing the entire codebase to the LLM increases token costs, increases response latency, and degrades accuracy due to attention dilution—especially on questions concerning localized business rules, settings configurations, and target boundary interfaces. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*: domain-oriented, minimal sufficient context partitions, coupled with a lightweight multi-core routing mechanism. We validate this approach through A/B/C within-subjects experiments across four software repositories: MailAgent (320k LOC), Django REST Framework (~1.2M LOC), Navorina (~270k LOC), and Oiloop (a proprietary macOS companion). Testing 139 questions under a double-blind expert review protocol, Context Cores (B) achieved **14× to 114× context compression** and **2.96× lower latency**, saving **98.5% in token costs** compared to full-repository baselines (A). On queries covering cross-cutting targets, multi-core routing achieved a **60.0% expert preference rate**. In complex, highly integrated repositories, graph-based retrieval (C) halves the hallucination rate (7–11%) compared to Context Cores (19–22%) while retaining 89% cost savings. We provide our prompt compilation architecture, router implementations, and evaluation dataset as a replication package.
+**Abstract:** Modern AI-assisted software development often loads repository-scale context into LLMs, increasing cost, latency, and attention dilution on scoped decision questions. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*—domain-oriented context partitions with lightweight multi-core routing. We report exploratory A/B/C within-subjects experiments on four codebases (139 questions; gpt-4o-mini; LLM-as-judge): MailAgent, Django REST Framework, Navorina, and Oiloop (private macOS). Context Cores (B) achieved **14× to 83× compression** and large token-cost reductions vs full-repository baselines (A). On three OSS projects, B mean accuracy exceeded A by **+19–24%**; on Oiloop, B **fell below** A (−12.5%)—the first counterexample in our study—while graph retrieval (C) achieved the best accuracy (+29%) and lowest hallucination (15%). The primary hypothesis is **partially supported**: efficiency gains are consistent; accuracy gains are not universal on integrated system codebases. Expert preference on Oiloop reached 60% via a decode pipeline, not an independent blind human round. We release protocols, raw runs, and routing artifacts for replication.
 
 ---
 
@@ -69,7 +69,7 @@ We formalize the core assumptions of the AI Context OS framework under the follo
   $$t_B \ll t_A$$
 * **Sub-Hypothesis ($H_{1c}$) [Domain Accuracy]:** On questions scoped to business rules, settings, and domain logic, Context Cores maintain or exceed the accuracy of the baseline ($Acc_B \ge Acc_A$).
 * **Sub-Hypothesis ($H_{1d}$) [Hallucination Mitigation]:** Context Cores reduce the rate of structural hallucinations by explicitly defining boundaries and exclusions for each domain.
-* **Sub-Hypothesis ($H_{1e}$) [Expert Preference]:** Under a double-blind rating protocol, domain experts prefer or grade as equal Condition B answers in at least 60% of cases compared to Condition A.
+* **Sub-Hypothesis ($H_{1e}$) [Expert Preference]:** Under a blinded preference rating protocol, domain experts prefer or grade as equal Condition B answers in at least 60% of cases compared to Condition A.
 
 ### Falsification Criteria
 The hypotheses will be rejected if:
@@ -190,14 +190,14 @@ The aggregate results across all projects are summarized in the table below:
 ### 7.2 Context Compression & Cost Savings
 Condition B (Routed Cores) consistently achieved superior context compression. In Oiloop, input tokens dropped from **81,212** to **979**, corresponding to an **83× Core Compression Ratio (CCR)** and **98.5% cost reduction** per query. Response latencies in Condition B dropped by **2.96× (3x faster)** compared to Condition A, providing an immediate performance benefit.
 
-### 7.3 Blind Expert Preference Validation
-To validate quality, an expert software architect conducted a double-blind preference evaluation on the Oiloop codebase, rating shuffled outputs from A and B:
+### 7.3 Expert Preference Pilot
+To assess qualitative developer utility, we conducted a pilot preference evaluation on the Oiloop codebase. An expert rated the shuffled outputs from Conditions A and B with labels masked to simulate a blind setup:
 - **Condition B Preferred:** 4 queries
 - **Condition A Preferred:** 8 queries
 - **Both Equal:** 8 queries
 - **Expert Preference Rate (B Preferred or Equal):** **60.0%**
 
-This cleared our exit criteria threshold ($\ge 60\%$), indicating that routed cores provide acceptable quality while operating at a fraction of the token size.
+This met our exit criteria threshold ($\ge 60\%$) for pilot acceptance, showing that routed cores provide viable utility on a majority of queries while operating at a fraction of the token size.
 
 ---
 
