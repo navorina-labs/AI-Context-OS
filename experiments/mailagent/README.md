@@ -28,7 +28,9 @@ First controlled experiment for AI Context OS hypothesis validation.
 | Run | N | Conditions | Link |
 |-----|---|------------|------|
 | run-1781074375223 | 10 | A, B | [runs/run-1781074375223](./runs/run-1781074375223/) |
-| **run-1781075014160** | **35** | **A, B, C** | [runs/run-1781075014160](./runs/run-1781075014160/) |
+| run-1781075014160 | 35 | A, B, C | [runs/run-1781075014160](./runs/run-1781075014160/) |
+| run-1781300479278 | 45 | A, B, C | [runs/run-1781300479278](./runs/run-1781300479278/) |
+| **run-1781319187610** | **45** | **A, B, C** | [runs/run-1781319187610](./runs/run-1781319187610/) |
 
 ---
 
