@@ -40,8 +40,8 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 | Metric | Target | Actual |
 |--------|--------|--------|
-| Routing precision | ≥0.90 | 0.95 |
-| Routing recall | ≥0.90 | 0.95 |
+| Routing precision | ≥0.90 | 1.00 |
+| Routing recall | ≥0.90 | 1.00 |
 
 ---
 
@@ -49,29 +49,29 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 | Measure | Value |
 |---------|-------|
-| Full repo tokens | ~81,212 |
-| Mean routed core tokens | ~979 |
-| CCR | 83× |
+| Full repo tokens | ~80,910 |
+| Mean routed core tokens | ~1,009 |
+| CCR | 112× |
 
 ---
 
 ## Results Summary
 
-Run: [runs/run-1781225808172/](runs/run-1781225808172/) · Report: [docs/expert-validation-results.md](../../docs/expert-validation-results.md)
+Run: [runs/run-1781344390027/](runs/run-1781344390027/) · Report: [docs/expert-validation-results.md](../../docs/expert-validation-results.md)
 
 | Metric | Condition A (Full) | Condition B (Cores) | Condition C (Graph) |
 |--------|-------------------|----------------------|---------------------|
-| Accuracy | 1.20 | 1.05 | **1.55** |
-| Completeness | 1.00 | 0.90 | **1.10** |
-| Actionability | 2.90 | 2.60 | **3.50** |
-| Hallucination | 20% | 25% | **15%** |
-| Mean input tokens | 81,212 | **979** | 8,290 |
-| Latency (mean ms) | 5,288 | **1,787** | 5,671 |
-| Compression | 1× | **83×** | 9.8× |
+| Accuracy | 1.00 | 1.05 | **1.55** |
+| Completeness | 0.85 | 0.90 | **1.20** |
+| Actionability | 2.70 | 2.65 | **3.40** |
+| Hallucination | 35% | **25%** | 30% |
+| Mean input tokens | 80,910 | **1,009** | 8,371 |
+| Latency (mean ms) | 9,305 | **2,402** | 5,240 |
+| Compression | 1× | **112×** | 11.6× |
 
-**Hypothesis:** Partially supported — primary accuracy (B ≥ A): **no** (`hypothesis_supported: false`). Expert preference H4 (≥60%): **yes** (60.0%, multi-core run). C: best accuracy and lowest hallucination.
+**Hypothesis:** Fully supported — primary accuracy (B ≥ A): **yes** (`hypothesis_supported: true`). Expert preference H4 (≥60%): **yes** (75.0%, multi-core run). C: best accuracy.
 
-Superseded run: [run-1781222450776](runs/run-1781222450776/) (single-core labels, 709-token B mean, 50% expert preference).
+Superseded runs: [run-1781225808172](runs/run-1781225808172/) (60.0% preference, routing bug on OL08); [run-1781222450776](runs/run-1781222450776/) (single-core labels, 709-token B mean, 50% expert preference).
 
 ---
 

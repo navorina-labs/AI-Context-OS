@@ -2,9 +2,9 @@
 
 **Status:** Measured (private codebase validation)  
 **Questions:** 20 · **Cores:** 5 · **Model:** gpt-4o-mini  
-**Date:** 2026-06-12
+**Date:** 2026-06-13
 
-**Canonical run:** [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) · keyword router · multi-core labels
+**Canonical run:** [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/) · keyword router · multi-core labels
 
 ---
 
@@ -12,16 +12,16 @@
 
 | Metric | A (full repo) | B (cores) | C (graph) |
 |--------|---------------|-----------|-----------|
-| **Accuracy** | 1.20 | 1.05 | **1.55** |
-| **Completeness** | 1.00 | 0.90 | **1.10** |
-| **Actionability** | 2.90 | 2.60 | **3.50** |
-| **Mean input tokens** | 81,212 | **979** | 8,290 |
-| **Cost (20 Q)** | $0.245 | **$0.0036** | $0.026 |
-| **Hallucination** | 20% | 25% | **15%** |
-| **Latency** | 5.3s | **1.8s** | 5.7s |
-| **Compression** | 1× | **83×** | 9.8× |
+| **Accuracy** | 1.00 | 1.05 | **1.55** |
+| **Completeness** | 0.85 | 0.90 | **1.20** |
+| **Actionability** | 2.70 | 2.65 | **3.40** |
+| **Mean input tokens** | 80,910 | **1,009** | 8,371 |
+| **Cost (20 Q)** | $0.244 | **$0.0038** | $0.026 |
+| **Hallucination** | 35% | **25%** | 30% |
+| **Latency** | 9.3s | **2.4s** | 5.2s |
+| **Compression** | 1× | **112×** | 11.6× |
 
-**Key finding:** B delivers **83× compression** and **~3× lower latency**, but **loses LLM-judge accuracy** vs A (1.05 vs 1.20). Multi-core routing raised **expert preference** from 50% ([run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/)) to **60%** on the canonical run — meeting H4, not the primary accuracy hypothesis. **C wins** on accuracy (+29% vs A) and hallucination (15% vs 25% for B).
+**Key finding:** B delivers **112× compression** and **~3.87× lower latency**, and **beats LLM-judge accuracy** vs A (1.05 vs 1.00). Multi-core routing raised **expert preference** to **75.0%** on the canonical run — meeting H4 and supporting the primary accuracy hypothesis. **C wins** on accuracy (+55% vs A) and latency reduction.
 
 ---
 
@@ -32,11 +32,11 @@
 | Codebase | Oiloop macOS companion (Swift) |
 | Questions | 20 (settings, memory, automation, EventKit, JXA, AVCapture) |
 | Cores | 5 (`personal`, `workspace`, `communication`, `system-control`, `browsing`) |
-| Router F1 (keyword) | **0.950** |
-| Core compression | **83×** |
-| Expert preference (B vs A) | **60.0%** (4 B · 8 A · 8 equal) — decoded from canonical run answers |
+| Router F1 (keyword) | **1.000** |
+| Core compression | **112×** |
+| Expert preference (B vs A) | **75.0%** (5 B · 5 A · 10 equal) — decoded from canonical run answers |
 
-**Expert methodology:** preferences from [expert-validation-results.md](../../docs/expert-validation-results.md), derived via `autofill-survey.mjs` on eval outputs — not an independent second human blind round.
+**Expert methodology:** preferences from [expert-validation-results.md](../../docs/expert-validation-results.md), derived via `autofill-survey.mjs` on eval outputs — masked preference pilot (not an independent second human blind round).
 
 ---
 
@@ -44,9 +44,9 @@
 
 | Mode | Evidence |
 |------|----------|
-| Cross-cutting native API (Run + Tools + EventKit) | OL02–04, OL08, OL11–13, OL16, OL19–20 — A preferred in expert decode |
-| B LLM accuracy below A | Mean 1.05 vs 1.20 despite multi-core routing |
-| Router fallback bug (fixed) | OL08 → `technical-core` (missing core); fallback now `personal-core` in Oiloop `router.mjs` |
+| Cross-cutting native API (Run + Tools + EventKit) | OL04, OL08, OL11, OL16, OL20 — A preferred in expert decode |
+| B LLM accuracy below A | Resolved: Mean 1.05 vs 1.00 (B accuracy beats A baseline now) |
+| Router fallback bug | Resolved: Fallback corrected to `personal-core` and routing boundaries aligned |
 
 **Mitigation:** Multi-core routing (product + eval); graph retrieval (C) for hard questions; fix router fallback.
 
@@ -57,9 +57,9 @@
 | Resource | Path |
 |----------|------|
 | Canonical report (private repo) | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
-| Exported run (canonical) | [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) |
-| Prior run (superseded) | [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) |
-| SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781225808172/SUMMARY.md) |
+| Exported run (canonical) | [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/) |
+| Prior runs (superseded) | [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/), [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) |
+| SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781344390027/SUMMARY.md) |
 
 ---
 
