@@ -105,8 +105,9 @@ Audit trail (skipped paths logged)
 | File | [FileOrganizer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/FileOrganizer.swift) | Main sorting logic + rule checks |
 | File | [WorkspaceAccess.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/WorkspaceAccess.swift) | macOS sandbox bookmark resolver |
 | File | [FileOrganizeService.swift](file:///Users/alex0nder/Projects/Oiloop/Core/Orchestrator/FileOrganizeService.swift) | In-memory plan tracker |
-| File | [UserRuleParser.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/UserRuleParser.swift) | Plain-text → SQLite rules |
-| File | [RuleEnforcer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/RuleEnforcer.swift) | shouldSkipFile / shouldSkipMail / shouldSkipMessage |
+| File | [UserRuleParser.swift](file:///Users/alex0nder/Projects/Oiloop/Core/Proactive/UserRuleParser.swift) | UserRuleParser + RuleEnforcer enum |
+| File | [ScheduledDigestBuilder.swift](file:///Users/alex0nder/Projects/Oiloop/Core/Routine/ScheduledDigestBuilder.swift) | dontTouch section in routine digest |
+| File | [FileModels.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/FileModels.swift) | FileToolError.accessDenied |
 
 ---
 
