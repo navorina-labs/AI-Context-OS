@@ -47,6 +47,19 @@ context-os route "How do we deploy?" --root .
 
 Checks manifest paths, core files exist, routing-map non-empty.
 
+### `context-os stats "<question>"`
+
+Sum character count of routed core `.md` files (~tokens ÷ 4). No API key.
+
+### `context-os cursor-rule`
+
+Install `.cursor/rules/context-os.mdc` on an existing repo (no scaffold overwrite).
+
+```bash
+context-os cursor-rule --target ~/Projects/MyApp
+context-os cursor-rule --variant oiloop --force
+```
+
 ### `context-os eval route`
 
 Routing F1 on `questions.json` — **no LLM, no API key**.

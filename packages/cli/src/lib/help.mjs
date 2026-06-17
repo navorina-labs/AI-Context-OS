@@ -6,6 +6,8 @@ Usage:
   context-os init [options]          Scaffold context-os/ in a project
   context-os route <question>        Keyword-route a question to core(s)
   context-os validate [options]      Check manifest + core files
+  context-os stats <question>        Estimate routed core size (chars/tokens)
+  context-os cursor-rule [options]   Install .cursor/rules/context-os.mdc only
   context-os eval route [options]    Routing F1 on questions JSON (no LLM)
 
 Init options:

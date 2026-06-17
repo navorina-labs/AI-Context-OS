@@ -1,0 +1,26 @@
+name: CLI
+
+on:
+  push:
+    paths:
+      - "packages/cli/**"
+      - "package.json"
+      - "examples/scaffold-saas/**"
+  pull_request:
+    paths:
+      - "packages/cli/**"
+      - "package.json"
+      - "examples/scaffold-saas/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm run test:cli
+      - run: npm run context-os -- validate --root examples/scaffold-saas
+      - run: npm run context-os -- eval route --root examples/scaffold-saas
+      - run: npm run context-os -- stats "Stripe webhook failed" --root examples/scaffold-saas
