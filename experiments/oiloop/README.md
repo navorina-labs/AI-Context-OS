@@ -57,25 +57,19 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 ## Results Summary
 
-Run: [runs/run-1781354424217/](runs/run-1781354424217/) · Report: [docs/expert-validation-results.md](../../docs/expert-validation-results.md)
+Run: [runs/run-1781660908/](runs/run-1781660908/) (Phase 3.1 canonical) · Prior: [run-1781354424217/](runs/run-1781354424217/) (superseded)
 
 | Metric | Condition A (Full) | Condition B (Cores) | Condition C (Graph) |
 |--------|-------------------|----------------------|---------------------|
-| Accuracy | 1.00 | **1.20** | **1.55** |
-| Completeness | 0.85 | **0.90** | **1.20** |
-| Actionability | 2.70 | **2.65** | **3.40** |
-| Hallucination | 20% | **20%** | **15%** |
-| Mean input tokens | 80,910 | **1,044** | **8,399** |
-| Latency (mean ms) | 3,920 | **1,840** | **4,294** |
-| Compression | 1× | **109×** | 11.6× |
+| Accuracy | 0.75 | **2.70** | 2.35 |
+| Hallucination | 30% | **0%** | 10% |
+| Mean input tokens | 76,663 | **6,334** | 8,963 |
+| Latency (mean ms) | 2,512 | **2,086** | 2,651 |
+| Compression | 1× | **29×** | 11× |
 
-**Hypothesis:** Fully supported — primary accuracy (B ≥ A): **yes** (`hypothesis_supported: true`). Expert preference H4 (≥60%): **yes** (75.0%, multi-core run). C: best accuracy.
+**Hypothesis:** Fully supported — B **2.70** vs A **0.75**; B hallucination **0%**. Production default: **B**.
 
-**Pilot (2026-06-17):** [run-1781658621476](runs/run-1781658621476/) — 10 Q (OL01–OL10), expanded cores; A 0.50 / B 2.10 / C 2.40. Does not supersede canonical 20Q run.
-
-Superseded runs: [run-1781344390027](runs/run-1781344390027/) (old canonical, B acc 1.05, OL08 bug); [run-1781225808172](runs/run-1781225808172/) (60.0% preference, routing bug on OL08); [run-1781222450776](runs/run-1781222450776/) (single-core labels, 709-token B mean, 50% expert preference).
-
-**Next eval:** Phase 3.1 — [prompts/run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
+Superseded: [run-1781354424217](runs/run-1781354424217/), [run-1781344390027](runs/run-1781344390027/), [run-1781225808172](runs/run-1781225808172/), [run-1781222450776](runs/run-1781222450776/).
 
 ---
 
