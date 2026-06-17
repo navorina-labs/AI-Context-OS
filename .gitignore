@@ -5,3 +5,6 @@
 
 # Local symlink to MailAgent checkout (not portable)
 _mailagent
+
+# Human blind pilot decode key (reveals A/B mapping)
+research/human-blind-pilot-oiloop-shuffle-key.json
