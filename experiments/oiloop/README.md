@@ -29,7 +29,7 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 | Core | Version | Token estimate |
 |------|---------|----------------|
 | [personal-core](cores/personal-core.md) | 1.0.0 | ~800 |
-| [workspace-core](cores/workspace-core.md) | 1.0.0 | ~900 |
+| [workspace-core](cores/workspace-core.md) | 1.1.0 | ~1200 |
 | [communication-core](cores/communication-core.md) | 1.0.0 | ~1000 |
 | [system-control-core](cores/system-control-core.md) | 1.0.0 | ~950 |
 | [browsing-core](cores/browsing-core.md) | 1.0.0 | ~750 |
@@ -74,6 +74,8 @@ Run: [runs/run-1781354424217/](runs/run-1781354424217/) · Report: [docs/expert-
 **Pilot (2026-06-17):** [run-1781658621476](runs/run-1781658621476/) — 10 Q (OL01–OL10), expanded cores; A 0.50 / B 2.10 / C 2.40. Does not supersede canonical 20Q run.
 
 Superseded runs: [run-1781344390027](runs/run-1781344390027/) (old canonical, B acc 1.05, OL08 bug); [run-1781225808172](runs/run-1781225808172/) (60.0% preference, routing bug on OL08); [run-1781222450776](runs/run-1781222450776/) (single-core labels, 709-token B mean, 50% expert preference).
+
+**Next eval:** Phase 3.1 — [prompts/run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
 
 ---
 
