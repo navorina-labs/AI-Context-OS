@@ -10,6 +10,8 @@ This is not a product. There is no SaaS, UI, API, or runtime engine here — onl
 
 **Research closed?** See [research/SYNTHESIS.md](research/SYNTHESIS.md) — final conclusions and production decision matrix.
 
+**Want to use it in your repo?** See [packages/README.md](packages/README.md) — `context-os init` CLI.
+
 ---
 
 ## Why This Project Exists
@@ -113,6 +115,7 @@ See [theory/minimal-context-principle.md](theory/minimal-context-principle.md).
 
 ```
 ai-context-os/
+├── packages/          # context-os CLI + @context-os/schemas
 ├── docs/              # Problem, hypothesis, architecture, routing
 ├── theory/            # Theoretical foundations
 ├── experiments/       # Controlled experiment designs

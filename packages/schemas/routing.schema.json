@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-context-os.dev/schemas/routing.schema.json",
+  "title": "Routing Rule",
+  "description": "Schema for routing rules in AI Context OS",
+  "type": "object",
+  "required": ["id", "version", "rules"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Routing ruleset identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "project": {
+      "type": "string",
+      "description": "Project these rules apply to, or 'generic' for defaults"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "priority", "match", "route"],
+        "properties": {
+          "id": { "type": "string" },
+          "priority": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Lower number = higher priority"
+          },
+          "match": {
+            "type": "object",
+            "properties": {
+              "intent": {
+                "type": "string",
+                "enum": ["business", "product", "technical", "operational", "mixed"]
+              },
+              "keywords": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "patterns": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Regex patterns for question matching"
+              },
+              "examples": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "route": {
+            "type": "object",
+            "required": ["cores"],
+            "properties": {
+              "cores": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "description": "Core ids to load, in order"
+              },
+              "composition": {
+                "type": "string",
+                "enum": ["concatenate", "primary_only", "interleave"],
+                "default": "concatenate"
+              },
+              "max_tokens": {
+                "type": "integer",
+                "minimum": 100,
+                "description": "Cap on combined context size"
+              }
+            }
+          },
+          "defer": {
+            "type": "object",
+            "properties": {
+              "condition": { "type": "string" },
+              "message": { "type": "string" },
+              "suggest_core": { "type": "string" }
+            },
+            "description": "When to defer instead of answering"
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "properties": {
+        "core": { "type": "string" },
+        "action": {
+          "type": "string",
+          "enum": ["route", "clarify", "reject"]
+        },
+        "message": { "type": "string" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "last_updated": { "type": "string", "format": "date" },
+        "author": { "type": "string" }
+      }
+    }
+  }
+}

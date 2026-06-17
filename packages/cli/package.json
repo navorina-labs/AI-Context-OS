@@ -1,0 +1,30 @@
+{
+  "name": "context-os",
+  "version": "0.1.0",
+  "description": "CLI to scaffold and validate domain-oriented context cores",
+  "type": "module",
+  "bin": {
+    "context-os": "./bin/context-os.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ai",
+    "context",
+    "llm",
+    "cursor",
+    "routing"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alex0nder/AI-Context-OS.git",
+    "directory": "packages/cli"
+  }
+}

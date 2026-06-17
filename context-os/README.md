@@ -50,11 +50,9 @@ Tag in core metadata. Audit monthly or after major project changes.
 
 ---
 
-## Not Included
+## Not Included (in research repo)
 
-- Runtime router engine
-- MCP server
-- API
-- Automatic sync with git
+- Hosted SaaS runtime
+- Automatic git sync
 
-These are explicitly out of scope for the research repository.
+**CLI scaffold** lives in [packages/cli](../packages/cli) (`context-os init`, `route`, `validate`).
