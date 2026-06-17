@@ -51,7 +51,7 @@ When to update `context-os/cores/` and `Resources/cores/` after code changes.
 
 **Fix:** Use **Organize Downloads Flow (OL06)** section — answer shape limited to four gold bullets. Defer RuleEnforcer to OL07 / don't-touch questions.
 
----
+**Verified:** 2026-06-17 — full prod run [run-prod-router-1781701118](runs/run-prod-router-1781701118/) B **2.75**, hall **0%**.
 
 ## Periodic
 

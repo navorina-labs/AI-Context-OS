@@ -59,12 +59,12 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 ## Results Summary
 
-Run: [runs/run-1781660908/](runs/run-1781660908/) (canonical) · Run 3: [run-prod-router-1781664681](runs/run-prod-router-1781664681/) · Run 2: [run-hybrid-1781664794](runs/run-hybrid-1781664794/)
+Run: [runs/run-1781660908/](runs/run-1781660908/) (canonical) · Run 3: [run-prod-router-1781701118](runs/run-prod-router-1781701118/) · Run 2: [run-hybrid-1781664794](runs/run-hybrid-1781664794/)
 
 | Metric | Phase 3.1 (gold) | Run 3 (keyword) | Run 2 cross-cutting (B) |
 |--------|------------------|-----------------|---------------------------|
-| B accuracy | **2.70** | **2.55** | **2.875** |
-| B hallucination | 0% | 5% | 0% |
+| B accuracy | **2.70** | **2.75** | **2.875** |
+| B hallucination | 0% | **0%** | 0% |
 | Router F1 | 1.0 | **1.0** | 1.0 (gold) |
 
 **Production default:** B (keyword router, multi-core). H₁f hybrid D **rejected**.

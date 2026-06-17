@@ -5,7 +5,8 @@
 **Protocol:** A/B/C within-subjects · gpt-4o-mini · LLM-as-judge + masked decode preference (A vs B)
 
 **Canonical run (Phase 3.1):** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) — 20 Q, gold, v1.1 cores. **B 2.70 / C 2.35 / A 0.75**.  
-**Run 3 (production router):** [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) — keyword, B **2.55**, F1 **1.0**.  
+**Run 3 (production router):** [run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/) — keyword, B **2.75**, F1 **1.0**, hall **0%**.  
+**Prior Run 3:** [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) — pre OL06 fix (B 2.55, 5% hall).  
 **Run 2 (hybrid):** [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/) — cross-cutting B/C/D; **H₁f rejected**.  
 **Phase 3.1 closed:** [PHASE-3.1-CLOSED.md](../../experiments/oiloop/runs/run-1781660908/PHASE-3.1-CLOSED.md)
 
@@ -21,7 +22,7 @@ Phase 3.1 replicates Oiloop eval with **workspace-core v1.1.0** and corrected go
 
 **Efficiency:** **CCR_tokens ~12×** (76,663 → 6,334); **CCR_core ~29×**. B latency **2.1s** vs A **2.5s**.
 
-**Production default for Oiloop: B (keyword router, multi-core)** — validated Run 3: B **2.55**, F1 **1.0**, 5% hallucination. Cross-cutting: B beats C and D (Run 2).
+**Production default for Oiloop: B (keyword router, multi-core)** — validated Run 3: B **2.75**, F1 **1.0**, **0%** hallucination. Cross-cutting: B beats C and D (Run 2).
 
 | Variant | Role on Oiloop (final) |
 |---------|------------------------|
@@ -34,14 +35,16 @@ Phase 3.1 replicates Oiloop eval with **workspace-core v1.1.0** and corrected go
 
 ## Run 3 — Production router (H₁h)
 
-| Metric | Gold [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) |
+| Metric | Gold [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/) |
 |--------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| B accuracy | 2.70 | **2.55** |
-| B hallucination | 0% | **5%** (OL06 only) |
+| B accuracy | 2.70 | **2.75** |
+| B hallucination | 0% | **0%** |
 | Router F1 | 1.0 | **1.0** |
-| B tokens | 6 334 | **6 349** |
+| B tokens | 6 334 | **6 467** |
 
 **H₁h: Supported** — production keyword router preserves gold routing; accuracy ≥ 80% of gold.
+
+Prior run (pre OL06 fix): [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) — B 2.55, 5% hall.
 
 OL08 Δ (3→1) is [judge variance](../../experiments/oiloop/runs/run-prod-router-1781664681/OL08-judge-variance.md), not routing failure.
 
@@ -73,7 +76,8 @@ OL08 Δ (3→1) is [judge variance](../../experiments/oiloop/runs/run-prod-route
 | run-1781344390027 | superseded | **1.00** | 1.05 | +0.05 | **true** | 0 | B unchanged; OL08 bug |
 | **run-1781354424217** | prior canonical | **1.00** | **1.20** | **+0.20** | **true** | **3** | OL08 fixed |
 | **run-1781660908** | **Phase 3.1 canonical** | **0.75** | **2.70** | **+1.95** | **true** | 3 | v1.1 cores + gold fix |
-| run-prod-router-1781664681 | Run 3 keyword | — | **2.55** | — | — | 1* | F1=1.0; *OL08 judge variance |
+| run-prod-router-1781701118 | Run 3 keyword | — | **2.75** | — | — | 1 | F1=1.0; hall 0% |
+| run-prod-router-1781664681 | Run 3 (prior) | — | 2.55 | — | — | 1* | pre OL06 fix |
 | run-hybrid-1781664794 | Run 2 B/C/D | — | **2.875**† | — | — | — | †cross-cutting only; B best |
 
 **Interpretation:** OL08 content fix successfully resolved the FilePreviewSheet content gap, elevating B accuracy of OL08 from 0 to 3, and overall B accuracy from 1.05 to 1.20.
@@ -212,7 +216,7 @@ Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/)
 |---------|--------|---------|-------|
 | Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
 
-**Also:** [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) · [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/)
+**Also:** [run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/) · [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/)
 
 **Next eval:** Phase 3.1 — [run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
 

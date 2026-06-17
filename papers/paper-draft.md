@@ -2,7 +2,7 @@
 
 **Authors:** Anonymous (Under Review)
 
-**Abstract:** Modern AI-assisted software development often loads repository-scale context into LLMs, increasing cost, latency, and attention dilution on scoped decision questions. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*—domain-oriented context partitions with lightweight multi-core routing. We report exploratory A/B/C within-subjects experiments on four codebases (139 decision-scoped questions; gpt-4o-mini; LLM-as-judge): MailAgent, Django REST Framework, Navorina, and Oiloop (private macOS). Context Cores (B) achieved **8× to 38× token compression** (`CCR_tokens`) and large cost reductions vs full-repository baselines (A). On three OSS projects, B mean accuracy exceeded A by **+19–24%**. On Oiloop (Phase 3.1, 20 Q, v1.1 cores), B reached **2.70 vs A 0.75** (bootstrap 95% CI on paired Δ: **[+1.60, +2.30]**); production keyword router preserved gains (B **2.55**, F1 **1.0**). Hybrid core+graph (D) did **not** beat multi-core B on cross-cutting questions (H₁f rejected). The primary hypothesis is **supported** on decision-scoped questions: efficiency gains are consistent; accuracy gains require adequate core metadata and multi-core routing on integrated codebases. Expert preference used a masked decode pipeline and a 10-question blind pilot (independent human rating in progress). We release protocols, raw runs (3/4 full; Django aggregate-only), and routing artifacts for replication.
+**Abstract:** Modern AI-assisted software development often loads repository-scale context into LLMs, increasing cost, latency, and attention dilution on scoped decision questions. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*—domain-oriented context partitions with lightweight multi-core routing. We report exploratory A/B/C within-subjects experiments on four codebases (139 decision-scoped questions; gpt-4o-mini; LLM-as-judge): MailAgent, Django REST Framework, Navorina, and Oiloop (private macOS). Context Cores (B) achieved **8× to 38× token compression** (`CCR_tokens`) and large cost reductions vs full-repository baselines (A). On three OSS projects, B mean accuracy exceeded A by **+19–24%**. On Oiloop (Phase 3.1, 20 Q, v1.1 cores), B reached **2.70 vs A 0.75** (bootstrap 95% CI on paired Δ: **[+1.60, +2.30]**); production keyword router preserved gains (B **2.75**, F1 **1.0**, hallucination **0%**). Hybrid core+graph (D) did **not** beat multi-core B on cross-cutting questions (H₁f rejected). The primary hypothesis is **supported** on decision-scoped questions: efficiency gains are consistent; accuracy gains require adequate core metadata and multi-core routing on integrated codebases. A **10-question author-rated blind pilot** preferred B in **60%** of cases (n=10; not independent experts). Masked decode preference on prior runs: 75% B-or-equal. We release protocols, raw runs (3/4 full; Django aggregate-only), and routing artifacts for replication.
 
 ---
 
@@ -195,7 +195,7 @@ Oiloop Phase 3.1 replicated evaluation with **workspace-core v1.1.0**, corrected
 
 - **B vs A accuracy:** 2.70 vs 0.75 (Δ **+1.95**, N = 20)
 - **Bootstrap 95% CI** on paired Δ (B − A): **[+1.60, +2.30]**; B beat A on **19/20** questions
-- **Production router (Run 3):** keyword F1 = **1.0**, B = **2.55** (≥80% of gold delta; H₁h supported)
+- **Production router (Run 3):** keyword F1 = **1.0**, B = **2.75**, hallucination **0%** ([run-prod-router-1781701118](../experiments/oiloop/runs/run-prod-router-1781701118/); ≥80% of gold delta; H₁h supported)
 - **Cross-cutting ablation (Run 2, 8 Q):** B **2.875** > D (hybrid) **2.50** > C **2.375** — H₁f rejected
 
 Prior Oiloop canonical (pre v1.1 cores) showed B **1.20** vs A **1.00**; core metadata richness (H₁g) explains the Phase 3.1 jump.
@@ -206,9 +206,9 @@ Prior Oiloop canonical (pre v1.1 cores) showed B **1.20** vs A **1.00**; core me
 
 ### 7.4 Expert & Blind Preference Pilots
 
-**Masked decode preference** (prior Oiloop canonical): B preferred or equal on **75%** of 20 questions (decode pipeline on LLM-judge outputs — not independent human raters).
+**10-question blind pilot** (Phase 3.1 answers, shuffled A/B): **author-rated** — B preferred **6**, equal **2**, A **2** (60% B; n=10). Source: [human-blind-pilot-oiloop.csv](../research/human-blind-pilot-oiloop.csv). Not independent human raters.
 
-**10-question blind pilot** (Phase 3.1 answers, shuffled A/B): agent rater — B preferred **7**, equal **3**, A **0** (100% B+Equal). Independent human rating in progress via [human-blind-pilot-oiloop](../research/human-blind-pilot-oiloop/QUESTIONNAIRE.md).
+**Masked decode preference** (prior Oiloop canonical): B preferred or equal on **75%** of 20 questions (decode pipeline on LLM-judge outputs).
 
 ---
 

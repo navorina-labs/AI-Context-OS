@@ -110,7 +110,7 @@ The hypothesis framework is **rejected** if:
 | H₁e (graph supplements) | **Partial** | C useful but not default; B wins Phase 3.1 |
 | H₁f (hybrid D) | **Rejected** | [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/): B 2.875 > D 2.50 > C 2.375 |
 | H₁g (core richness) | **Supported** | B 2.70 vs prior canonical 1.20 |
-| H₁h (prod router) | **Supported** | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/): F1=1.0, B 2.55 |
+| H₁h (prod router) | **Supported** | [run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/): F1=1.0, B **2.75**, hall **0%** |
 
 ---
 

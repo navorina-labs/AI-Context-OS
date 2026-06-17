@@ -25,13 +25,15 @@
 
 ## Run 3 — Production router (H₁h)
 
-[run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) · keyword router · 20 Q · B only
+[run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/) · keyword router · 20 Q · B only (v1.1.1)
 
 | Metric | Gold | Production |
 |--------|------|------------|
-| B accuracy | 2.70 | **2.55** |
+| B accuracy | 2.70 | **2.75** |
 | Router F1 | 1.0 | **1.0** |
-| B hallucination | 0% | 5% (OL06) |
+| B hallucination | 0% | **0%** |
+
+Prior (pre OL06 fix): [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) — B 2.55, 5% hall.
 
 OL08 Δ (3→1) = [judge variance](../../experiments/oiloop/runs/run-prod-router-1781664681/OL08-judge-variance.md), not routing failure.
 
@@ -75,7 +77,7 @@ OL08 Δ (3→1) = [judge variance](../../experiments/oiloop/runs/run-prod-router
 | Resource | Path |
 |----------|------|
 | Phase 3.1 canonical | [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) |
-| Production router | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) |
+| Production router | [run-prod-router-1781701118](../../experiments/oiloop/runs/run-prod-router-1781701118/) |
 | Hybrid ablation | [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/) |
 | Private report | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
 
