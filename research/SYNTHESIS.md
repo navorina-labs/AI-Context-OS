@@ -101,4 +101,4 @@ Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv)
 
 - Phase 2: [PHASE-2-RESULTS.md](../context-os/evaluations/PHASE-2-RESULTS.md)
 - Phase 3.1: [PHASE-3-RESULTS.md](../context-os/evaluations/PHASE-3-RESULTS.md) · [PHASE-3.1-CLOSED.md](../experiments/oiloop/runs/run-1781660908/PHASE-3.1-CLOSED.md)
-- Visual: [phase-3-twitter-card.png](../context-os/evaluations/phase-3-twitter-card.png) *(update with Phase 3.1 numbers when posting)*
+- Visual: [phase-3-twitter-card.png](../context-os/evaluations/phase-3-twitter-card.png) (Phase 3.1 numbers)

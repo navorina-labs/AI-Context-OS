@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "context-os": "node packages/cli/bin/context-os.mjs",
-    "test:cli": "node packages/cli/bin/context-os.mjs init --name demo --profile minimal --target /tmp/context-os-demo-test --force && node packages/cli/bin/context-os.mjs validate --root /tmp/context-os-demo-test && node packages/cli/bin/context-os.mjs route \"deploy to production\" --root /tmp/context-os-demo-test"
+    "test:cli": "node packages/cli/bin/context-os.mjs init --name demo --profile minimal --target /tmp/context-os-demo-test --force && node packages/cli/bin/context-os.mjs validate --root /tmp/context-os-demo-test && node packages/cli/bin/context-os.mjs route \"deploy to production\" --root /tmp/context-os-demo-test",
+    "test:scaffold": "npm run context-os -- validate --root examples/scaffold-saas && npm run context-os -- eval route --root examples/scaffold-saas"
   },
   "engines": {
     "node": ">=18"
