@@ -32,7 +32,7 @@ AI Context OS was tested on **3 OSS projects** (129 questions total: 45 + 42 + 4
 
 **Legend:** A = full repo · B = keyword-routed cores · C = Hermes-style graph retrieval  
 **CCR_tokens** = `mean(tokens_in_A) / mean(tokens_in_B)` · **CCR_core** = harness `mean_ccr_tokens_est_b` (baseline chars / core chars)  
-† Django: summary only — [django-phase-2.1.md](django-phase-2.1.md); raw run not exported (unverifiable from this repo).
+† Django: [aggregate export](../../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) — no per-question `paired.csv`; see [RE-RUN.md](../../experiments/django-rest-framework/RE-RUN.md).
 
 **MailAgent:** [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) (keyword). Superseded gold: [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/).
 
@@ -135,7 +135,7 @@ Navorina                         ●
 ## Limitations
 
 - **LLM-as-judge** for accuracy and hallucination (not blind human raters).
-- **Django REST** — summary published; **raw run not exported** (28% of Phase 2 N unverifiable here).
+- **Django REST** — aggregate export [run-drf-phase-2.1-aggregate](../../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/); per-question CSV requires [re-run](../../experiments/django-rest-framework/RE-RUN.md).
 - **MailAgent** canonical run uses keyword router; gold run `1781075014160` is oracle baseline only.
 - **C** = static graph index + keyword/BFS (not live CodeGraph MCP).
 - **CCR:** report CCR_tokens for cost claims; CCR_core is supplementary.
@@ -148,7 +148,7 @@ Navorina                         ●
 | Project | Report | Raw run | Verifiable |
 |---------|--------|---------|------------|
 | MailAgent | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) | ✅ |
-| Django REST | [django-phase-2.1.md](django-phase-2.1.md) | summary only | ⚠️ |
+| Django REST | [django-phase-2.1.md](django-phase-2.1.md) | [run-drf-phase-2.1-aggregate](../../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) | ⚠️ aggregate only |
 | Navorina | [navorina-phase-2.1.md](navorina-phase-2.1.md) | [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) | ✅ |
 
 ---

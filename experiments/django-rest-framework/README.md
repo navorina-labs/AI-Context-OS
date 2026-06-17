@@ -35,7 +35,7 @@ Replication of AI Context OS on a popular open-source web API framework.
 | Routing validated | ✅ F1 0.72 kw / 0.85 semantic |
 | A/B/C experiment | ✅ Completed |
 | Results in research repo | ✅ [django-phase-2.1.md](../../context-os/evaluations/django-phase-2.1.md) |
-| Raw run exported | ⏳ Not available (summary from private workspace) |
+| Raw run exported | ⚠️ [aggregate only](../../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) — [RE-RUN.md](./RE-RUN.md) for full export |
 
 ---
 

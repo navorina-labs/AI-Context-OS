@@ -10,9 +10,9 @@
 | Output | Status | Recommendation |
 |--------|--------|----------------|
 | **Twitter / blog** | ✅ GO | Phase 3.1: B 2.70 vs A 0.75; prod router F1=1.0 |
-| **Methods + replication repo** | ⚠️ GO with gaps | 3/4 raw runs; Django summary only |
-| **arXiv methods preprint** | ⚠️ GO with caveats | LLM judge; bootstrap CI added; human pilot pending |
-| **Conference empirical paper** | ⛔ NO-GO | Need human raters + Django raw run |
+| **Methods + replication repo** | ⚠️ GO with gaps | Django aggregate-only (no paired.csv); 3/4 full runs |
+| **arXiv methods preprint** | ✅ GO | Paper draft updated; limitations upfront |
+| **Conference empirical paper** | ⛔ NO-GO | Independent human rater on blind pilot; Django full re-run |
 
 **One-line:** H₁ holds strongly on Oiloop Phase 3.1 (B 2.70 vs A 0.75, Δ +1.95); prior +0.05 fragility superseded by v1.1 cores + gold fix.
 
@@ -38,7 +38,8 @@
 |-------|----------|
 | LLM-as-judge only | **9** |
 | Masked decode 75% ≠ human study | **8** — protocol: [human-blind-pilot-oiloop.md](../prompts/human-blind-pilot-oiloop.md) |
-| Django raw run missing (28% of N) | **7** |
+| Django raw run (per-question) | **6** — aggregate export only; [RE-RUN.md](../experiments/django-rest-framework/RE-RUN.md) |
+| Human blind pilot (independent) | **7** — agent-rated 100%; user rating in progress |
 | OL06 prod hallucination (5%) | **3** — core metadata, not routing |
 
 ---
@@ -48,7 +49,9 @@
 | Project | Run | Router | B acc | Δ B vs A | CCR_tokens |
 |---------|-----|--------|-------|----------|------------|
 | MailAgent | run-1781319187610 | keyword F1=1.0 | — | +21% | 8.3× |
-| Django REST | summary only | keyword F1=0.85 | — | +24% | 38× |
+| Django REST | run-drf-phase-2.1-aggregate | keyword F1=0.72 | 1.68 | +0.33‡ | 38× |
+
+‡ Aggregate export; no paired.csv.
 | Navorina | run-1781143403051 | keyword F1=0.87 | — | +19% | 13.7× |
 | **Oiloop** | **run-1781660908** | gold F1=1.0 | **2.70** | **+1.95** | **~12×** |
 | Oiloop prod | run-prod-router-1781664681 | keyword F1=1.0 | 2.55 | — | ~12× |
@@ -59,9 +62,9 @@
 
 1. ~~Re-run Oiloop Phase 3.1~~ ✅ run-1781660908
 2. ~~Bootstrap CI on paired deltas~~ ✅ `research/bootstrap-ci.mjs`
-3. Export Django `summary.json` + `paired.csv` to this repo
-4. Human blind pilot 10 Q (Oiloop) — [protocol](../prompts/human-blind-pilot-oiloop.md)
-5. Fill paper Results + Limitations from PHASE-2/3 + validity-audit §6
+3. ~~Export Django~~ ⚠️ aggregate [run-drf-phase-2.1-aggregate](../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) — full re-run optional
+4. Human blind pilot 10 Q — user rating in progress ([protocol](../prompts/human-blind-pilot-oiloop.md))
+5. ~~Paper Results + Limitations~~ ✅ [paper-draft.md](../papers/paper-draft.md)
 
 ---
 
