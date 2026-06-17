@@ -8,6 +8,8 @@ This is not a product. There is no SaaS, UI, API, or runtime engine here — onl
 
 **New here?** Start with [How to use this repository](#how-to-use-this-repository) — a 15-minute path to the measured results (no need to read every folder).
 
+**Research closed?** See [research/SYNTHESIS.md](research/SYNTHESIS.md) — final conclusions and production decision matrix.
+
 ---
 
 ## Why This Project Exists
@@ -141,6 +143,7 @@ This repo is **research output**, not an app. You do not need to read every file
 
 | Step | File | Why |
 |------|------|-----|
+| 0 | [research/SYNTHESIS.md](../../research/SYNTHESIS.md) | **Final conclusions** — decision matrix, limitations, practice phase |
 | 1 | [context-os/evaluations/PHASE-2-RESULTS.md](context-os/evaluations/PHASE-2-RESULTS.md) | Main table — 3 OSS projects, when **B** (routed cores) vs **C** (graph) |
 | 2 | [context-os/evaluations/PHASE-3-RESULTS.md](context-os/evaluations/PHASE-3-RESULTS.md) | Private integrated codebase (Oiloop) |
 | 3 | [context-os/evaluations/phase-3-twitter-card.png](context-os/evaluations/phase-3-twitter-card.png) | Visual summary — 149 questions, 4 codebases |

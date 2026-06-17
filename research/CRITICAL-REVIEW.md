@@ -40,7 +40,7 @@
 | Masked decode 75% ≠ human study | **8** — protocol: [human-blind-pilot-oiloop.md](../prompts/human-blind-pilot-oiloop.md) |
 | Django raw run (per-question) | **6** — aggregate export only; [RE-RUN.md](../experiments/django-rest-framework/RE-RUN.md) |
 | Human blind pilot (independent) | **7** — agent-rated 100%; user rating in progress |
-| OL06 prod hallucination (5%) | **3** — core metadata, not routing |
+| OL06 prod hallucination (5%) | **3** — v1.1.1 OL06 answer scaffold in workspace-core |
 
 ---
 

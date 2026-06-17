@@ -70,7 +70,7 @@ MailAgent F1=1.0 is project-specific (narrow domain + adjudicated question bank)
 
 +19–24% mean accuracy (B vs A) on Django REST and Navorina; MailAgent **+21%** with keyword router (45 Q). **CCR_tokens 8–38×** lower than A.
 
-**Phase 3 (Oiloop):** B **+5%** vs A (thin margin, N=20, A baseline unstable between runs) — see [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md).
+**Phase 3 (Oiloop):** B **+1.95** vs A (Phase 3.1, N=20) — see [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md) and [research/SYNTHESIS.md](../../research/SYNTHESIS.md).
 
 ### 2. Hallucination: C beats B on 2/4 projects (with Phase 3)
 
