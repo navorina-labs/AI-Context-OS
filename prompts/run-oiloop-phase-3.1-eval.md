@@ -92,21 +92,46 @@ Model: **gpt-4o-mini** · Judge: LLM-as-judge · Temperature: frozen across cond
 - Production F1 ≥ 0.85
 - B_prod accuracy ≥ 0.80 × B_gold accuracy (Run 1)
 
-## Commands (adapt paths)
+## Commands (Oiloop repo)
+
+See `Oiloop/context-os/eval/RUN-PHASE-3.1-NEXT.md` for copy-paste commands.
+
+### Run 3 — Production router (H₁h)
+
+```bash
+cd /Users/alex0nder/Projects/Oiloop
+node context-os/eval/run-eval.mjs \
+  --condition b \
+  --router keyword \
+  --out context-os/eval/results/run-prod-router-$(date +%s)
+node context-os/eval/aggregate.mjs context-os/eval/results/run-prod-router-<id>
+```
+
+### Run 2 — Hybrid ablation (H₁f)
+
+```bash
+node context-os/eval/run-eval.mjs \
+  --filter cross-cutting \
+  --condition bcd \
+  --router gold \
+  --out context-os/eval/results/run-hybrid-$(date +%s)
+node context-os/eval/aggregate.mjs context-os/eval/results/run-hybrid-<id>
+```
+
+### Condition D flags
+
+| Flag | Meaning |
+|------|---------|
+| `--condition d` | Hybrid only |
+| `--condition bcd` | B + C + D |
+| `--condition abcd` | Full matrix |
+| `--filter cross-cutting` | 2+ expected_cores |
+
+Legacy reference:
 
 ```bash
 # Graph index (for C and D)
-npm run eval:context-os:graph-build
-
-# Run 1: full A/B/C
-npm run eval:context-os -- --conditions A,B,C --questions 20
-
-# Run 2: hybrid ablation
-npm run eval:context-os -- --conditions B,C,D --filter cross-cutting
-
-# Aggregate + export
-npm run eval:context-os:aggregate -- context-os/eval/results/run-<id>
-npm run eval:context-os:export -- context-os/eval/results/run-<id>
+node context-os/eval/build-graph-index.mjs
 ```
 
 ## Export → public repo
