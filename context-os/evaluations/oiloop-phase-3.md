@@ -1,27 +1,52 @@
 # Oiloop — Phase 3 Results
 
-**Status:** Measured (private codebase validation)  
-**Questions:** 20 · **Cores:** 5 · **Model:** gpt-4o-mini  
-**Date:** 2026-06-13
+**Status:** Phase 3.1 closed (2026-06-17)  
+**Questions:** 20 · **Cores:** 5 (v1.1.0) · **Model:** gpt-4o-mini  
+**Production default:** B (keyword router, multi-core)
 
-**Canonical run:** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) · keyword router · multi-core labels
+**Canonical run:** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) · gold router · v1.1 cores  
+**Closure:** [PHASE-3.1-CLOSED.md](../../experiments/oiloop/runs/run-1781660908/PHASE-3.1-CLOSED.md)
 
 ---
 
-## A/B/C Results
+## Phase 3.1 — A/B/C (canonical)
 
 | Metric | A (full repo) | B (cores) | C (graph) |
 |--------|---------------|-----------|-----------|
-| **Accuracy** | 1.00 | **1.20** | **1.55** |
-| **Completeness** | 0.85 | **0.90** | **1.20** |
-| **Actionability** | 2.70 | **2.65** | **3.40** |
-| **Mean input tokens** | 80,910 | **1,044** | **8,399** |
-| **Cost (20 Q)** | $0.244 | **$0.0038** | $0.026 |
-| **Hallucination** | 20% | **20%** | **15%** |
-| **Latency** | 3.9s | **1.8s** | 4.3s |
-| **Compression** | 1× | **109×** | 11.6× |
+| **Accuracy** | 0.75 | **2.70** | 2.35 |
+| **Hallucination** | 30% | **0%** | 10% |
+| **Mean input tokens** | 76,663 | **6,334** | 8,963 |
+| **CCR (tokens)** | 1× | **~12×** | ~8.6× |
+| **Latency** | 2.5s | **2.1s** | 2.7s |
 
-**Key finding:** B delivers **109× compression** and **~2.13× lower latency**, and **beats LLM-judge accuracy** vs A (1.20 vs 1.00). Multi-core routing raised **expert preference** to **75.0%** on the canonical run — meeting H4 and supporting the primary accuracy hypothesis. **C wins** on accuracy (+55% vs A) and latency reduction.
+**H₁ supported:** B **2.70** vs A **0.75** (Δ +1.95). H₁g supported (core richness: 1.20 → 2.70).
+
+---
+
+## Run 3 — Production router (H₁h)
+
+[run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) · keyword router · 20 Q · B only
+
+| Metric | Gold | Production |
+|--------|------|------------|
+| B accuracy | 2.70 | **2.55** |
+| Router F1 | 1.0 | **1.0** |
+| B hallucination | 0% | 5% (OL06) |
+
+OL08 Δ (3→1) = [judge variance](../../experiments/oiloop/runs/run-prod-router-1781664681/OL08-judge-variance.md), not routing failure.
+
+---
+
+## Run 2 — Cross-cutting B/C/D (H₁f)
+
+[run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/) · 8 cross-cutting Q
+
+| | B | C | D |
+|---|---|---|---|
+| Accuracy | **2.875** | 2.375 | 2.500 |
+| Hallucination | **0%** | 25% | 12.5% |
+
+**H₁f rejected** — multi-core B beats hybrid D and graph C on cross-cutting.
 
 ---
 
@@ -30,40 +55,18 @@
 | Metric | Value |
 |--------|-------|
 | Codebase | Oiloop macOS companion (Swift) |
-| Questions | 20 (settings, memory, automation, EventKit, JXA, AVCapture) |
-| Cores | 5 (`personal`, `workspace`, `communication`, `system-control`, `browsing`) |
-| Router F1 (keyword) | **1.000** |
-| Core compression | **109×** |
-| Expert preference (B vs A) | **75.0%** (5 B · 5 A · 10 equal) — decoded from canonical run answers |
-
-**Expert methodology:** preferences from [expert-validation-results.md](../../docs/expert-validation-results.md), derived via `autofill-survey.mjs` on eval outputs — masked preference pilot (not an independent second human blind round).
+| Cores | `personal`, `workspace`, `communication`, `system-control`, `browsing` |
+| Router F1 (keyword) | **1.000** (Run 3) |
+| Expert preference (masked decode, prior run) | **75.0%** — human blind pilot pending |
 
 ---
 
-## Failure Modes
+## Historical runs (superseded)
 
-| Mode | Evidence |
-|------|----------|
-| Cross-cutting native API (Run + Tools + EventKit) | OL04, OL08, OL11, OL16, OL20 — A preferred in expert decode |
-| B LLM accuracy below A | Resolved: Mean 1.20 vs 1.00 (B accuracy beats A baseline now) |
-| Router fallback bug | Resolved: Fallback corrected to `personal-core` and routing boundaries aligned |
-
-**Mitigation:** Multi-core routing (product + eval); graph retrieval (C) for hard questions; fix router fallback.
-
----
-
-## Pilot Re-validation (2026-06-17)
-
-10-question subset (OL01–OL10) with **expanded core metadata** — confirms hypothesis direction with stronger B/C separation vs A.
-
-| Metric | A | B | C |
-|--------|---|---|---|
-| Accuracy | 0.50 | **2.10** | **2.40** |
-| Input tokens | 76,663 | **6,629** | 8,850 |
-| CCR (chars) | 1× | **31.7×** | 11.2× |
-| Hallucination | 20% | 30% | 20% |
-
-Run: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) · does **not** supersede canonical 20Q run.
+| Run | B acc | Notes |
+|-----|-------|-------|
+| [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) | 1.20 | Pre v1.1 cores |
+| [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) | 2.10 | 10 Q pilot, expanded metadata |
 
 ---
 
@@ -71,16 +74,16 @@ Run: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) · do
 
 | Resource | Path |
 |----------|------|
-| Canonical report (private repo) | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
-| Exported run (canonical) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) |
-| Pilot run (10 Q, expanded cores) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
-| Prior runs (superseded) | [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/), [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/), [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) |
-| SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781354424217/SUMMARY.md) |
+| Phase 3.1 canonical | [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) |
+| Production router | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) |
+| Hybrid ablation | [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/) |
+| Private report | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
 
 ---
 
 ## Cross-Reference
 
-- Phase 3 summary + Phase 2 comparison: [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
-- Phase 2 baseline: [PHASE-2-RESULTS.md](PHASE-2-RESULTS.md)
-- Applied instance: [applied-instances.md](applied-instances.md)
+- [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
+- [PHASE-2-RESULTS.md](PHASE-2-RESULTS.md)
+- [applied-instances.md](applied-instances.md)
+- [hypothesis.md](../../docs/hypothesis.md)
