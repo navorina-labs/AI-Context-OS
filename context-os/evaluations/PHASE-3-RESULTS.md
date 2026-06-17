@@ -1,32 +1,37 @@
 # Phase 3 Results: Private Codebase Validation (Oiloop)
 
-**Status:** Measured (1 private project, 20 questions)  
-**Date:** 2026-06-13 (post adversarial audit)  
+**Status:** Measured · **Updated:** 2026-06-17 (Phase 3.1 replication)  
+**Date:** 2026-06-13 (initial) · 2026-06-17 (Phase 3.1)  
 **Protocol:** A/B/C within-subjects · gpt-4o-mini · LLM-as-judge + masked decode preference (A vs B)
 
-**Canonical run:** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) (keyword router, multi-core `expected_cores`).  
-**Pilot (2026-06-17):** [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) — 10 Q (OL01–OL10), expanded cores; B 2.10 / C 2.40 vs A 0.50.  
-Superseded: [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/) (old canonical, B acc 1.05, OL08 bug); [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) (routing bug on OL08); [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) (single-core gold labels).
+**Canonical run (Phase 3.1):** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) — 20 Q, workspace-core v1.1.0, fixed gold OL05/OL07. **B 2.70 / C 2.35 / A 0.75**.  
+**Prior canonical:** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) (superseded 2026-06-17).  
+**Pilot:** [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) — 10 Q subset.  
+Superseded: [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/), [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/), [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/).
 
 ---
 
-## Executive Summary
+## Executive Summary (Phase 3.1 — 2026-06-17)
 
-Phase 3 validates Context OS on **Oiloop** — a private, highly integrated macOS Swift companion (5 product cores, ~80.9k mean API input tokens for full-repo baseline).
+Phase 3.1 replicates Oiloop eval with **workspace-core v1.1.0** and corrected gold answers.
 
-**Primary hypothesis (B accuracy ≥ A):** Met **descriptively** — B 1.20 vs A 1.00 (`hypothesis_supported: true`). Margin **+0.20** on N=20 is not statistically tested. B accuracy improved from 1.05 to 1.20 after resolving the OL08 content gap.
+**Primary hypothesis (B accuracy ≥ A):** Met — B **2.70** vs A **0.75** (`hypothesis_supported: true`). Δ **+1.95** on N=20.
 
-**H4 (masked decode preference B ≥ 60%):** Met — 75.0% B-preferred-or-equal from decode pipeline ([expert-validation-results.md](../../docs/expert-validation-results.md)). **Not** independent human raters.
+**H₁g (core richness):** Met — B improved from **1.20 → 2.70** vs prior canonical.
 
-**Efficiency:** **CCR_tokens 78×** (80,910 → 1,044 mean input tokens); **CCR_core 109×** (harness baseline/core chars). **2.13×** lower latency (B vs A).
+**Efficiency:** **CCR_tokens ~12×** (76,663 → 6,334); **CCR_core ~29×**. B latency **2.1s** vs A **2.5s**.
 
-**Production default for Oiloop: C (graph retrieval)** — best accuracy (+55% vs A).
+**Production default for Oiloop: B (routed cores)** — best accuracy (2.70), zero hallucination, lowest tokens. C (2.35) remains fallback for graph-heavy cross-cutting Qs.
 
-| Variant | Role on Oiloop |
-|---------|----------------|
+| Variant | Role on Oiloop (Phase 3.1) |
+|---------|----------------------------|
 | **A** | Full repo — never default |
-| **B** | Fast/cheap lane; +0.20 accuracy vs A |
-| **C** | **Production default** — best accuracy |
+| **B** | **Production default** — best accuracy + 0% hallucination |
+| **C** | Graph supplement for cross-cutting / when B coverage gaps |
+
+---
+
+## Executive Summary (Phase 3 — 2026-06-13, superseded headline)
 
 ---
 
@@ -36,7 +41,8 @@ Phase 3 validates Context OS on **Oiloop** — a private, highly integrated macO
 |-----|------|-------|-------|----------|------------|------------|-------|
 | run-1781225808172 | superseded | **1.20** | 1.05 | −0.15 | **false** | 0 | OL08 routing bug |
 | run-1781344390027 | superseded | **1.00** | 1.05 | +0.05 | **true** | 0 | B unchanged; OL08 bug |
-| **run-1781354424217** | **canonical** | **1.00** | **1.20** | **+0.20** | **true** | **3** | OL08 fixed, canonical re-run |
+| **run-1781354424217** | prior canonical | **1.00** | **1.20** | **+0.20** | **true** | **3** | OL08 fixed |
+| **run-1781660908** | **Phase 3.1 canonical** | **0.75** | **2.70** | **+1.95** | **true** | — | v1.1 cores + gold fix |
 
 **Interpretation:** OL08 content fix successfully resolved the FilePreviewSheet content gap, elevating B accuracy of OL08 from 0 to 3, and overall B accuracy from 1.05 to 1.20.
 
@@ -139,6 +145,20 @@ Decoded from [expert-validation-results.md](../../docs/expert-validation-results
 
 ---
 
+## Phase 3.1 Results (canonical)
+
+| Metric | A | B | C | Δ B vs A |
+|--------|---|---|---|----------|
+| Accuracy | 0.75 | **2.70** | 2.35 | **+1.95** |
+| Hallucination | 30% | **0%** | 10% | −30 pp |
+| Input tokens | 76,663 | **6,334** | 8,963 | −91.7% |
+| CCR (chars) | 1× | **29×** | 11× | |
+| Latency | 2.5s | **2.1s** | 2.7s | |
+
+Run: [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) · [ABC-COMPARE.md](../../experiments/oiloop/runs/run-1781660908/ABC-COMPARE.md)
+
+---
+
 ## Pilot Re-validation (2026-06-17)
 
 Expanded Context Core metadata re-run on OL01–OL10. Full-repo baseline (A) collapsed to **0.50** mean accuracy at 400k chars; B and C both exceed **2.0**.
@@ -158,7 +178,7 @@ Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/)
 
 | Project | Report | Raw run | Pilot |
 |---------|--------|---------|-------|
-| Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
+| Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
 
 **Next eval:** Phase 3.1 — [run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
 

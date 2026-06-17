@@ -46,18 +46,17 @@ Oiloop ships domain-oriented context cores in the chat orchestrator:
 
 ### Phase 3 eval (Oiloop product codebase)
 
-**Canonical (20 Q):** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/)
+**Canonical (20 Q, Phase 3.1):** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/)
 
 | Metric | A | B | C |
 |--------|---|---|---|
-| Accuracy | 1.00 | **1.20** | **1.55** |
-| Hallucination | 20% | 20% | **15%** |
-| Input tokens | 80,910 | **1,044** | 8,399 |
-| CCR_tokens | 1× | **78×** | 9.6× |
+| Accuracy | 0.75 | **2.70** | 2.35 |
+| Hallucination | 30% | **0%** | 10% |
+| Input tokens | 76,663 | **6,334** | 8,963 |
+| CCR (chars) | 1× | **29×** | 11× |
 | Router F1 | — | **1.000** | — |
-| Expert preference (H4) | — | **75%** | — |
 
-**Pilot (10 Q, expanded cores, 2026-06-17):** [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) — B **2.10**, C **2.40**, A 0.50; CCR **31.7×** (chars).
+**Prior canonical (superseded):** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) — B 1.20, C 1.55.
 
 - Report: [oiloop-phase-3.md](oiloop-phase-3.md) · summary: [PHASE-3-RESULTS.md](PHASE-3-RESULTS.md)
 - Canonical (private): `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md`
