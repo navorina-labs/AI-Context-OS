@@ -1,0 +1,15 @@
+{
+  "name": "ai-context-os-monorepo",
+  "private": true,
+  "description": "AI Context OS — research + CLI framework",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "context-os": "node packages/cli/bin/context-os.mjs",
+    "test:cli": "node packages/cli/bin/context-os.mjs init --name demo --profile minimal --target /tmp/context-os-demo-test --force && node packages/cli/bin/context-os.mjs validate --root /tmp/context-os-demo-test && node packages/cli/bin/context-os.mjs route \"deploy to production\" --root /tmp/context-os-demo-test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

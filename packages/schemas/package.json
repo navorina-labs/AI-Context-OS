@@ -1,0 +1,19 @@
+{
+  "name": "@context-os/schemas",
+  "version": "0.1.0",
+  "description": "JSON schemas for Context Cores and routing rules",
+  "type": "module",
+  "exports": {
+    "./core": "./core.schema.json",
+    "./routing": "./routing.schema.json"
+  },
+  "files": [
+    "*.json"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alex0nder/AI-Context-OS.git",
+    "directory": "packages/schemas"
+  }
+}
