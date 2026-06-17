@@ -100,17 +100,17 @@ The hypothesis framework is **rejected** if:
 
 ---
 
-## Evidence Status (2026-06-17)
+## Evidence Status (2026-06-17, Phase 3.1 closed)
 
 | Claim | Status | Evidence |
 |-------|--------|----------|
-| H₁ (B acc ≥ A) | **Supported (descriptive)** | 4/4 projects; Oiloop pilot Δ +1.60 |
-| H₁a (halluc ↓) | **Partial** | B = A on canonical Oiloop; B > A on pilot cross-cutting |
-| H₁c (latency ↓) | **Supported** | Oiloop canonical B 1.8s vs A 3.9s |
-| H₁e (graph supplements) | **Supported** | C 1.55 vs B 1.20 (canonical); C 2.40 vs B 2.10 (pilot) |
-| H₁f (hybrid) | **Untested** | Condition D not yet measured |
-| H₁g (core richness) | **Descriptive** | Pilot expanded cores: B 2.10 vs canonical 1.20 |
-| H₁h (prod router) | **Untested** | All runs used gold F1 = 1.0 |
+| H₁ (B acc ≥ A) | **Supported** | Oiloop Phase 3.1: B 2.70 vs A 0.75 |
+| H₁a (halluc ↓) | **Supported (single-domain)** | Prod B 5%; gold B 0% on 20 Q |
+| H₁c (latency ↓) | **Supported** | B 2.1–2.6s vs A 2.5s+ |
+| H₁e (graph supplements) | **Partial** | C useful but not default; B wins Phase 3.1 |
+| H₁f (hybrid D) | **Rejected** | [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/): B 2.875 > D 2.50 > C 2.375 |
+| H₁g (core richness) | **Supported** | B 2.70 vs prior canonical 1.20 |
+| H₁h (prod router) | **Supported** | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/): F1=1.0, B 2.55 |
 
 ---
 
@@ -118,4 +118,4 @@ The hypothesis framework is **rejected** if:
 
 See [research/evaluation-framework.md](../research/evaluation-framework.md) and [research/experiment-design.md](../research/experiment-design.md).
 
-**Next eval:** [prompts/run-oiloop-phase-3.1-eval.md](../prompts/run-oiloop-phase-3.1-eval.md)
+**Next eval:** Phase 3.1 **closed** — see [PHASE-3.1-CLOSED.md](../experiments/oiloop/runs/run-1781660908/PHASE-3.1-CLOSED.md)
