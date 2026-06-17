@@ -5,6 +5,7 @@
 **Protocol:** A/B/C within-subjects · gpt-4o-mini · LLM-as-judge + masked decode preference (A vs B)
 
 **Canonical run:** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) (keyword router, multi-core `expected_cores`).  
+**Pilot (2026-06-17):** [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) — 10 Q (OL01–OL10), expanded cores; B 2.10 / C 2.40 vs A 0.50.  
 Superseded: [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/) (old canonical, B acc 1.05, OL08 bug); [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/) (routing bug on OL08); [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) (single-core gold labels).
 
 ---
@@ -138,11 +139,26 @@ Decoded from [expert-validation-results.md](../../docs/expert-validation-results
 
 ---
 
+## Pilot Re-validation (2026-06-17)
+
+Expanded Context Core metadata re-run on OL01–OL10. Full-repo baseline (A) collapsed to **0.50** mean accuracy at 400k chars; B and C both exceed **2.0**.
+
+| Metric | A | B | C | Δ B vs A |
+|--------|---|---|---|----------|
+| Accuracy | 0.50 | **2.10** | **2.40** | **+1.60** |
+| Input tokens | 76,663 | **6,629** | 8,850 | −91.4% |
+| CCR (chars) | 1× | **31.7×** | 11.2× | |
+| Hallucination | 20% | 30% | 20% | |
+
+Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) · [ABC-COMPARE.md](../../experiments/oiloop/runs/run-1781658621476/ABC-COMPARE.md). Canonical 20Q benchmark unchanged.
+
+---
+
 ## Per-Project Report
 
-| Project | Report | Raw run |
-|---------|--------|---------|
-| Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) |
+| Project | Report | Raw run | Pilot |
+|---------|--------|---------|-------|
+| Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
 
 ---
 
