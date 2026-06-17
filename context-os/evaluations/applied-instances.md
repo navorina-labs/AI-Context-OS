@@ -40,7 +40,7 @@ Oiloop ships domain-oriented context cores in the chat orchestrator:
 | Purpose | Validate hypothesis on OSS codebase | Reduce tokens + hallucination for companion |
 | Cores | 5 (Serializers, Views, Auth, Routing, Config) | 5 (personal, workspace, communication, systemControl, browsing) |
 | Eval | Formal A/B/C, 42 questions | Formal A/B/C, **20 questions** (Phase 3) |
-| Default strategy | **C** (graph) for codegen safety | **C** (graph) — Phase 3 measured; B loses accuracy on cross-cutting system Qs |
+| Default strategy | **C** (graph) for codegen safety | **B** (keyword, multi-core) — Phase 3.1 |
 
 ---
 
