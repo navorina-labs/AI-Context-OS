@@ -52,12 +52,28 @@
 
 ---
 
+## Pilot Re-validation (2026-06-17)
+
+10-question subset (OL01–OL10) with **expanded core metadata** — confirms hypothesis direction with stronger B/C separation vs A.
+
+| Metric | A | B | C |
+|--------|---|---|---|
+| Accuracy | 0.50 | **2.10** | **2.40** |
+| Input tokens | 76,663 | **6,629** | 8,850 |
+| CCR (chars) | 1× | **31.7×** | 11.2× |
+| Hallucination | 20% | 30% | 20% |
+
+Run: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) · does **not** supersede canonical 20Q run.
+
+---
+
 ## Raw Artifacts
 
 | Resource | Path |
 |----------|------|
 | Canonical report (private repo) | `Oiloop/docs/OILOOP-EXPERIMENT-RESULTS.md` |
 | Exported run (canonical) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) |
+| Pilot run (10 Q, expanded cores) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
 | Prior runs (superseded) | [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/), [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/), [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/) |
 | SUMMARY | [SUMMARY.md](../../experiments/oiloop/runs/run-1781354424217/SUMMARY.md) |
 
