@@ -1,0 +1,12 @@
+---
+description: Route decision-scoped questions through Context OS cores
+globs:
+alwaysApply: true
+---
+
+Before answering project-specific decision questions:
+
+1. Read `context-os/manifest.json` and `context-os/router/question-router.md`
+2. Route to 1 primary + 0–2 secondary cores — do not load the full repository
+3. Open only Sources listed in the selected core(s)
+4. After code changes affecting entities in a core, update that core per `context-os/MAINTENANCE.md`
