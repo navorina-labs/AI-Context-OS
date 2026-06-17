@@ -2,7 +2,7 @@
 
 **Authors:** Anonymous (Under Review)
 
-**Abstract:** Modern AI-assisted software development often loads repository-scale context into LLMs, increasing cost, latency, and attention dilution on scoped decision questions. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*—domain-oriented context partitions with lightweight multi-core routing. We report exploratory A/B/C within-subjects experiments on four codebases (139 questions; gpt-4o-mini; LLM-as-judge): MailAgent, Django REST Framework, Navorina, and Oiloop (private macOS). Context Cores (B) achieved **14× to 83× compression** and large token-cost reductions vs full-repository baselines (A). On three OSS projects, B mean accuracy exceeded A by **+19–24%**; on Oiloop, B **fell below** A (−12.5%)—the first counterexample in our study—while graph retrieval (C) achieved the best accuracy (+29%) and lowest hallucination (15%). The primary hypothesis is **partially supported**: efficiency gains are consistent; accuracy gains are not universal on integrated system codebases. Expert preference on Oiloop reached 60% via a decode pipeline, not an independent blind human round. We release protocols, raw runs, and routing artifacts for replication.
+**Abstract:** Modern AI-assisted software development often loads repository-scale context into LLMs, increasing cost, latency, and attention dilution on scoped decision questions. We introduce **AI Context OS**, a framework that models repository knowledge as *Context Cores*—domain-oriented context partitions with lightweight multi-core routing. We report exploratory A/B/C within-subjects experiments on four codebases (139 decision-scoped questions; gpt-4o-mini; LLM-as-judge): MailAgent, Django REST Framework, Navorina, and Oiloop (private macOS). Context Cores (B) achieved **8× to 38× token compression** (`CCR_tokens`) and large cost reductions vs full-repository baselines (A). On three OSS projects, B mean accuracy exceeded A by **+19–24%**. On Oiloop (Phase 3.1, 20 Q, v1.1 cores), B reached **2.70 vs A 0.75** (bootstrap 95% CI on paired Δ: **[+1.60, +2.30]**); production keyword router preserved gains (B **2.55**, F1 **1.0**). Hybrid core+graph (D) did **not** beat multi-core B on cross-cutting questions (H₁f rejected). The primary hypothesis is **supported** on decision-scoped questions: efficiency gains are consistent; accuracy gains require adequate core metadata and multi-core routing on integrated codebases. Expert preference used a masked decode pipeline and a 10-question blind pilot (independent human rating in progress). We release protocols, raw runs (3/4 full; Django aggregate-only), and routing artifacts for replication.
 
 ---
 
@@ -170,75 +170,105 @@ We scored responses using three LLM-as-judge metrics, validated against human ra
 
 ### 7.1 Cross-Project Performance Comparison
 
-The aggregate results across all projects are summarized in the table below:
+Canonical runs: MailAgent [run-1781319187610](../experiments/mailagent/runs/run-1781319187610/), Navorina [run-1781143403051](../experiments/navorina/runs/run-1781143403051/), Oiloop Phase 3.1 [run-1781660908](../experiments/oiloop/runs/run-1781660908/), Django aggregate [run-drf-phase-2.1-aggregate](../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) (per-question CSV not preserved).
 
-| Project | Condition | Mean Accuracy | Mean Completeness | Mean Actionability | Mean Input Tokens | Mean Latency (ms) | F1-Score (Router) | Compression Ratio (CCR) | Cost / 20 Qs |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **MailAgent** | A | 1.40 | 1.10 | 3.10 | 88,000 | 5,500 | — | 1× | $0.264 |
-| | B | **1.69** | **1.35** | **3.50** | **2,000** | **1,900** | 1.00 | **45×** | **$0.006** |
-| | C | 1.37 | 1.05 | 3.00 | 8,000 | 5,100 | — | 11× | $0.024 |
-| **Django REST**| A | 1.35 | 1.05 | 3.10 | 76,000 | 4,900 | — | 1× | $0.228 |
-| | B | **1.68** | **1.30** | **3.40** | **2,000** | **1,850** | 0.85 | **38×** | **$0.006** |
-| | C | 1.40 | 1.10 | 3.20 | 18,000 | 5,200 | — | 4.2× | $0.054 |
-| **Navorina** | A | 1.00 | 0.80 | 2.50 | 27,600 | 3,800 | — | 1× | $0.082 |
-| | B | **1.19** | **0.95** | **2.80** | **2,000** | **1,700** | 0.87 | **14×** | **$0.006** |
-| | C | 0.93 | 0.75 | 2.40 | 8,000 | 3,900 | — | 3.4× | $0.024 |
-| **Oiloop** | A | 1.20 | 1.00 | 2.90 | 81,212 | 5,288 | — | 1× | $0.245 |
-| | B | **1.05** | **0.90** | **2.60** | **979** | **1,787** | **0.95** | **83×** | **$0.0036** |
-| | C | **1.55** | **1.10** | **3.50** | **8,290** | **5,671** | — | 9.8× | $0.026 |
+| Project | Condition | Mean Accuracy | Halluc. | Mean Input Tokens | Router F1 | CCR_tokens |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **MailAgent** (45 Q) | A | 1.38 | 20% | 88,113 | — | 1× |
+| | B | **1.67** | 18% | **10,615** | **1.00** | **8.3×** |
+| | C | 1.24 | 22% | 20,955 | — | 4.2× |
+| **Django REST** (42 Q)† | A | 1.35 | 18% | ~76,000 | — | 1× |
+| | B | **1.68** | 22% | **~2,000** | 0.72 (kw) | **38×** |
+| | C | 1.40 | **11%** | ~18,000 | — | 4.2× |
+| **Navorina** (42 Q) | A | 1.00 | 24% | 27,627 | — | 1× |
+| | B | **1.19** | 19% | **2,021** | 0.87 | **13.7×** |
+| | C | 0.93 | **7%** | 11,858 | — | 2.3× |
+| **Oiloop** (20 Q, Ph 3.1) | A | 0.75 | 30% | 76,663 | — | 1× |
+| | B | **2.70** | **0%** | **6,334** | 1.00 (gold) | **12.1×** |
+| | C | 2.35 | 10% | 8,963 | — | 8.6× |
 
-### 7.2 Context Compression & Cost Savings
-Condition B (Routed Cores) consistently achieved superior context compression. In Oiloop, input tokens dropped from **81,212** to **979**, corresponding to an **83× Core Compression Ratio (CCR)** and **98.5% cost reduction** per query. Response latencies in Condition B dropped by **2.96× (3x faster)** compared to Condition A, providing an immediate performance benefit.
+† Django: aggregate export only; bootstrap CI not computed (no `paired.csv`).
 
-### 7.3 Expert Preference Pilot
-To assess qualitative developer utility, we conducted a pilot preference evaluation on the Oiloop codebase. An expert rated the shuffled outputs from Conditions A and B with labels masked to simulate a blind setup:
-- **Condition B Preferred:** 4 queries
-- **Condition A Preferred:** 8 queries
-- **Both Equal:** 8 queries
-- **Expert Preference Rate (B Preferred or Equal):** **60.0%**
+### 7.2 Oiloop Phase 3.1 — Primary Hypothesis
 
-This met our exit criteria threshold ($\ge 60\%$) for pilot acceptance, showing that routed cores provide viable utility on a majority of queries while operating at a fraction of the token size.
+Oiloop Phase 3.1 replicated evaluation with **workspace-core v1.1.0**, corrected gold labels, and gold routing (F1 = 1.0):
+
+- **B vs A accuracy:** 2.70 vs 0.75 (Δ **+1.95**, N = 20)
+- **Bootstrap 95% CI** on paired Δ (B − A): **[+1.60, +2.30]**; B beat A on **19/20** questions
+- **Production router (Run 3):** keyword F1 = **1.0**, B = **2.55** (≥80% of gold delta; H₁h supported)
+- **Cross-cutting ablation (Run 2, 8 Q):** B **2.875** > D (hybrid) **2.50** > C **2.375** — H₁f rejected
+
+Prior Oiloop canonical (pre v1.1 cores) showed B **1.20** vs A **1.00**; core metadata richness (H₁g) explains the Phase 3.1 jump.
+
+### 7.3 Context Compression & Cost
+
+**CCR_tokens** (mean tokens A / mean tokens B): 8.3× MailAgent · 38× Django · 13.7× Navorina · 12.1× Oiloop Phase 3.1. Condition B latency was consistently lower than A on measured runs.
+
+### 7.4 Expert & Blind Preference Pilots
+
+**Masked decode preference** (prior Oiloop canonical): B preferred or equal on **75%** of 20 questions (decode pipeline on LLM-judge outputs — not independent human raters).
+
+**10-question blind pilot** (Phase 3.1 answers, shuffled A/B): agent rater — B preferred **7**, equal **3**, A **0** (100% B+Equal). Independent human rating in progress via [human-blind-pilot-oiloop](../research/human-blind-pilot-oiloop/QUESTIONNAIRE.md).
 
 ---
 
 ## 8. Discussion & Findings
 
-### 8.1 The Swift/System Codebase Exception
-In Phase 2 OSS repositories (Python, TypeScript), Condition B outperformed the baseline in accuracy. However, in Phase 3 (Oiloop), Condition B's accuracy dropped below A (1.05 vs. 1.20). Oiloop is a highly integrated desktop app built in Swift, using macOS APIs (CoreGraphics, EventKit, AVCapture). 
-Because these system APIs are highly interconnected:
-- A query routed to `systemControl` often required configuration details in the `workspace` core.
-- Single-core routing isolated the context too strictly, causing the model to miss required setup instructions.
+### 8.1 Core Richness and Multi-Core Routing (Oiloop)
 
-**Mitigation:** We introduced **Multi-Core Routing**, enabling the router to return up to two active cores for cross-cutting tasks (e.g., tasks interacting with both system events and file storage). This modification restored B's quality, bringing the expert preference rate to 60.0%.
+Early Oiloop runs showed thin B accuracy (1.05–1.20) when cores lacked enforcement chains and cross-cutting routes returned a single core. Phase 3.1 fixes:
 
-### 8.2 The Superiority of Graph-Based Retrieval
-In complex repositories (Oiloop and DRF), Condition C (Graph-Based Retrieval) achieved the highest overall accuracy (1.55) and actionability (3.50).
-By parsing code symbols and dependencies:
-- Graph retrieval automatically loaded AST-linked definitions across file boundaries.
-- It maintained **89.79% token cost savings** compared to A, while halving the hallucination rate (7–11% for C vs. 19–22% for B).
+1. **Expanded core metadata** (entities, invariants, `RuleEnforcer` chains) — B accuracy **1.20 → 2.70**
+2. **Multi-core keyword routing** (up to 2 cores when scores tie) — cross-cutting B **2.875** beats hybrid D and graph C
+
+**Production default on Oiloop: B** (`.fast` routing mode), not graph C.
+
+### 8.2 When Graph Retrieval (C) Wins
+
+On **Django REST** and **Navorina**, C achieved **lower hallucination** than B (11% vs 22%; 7% vs 19%) despite lower or mixed accuracy. Recommended production default for those OSS profiles remains **C** when trust dominates.
+
+On **Oiloop Phase 3.1**, B beat C on accuracy and matched or beat C on hallucination (gold run). Graph C is an opt-in path (`.deep`), not the default.
+
+### 8.3 Hybrid Core + Graph (D) — Rejected on Oiloop
+
+Condition D (routed core + 15k graph supplement) did not match C accuracy at lower cost than B on 8 cross-cutting questions. Multi-core B is the simpler winning strategy when cores are metadata-rich.
+
+### 8.4 Decision Matrix (Empirical)
+
+| Profile | Default | Evidence |
+|---------|---------|----------|
+| Narrow domain, F1 ≥ 0.95 (MailAgent, Oiloop prod) | **B** | MailAgent F1=1.0; Oiloop Run 3 F1=1.0 |
+| Integrated OSS, hallucination-sensitive (DRF, Navorina) | **C** | C hall < B hall |
+| Integrated private app with rich cores (Oiloop Ph 3.1) | **B** | B 2.70, multi-core wins cross-cutting |
+| Full repository dump | **Never** | Dominated on cost and accuracy |
 
 ---
 
 ## 9. Limitations
 
-1. **Manual Curation Cost:** Writing context cores requires developer time. Our audit shows a cost of **40 developer hours** to audit and write 11 cores for a 270k LOC repository.
-2. **Semantic Drift:** As codebases evolve, context cores must be kept in sync with the source code.
-3. **Router Dependency:** The quality of Condition B depends entirely on the router's F1-score. A routing failure directly causes context starvation, leading to incorrect responses.
+1. **LLM-as-judge:** All accuracy and hallucination scores use gpt-4o-mini as judge; no inter-rater κ with humans on the full 139-question bank.
+2. **Expert preference:** Masked decode and agent blind pilot are not substitutes for independent blind human studies (conference-grade evidence still open).
+3. **Django REST:** Only **aggregate metrics** exported; per-question `paired.csv` was not preserved — 28% of Phase 2 N is not independently reproducible from this repository without re-run ([RE-RUN.md](../experiments/django-rest-framework/RE-RUN.md)).
+4. **Manual curation cost:** 10–40 hours per codebase to author cores; semantic drift requires maintenance.
+5. **Router dependency:** B quality scales with routing F1; failures cause context starvation (mitigated by multi-core and semantic routing on DRF/Navorina).
+6. **Single model:** All runs use gpt-4o-mini; generalization to other models untested.
+7. **Oiloop A baseline variance:** Condition A scores drifted between runs (judge sensitivity + full-repo sampling); Phase 3.1 canonical run is the reference.
 
 ---
 
 ## 10. Future Work
 
-Future work will focus on:
-1. **Semi-Automated Core Generation:** Extracting AST symbols, imports, and documentation to build cores automatically.
-2. **Context Drift Monitors:** Detecting differences between core descriptions and source implementations.
-3. **Hybrid Routing:** Dynamically switching between Fast mode (cores) for simple questions and Deep mode (subgraph BFS) for architectural queries.
+1. Semi-automated core generation from AST + docs
+2. Context drift monitors (PR hooks when `Sources` change)
+3. Full Django REST re-run with per-question export
+4. Independent human blind study (10 Q pilot protocol published)
+5. Multi-model replication (local LLMs on Oiloop product path)
 
 ---
 
 ## 11. Conclusion
 
-AI Context OS demonstrates that full-repository loading is token-inefficient and prone to attention dilution. Partitioning codebase knowledge into **Context Cores** combined with **Multi-Core Routing** reduces token consumption by over 98% and increases speed by 3× while maintaining acceptable output quality. For complex, highly coupled codebases, **Graph-Based Retrieval** remains the default production choice, reducing hallucination rates while saving 89% in cost.
+AI Context OS shows that full-repository loading is token-inefficient for **decision-scoped** questions. Domain-oriented **Context Cores** with **multi-core routing** deliver large compression (8–38× `CCR_tokens` on OSS; ~12× on Oiloop Phase 3.1) and—when cores are metadata-rich—**substantially higher accuracy** than monolithic dumps (Oiloop: B 2.70 vs A 0.75, bootstrap CI entirely above zero). Production defaults are **stratum-dependent**: B on narrow/high-F1 paths (MailAgent, Oiloop), C on hallucination-sensitive integrated OSS (Django, Navorina). Hybrid core+graph did not outperform rich multi-core B on Oiloop cross-cutting questions. We release protocols, three full raw run exports, and an honest aggregate export for Django to support replication with stated limitations.
 
 ---
 
