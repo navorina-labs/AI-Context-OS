@@ -2,6 +2,8 @@
 
 This experiment evaluates the **AI Context OS** domain-oriented context cores approach on a private commercial macOS companion application (`Oiloop`).
 
+**Maintenance:** [MAINTENANCE.md](MAINTENANCE.md) — when to update cores after code changes.
+
 ---
 
 ## Metadata
