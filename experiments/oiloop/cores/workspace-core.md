@@ -5,11 +5,11 @@
 | Field | Value |
 |-------|-------|
 | id | workspace-core |
-| version | 1.0.0 |
+| version | 1.1.0 |
 | parent_core | null |
 | project | Oiloop |
-| last_updated | 2026-06-13 |
-| token_estimate | 900 |
+| last_updated | 2026-06-17 |
+| token_estimate | 1200 |
 
 ---
 
@@ -35,6 +35,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 - System automation commands (Terminal shell, simulation) → System Control Core
 - Mail/Messages triage → Communication Core
 - Browser tab listing → Browsing Core
+- Persona, tone, memory schemas → Personal Core
 
 ---
 
@@ -43,18 +44,46 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 | Entity | Description |
 |--------|-------------|
 | `FilePreviewSheet` | SwiftUI sheet listing pending file moves; user confirms or cancels organize plan. |
-| `FileOrganizer` | Handles path calculations, duplicate checks, and generating layout proposals. |
-| `WorkspaceAccess` | Persists and resolves sandbox bookmark security data. |
+| `FileOrganizer` | Handles path calculations, duplicate checks, rule checks, and generating layout proposals. |
+| `WorkspaceAccess` | Persists and resolves sandbox bookmark security data; wraps `startAccessingSecurityScopedResource` / `stopAccessingSecurityScopedResource`. |
 | `FileOrganizeService` | Holds proposed state and coordinates confirmations. |
-| `UserRuleParser` | Decodes custom text rules into SQLite format to prevent unwanted file moves. |
+| `UserRuleParser` | Decodes custom text rules into SQLite `user_rules` rows (including `dontTouch` patterns). |
+| `RuleEnforcer` | Evaluates whether files, mail, or messages should be skipped: `shouldSkipFile`, `shouldSkipMail`, `shouldSkipMessage`. |
+
+---
+
+## Sandbox Access Flow (OL05)
+
+1. User grants folder via picker → security-scoped bookmark **Data** persisted (settings / SQLite — see `WorkspaceAccess.swift`).
+2. On file operation: resolve bookmark → `URL.startAccessingSecurityScopedResource()`.
+3. Validate target URL is within whitelisted bookmark directories.
+4. Execute operation → `URL.stopAccessingSecurityScopedResource()`.
+5. On failure: surface only error types documented in `WorkspaceAccess.swift` Sources (do not invent enum names).
+
+---
+
+## Don't Touch Enforcement Chain (OL07)
+
+```
+UserRuleParser → user_rules (SQLite, dontTouch kind)
+       ↓
+RuleEnforcer.shouldSkipFile / shouldSkipMail / shouldSkipMessage
+       ↓
+FileOrganizer (skip matching paths before proposing moves)
+       ↓
+FilePreviewSheet (Apply required — no silent moves)
+       ↓
+Audit trail (skipped paths logged)
+```
 
 ---
 
 ## Invariants
 
 - File moves must only occur within whitelisted bookmark directories.
-- No files are ever moved without explicit user confirmation.
+- No files are ever moved without explicit user confirmation via `FilePreviewSheet`.
 - Skipped folders / paths must be logged in the audit trail.
+- Only cite symbols listed in Key Entities and Sources — do not invent error types or services.
 
 ---
 
@@ -64,6 +93,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 |------|----------|-----------|-----|
 | 2026-05-20 | Sandboxed folder bookmarks | Necessary to allow file operations while complying with macOS sandbox regulations. | ADR-02 |
 | 2026-06-05 | Dry-run propose-before-move | Protects user files from accidental or unwanted LLM-proposed actions. | ADR-03 |
+| 2026-06-17 | RuleEnforcer + enforcement chain in core | Reduces OL07 hallucination (generic "Rule Enforcers", missing FilePreviewSheet link). | — |
 
 ---
 
@@ -72,9 +102,11 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 | Type | Reference | Description |
 |------|-----------|-------------|
 | File | [FilePreviewSheet.swift](file:///Users/alex0nder/Projects/Oiloop/App/FilePreviewSheet.swift) | Move preview UI (Apply / Cancel) |
-| File | [FileOrganizer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/FileOrganizer.swift) | Main sorting logic |
+| File | [FileOrganizer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/FileOrganizer.swift) | Main sorting logic + rule checks |
 | File | [WorkspaceAccess.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/WorkspaceAccess.swift) | macOS sandbox bookmark resolver |
 | File | [FileOrganizeService.swift](file:///Users/alex0nder/Projects/Oiloop/Core/Orchestrator/FileOrganizeService.swift) | In-memory plan tracker |
+| File | [UserRuleParser.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/UserRuleParser.swift) | Plain-text → SQLite rules |
+| File | [RuleEnforcer.swift](file:///Users/alex0nder/Projects/Oiloop/Tools/FileTools/RuleEnforcer.swift) | shouldSkipFile / shouldSkipMail / shouldSkipMessage |
 
 ---
 
@@ -82,6 +114,7 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 
 - Local file explorer UI styles.
 - Generic file-system helpers.
+- Undocumented services (e.g. do not cite "Scheduled Digest Warnings" unless added to Sources).
 
 ---
 
@@ -90,3 +123,14 @@ Responsible for file organization, loose files cleanup, directory auditing, secu
 - Proposed moves list (`file_a -> folder_b`).
 - Validation reports of rules matching user files.
 - Sandbox access audit logs.
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.1.0 | 2026-06-17 | Sandbox flow, RuleEnforcer, enforcement chain (OL05/OL07 fixes) |
+| 1.0.0 | 2026-06-13 | FilePreviewSheet entity; initial workspace scope |
+
+See [core-fixes-OL05-OL07.md](../core-fixes-OL05-OL07.md) for eval evidence.

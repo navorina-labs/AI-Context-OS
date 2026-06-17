@@ -160,6 +160,8 @@ Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/)
 |---------|--------|---------|-------|
 | Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
 
+**Next eval:** Phase 3.1 — [run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
+
 ---
 
 ## Cross-Reference
@@ -168,3 +170,6 @@ Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/)
 - Validity: [research/validity-audit.md](../../research/validity-audit.md)
 - Applied instance: [applied-instances.md](applied-instances.md)
 - Methodology: [research/evaluation-framework.md](../../research/evaluation-framework.md)
+- Phase 3.1 protocol: [prompts/run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md)
+- Core fixes (OL05/OL07): [core-fixes-OL05-OL07.md](../../experiments/oiloop/core-fixes-OL05-OL07.md)
+- Hypothesis v2: [docs/hypothesis.md](../../docs/hypothesis.md)

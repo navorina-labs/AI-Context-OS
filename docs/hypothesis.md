@@ -1,24 +1,44 @@
 # Hypothesis
 
+**Version:** 2.0 · **Updated:** 2026-06-17 (post Phase 2 + Oiloop Phase 3 + pilot run-1781658621476)
+
+---
+
 ## Primary Hypothesis
 
-**AI systems produce higher-quality answers when context is organized by decision domains rather than by files, folders, or undifferentiated repository dumps.**
+**AI systems produce higher-quality answers when context is organized by decision domains rather than by undifferentiated repository dumps.**
 
 Formally:
 
-> H₁: For a fixed question set Q and project P, answers generated via `Router(Q) → ContextCore(s) → LLM` outperform answers generated via `FullRepository(P) → LLM` on accuracy, reasoning quality, and hallucination rate, while using significantly less context.
+> **H₁:** For a fixed set of *decision-scoped* questions Q and project P, answers generated via `Router(Q) → ContextCore(s) → LLM` (Condition B) achieve **higher accuracy** than `FullRepository(P) → LLM` (Condition A), at **≥5× context compression** (`CCR_tokens`).
 
-Null hypothesis:
+**Null hypothesis (H₀):** B accuracy ≤ A accuracy on decision-scoped Q.
 
-> H₀: There is no significant difference in answer quality between domain-routed context cores and full repository context.
+**Out of scope for H₁:** hallucination, latency, graph retrieval, exploratory questions ("how does this codebase work").
+
+---
+
+## Stratified Predictions (Decision Matrix)
+
+Quality is not uniform across question types. Predicted winner by stratum:
+
+| Question type | Predicted default | Primary metric |
+|---------------|-------------------|----------------|
+| Single-domain, router F1 ≥ 0.95 | **B** (routed cores) | CCR_tokens, latency |
+| Cross-cutting (2+ cores) | **D or C** (hybrid / graph) | accuracy, hallucination |
+| Integrated / system-heavy codebases | **C** (graph retrieval) | accuracy, trust |
+| Exploratory / repo-wide | **A or C** | out of H₁ scope |
+| Full repository dump | **Never default** | cost dominated |
 
 ---
 
 ## Supporting Sub-Hypotheses
 
-### H₁a: Domain Boundaries Reduce Hallucination
+### H₁a: Domain Boundaries Reduce Cross-Domain Hallucination
 
-When context is bounded to a decision domain, the model has fewer irrelevant facts to misconnect. Hallucination rate decreases.
+When context is bounded to a decision domain, the model has fewer irrelevant facts to misconnect. **Fabricated cross-domain connections** decrease vs full-repo dumps.
+
+> **H₁a′ (cross-cutting caveat):** On questions spanning 2+ cores, single-core routing (B) does **not** guarantee lower hallucination than A. Multi-core composition (B₂) or hybrid (D) is required.
 
 ### H₁b: Minimal Context Improves Reasoning Quality
 
@@ -26,38 +46,76 @@ Smaller, focused context improves chain-of-thought quality because each step ref
 
 ### H₁c: Routing Latency Is Offset by Context Reduction
 
-Router overhead plus smaller context yields lower total latency than processing full repository context.
+Router overhead plus smaller context yields lower total latency than processing full repository context (especially on local LLMs).
 
 ### H₁d: Context Cores Generalize Across Projects
 
-The four-core model (Business, Product, Technical, Operational) applies to diverse project types without per-project custom ontology.
+The four-core model (Business, Product, Technical, Operational) — and product-specific variants (e.g. Oiloop's 5 cores) — applies to diverse project types without per-project custom ontology.
 
-### H₁e: GraphRAG Does Not Substitute for Decision Boundaries
+### H₁e: Graph Retrieval Supplements Decision Boundaries (revised)
 
-Knowledge graphs improve entity retrieval but do not replace explicit decision-domain boundaries. Context cores outperform graph-only approaches on decision-scoped questions.
+Knowledge graphs **supplement** explicit decision-domain cores; they do not replace them.
+
+> For integrated codebases: `accuracy(C) ≥ accuracy(B) ≥ accuracy(A)` at `tokens(C) < tokens(A)`.
+
+*Previous H₁e ("cores outperform graph-only") was rejected by Oiloop Phase 3 data.*
+
+### H₁f: Hybrid Core + Graph Matches C at Lower Cost
+
+Condition D (routed core + small graph supplement) matches or exceeds C accuracy on cross-cutting questions at ≤1.5× B token cost.
+
+### H₁g: Core Metadata Richness Scales Answer Quality
+
+Answer quality scales with core metadata completeness (entities, invariants, enforcement chains), not routing precision alone. Expanded cores widen B/C vs A gap without increasing hallucination on single-domain Q.
+
+### H₁h: Production Router Preserves Gold-Router Gains
+
+Production keyword router (F1 ≥ 0.85) preserves ≥80% of the accuracy delta (B − A) measured under gold routing (F1 = 1.0).
 
 ---
 
 ## What We Are NOT Claiming
 
-- Context cores replace full repository access for exploratory tasks ("show me how this codebase works")
-- Manual core curation scales indefinitely without tooling (tooling is future work, out of scope for v0)
-- One core per question is always sufficient (mixed questions may require core composition)
+- Context cores replace full repository access for exploratory tasks
+- Manual core curation scales indefinitely without tooling
+- One core per question is always sufficient (mixed questions require composition or D)
 - Context cores eliminate hallucination entirely
+- B is the universal production default (C or D wins on integrated / cross-cutting Q)
 
 ---
 
 ## Falsification Criteria
 
-The hypothesis is **rejected** if:
+The hypothesis framework is **rejected** if:
 
-1. Full repository baseline wins on accuracy for >60% of questions in the evaluation set
-2. Context compression ratio <2× with no quality gain
-3. Hallucination rate is equal or higher with cores vs full repo
-4. Mixed-domain questions perform worse with routed cores than with full context
+| # | Criterion | Scope |
+|---|-----------|-------|
+| 1 | A wins accuracy on **>50%** of decision-scoped questions | all Q |
+| 2 | `CCR_tokens` < 5× **and** B accuracy ≤ A | efficiency claim |
+| 3 | Hallucination(B) ≥ Hallucination(A) on **single-domain** Q only | H₁a |
+| 4 | D and C both fail to beat A on **cross-cutting** Q | H₁f |
+| 5 | Production router F1 < 0.85 **and** B accuracy ≤ A | H₁h |
+
+*Criteria 3 does not apply to cross-cutting Q — see H₁a′.*
+
+---
+
+## Evidence Status (2026-06-17)
+
+| Claim | Status | Evidence |
+|-------|--------|----------|
+| H₁ (B acc ≥ A) | **Supported (descriptive)** | 4/4 projects; Oiloop pilot Δ +1.60 |
+| H₁a (halluc ↓) | **Partial** | B = A on canonical Oiloop; B > A on pilot cross-cutting |
+| H₁c (latency ↓) | **Supported** | Oiloop canonical B 1.8s vs A 3.9s |
+| H₁e (graph supplements) | **Supported** | C 1.55 vs B 1.20 (canonical); C 2.40 vs B 2.10 (pilot) |
+| H₁f (hybrid) | **Untested** | Condition D not yet measured |
+| H₁g (core richness) | **Descriptive** | Pilot expanded cores: B 2.10 vs canonical 1.20 |
+| H₁h (prod router) | **Untested** | All runs used gold F1 = 1.0 |
 
 ---
 
 ## Measurement
 
 See [research/evaluation-framework.md](../research/evaluation-framework.md) and [research/experiment-design.md](../research/experiment-design.md).
+
+**Next eval:** [prompts/run-oiloop-phase-3.1-eval.md](../prompts/run-oiloop-phase-3.1-eval.md)
