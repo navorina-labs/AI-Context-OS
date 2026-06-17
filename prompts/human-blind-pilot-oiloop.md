@@ -37,7 +37,30 @@ Compare to masked decode baseline: 75% on prior canonical run.
 
 ---
 
+## Artifacts
+
+| File | Purpose |
+|------|---------|
+| `research/generate-human-blind-pilot.mjs` | Build blind questionnaire from run |
+| `research/human-blind-pilot-oiloop/QUESTIONNAIRE.md` | **Give to rater** (no A/B labels) |
+| `research/human-blind-pilot-oiloop/RATING-SHEET.md` | Quick checklist |
+| `research/human-blind-pilot-oiloop.csv` | Record preferences (`display_id` Q01–Q10) |
+| `research/human-blind-pilot-oiloop-shuffle-key.json` | **Private** — gitignored |
+| `research/decode-human-blind-pilot.mjs` | Decode CSV → B preference rate |
+
+## Commands
+
+```bash
+# Regenerate (if run artifacts change)
+node research/generate-human-blind-pilot.mjs
+
+# After filling CSV
+node research/decode-human-blind-pilot.mjs
+```
+
+---
+
 ## Artifacts to commit
 
-- `research/human-blind-pilot-oiloop.csv` (preferences only)
-- `research/human-blind-pilot-oiloop-shuffle-key.json` (gitignored or private — do not publish A/B mapping with answers)
+- `research/human-blind-pilot-oiloop.csv` (preferences only, after rating)
+- `research/human-blind-pilot-oiloop-results.md` (after decode)
