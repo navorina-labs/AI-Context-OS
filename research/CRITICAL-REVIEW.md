@@ -49,9 +49,7 @@
 | Project | Run | Router | B acc | Δ B vs A | CCR_tokens |
 |---------|-----|--------|-------|----------|------------|
 | MailAgent | run-1781319187610 | keyword F1=1.0 | — | +21% | 8.3× |
-| Django REST | run-drf-phase-2.1-aggregate | keyword F1=0.72 | 1.68 | +0.33‡ | 38× |
-
-‡ Aggregate export; no paired.csv.
+| Django REST | run-drf-phase-2.1-aggregate | keyword F1=0.72 | 1.68 | +0.33 | 38× |
 | Navorina | run-1781143403051 | keyword F1=0.87 | — | +19% | 13.7× |
 | **Oiloop** | **run-1781660908** | gold F1=1.0 | **2.70** | **+1.95** | **~12×** |
 | Oiloop prod | run-prod-router-1781664681 | keyword F1=1.0 | 2.55 | — | ~12× |
