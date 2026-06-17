@@ -23,7 +23,7 @@
 
 † Django: [aggregate export](../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) — no per-question `paired.csv`.
 
-**Canonical Oiloop runs:** [run-1781660908](../experiments/oiloop/runs/run-1781660908/) (gold) · [run-prod-router-1781664681](../experiments/oiloop/runs/run-prod-router-1781664681/) (keyword, B 2.55).
+**Canonical Oiloop runs:** [run-1781660908](../experiments/oiloop/runs/run-1781660908/) (gold) · [run-prod-router-1781701118](../experiments/oiloop/runs/run-prod-router-1781701118/) (keyword, B **2.75**, hall **0%**).
 
 ---
 
@@ -68,7 +68,7 @@ Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv)
 - LLM-as-judge only (no Cohen's κ at scale).
 - Project-specific question banks (N=149 total, not same 149 Q everywhere).
 - Django without per-question raw export.
-- Oiloop prod router: 5% B hallucination (OL06 — core over-scoping; see [MAINTENANCE.md](../experiments/oiloop/MAINTENANCE.md)).
+- Oiloop prod router: ~~5% B hallucination (OL06)~~ **fixed** v1.1.1 — smoke verified ([run-ol06-v111-smoke](../experiments/oiloop/runs/run-ol06-v111-smoke/))
 - Not statistically confirmatory — exploratory multi-case study.
 
 ---
@@ -78,9 +78,9 @@ Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv)
 | Priority | Action | Owner |
 |----------|--------|-------|
 | P0 | Core maintenance workflow | [experiments/oiloop/MAINTENANCE.md](../experiments/oiloop/MAINTENANCE.md) |
-| P0 | OL06 answer scaffold in workspace-core v1.1.1 | Oiloop `context-os/cores/` |
+| P0 | OL06 answer scaffold in workspace-core v1.1.1 | ✅ smoke verified |
 | P1 | `ContextCoreLoader` + composer review in prod | Oiloop (shipped) |
-| P1 | arXiv methods preprint | [papers/paper-draft.md](../papers/paper-draft.md) |
+| P1 | arXiv methods preprint | ✅ [ARXIV-SUBMISSION.md](../papers/ARXIV-SUBMISSION.md) — upload PDF |
 | P2 | Django full re-run (paired.csv) | Optional — conference track |
 | P2 | Independent human re-rate (10 Q) | Optional — conference track |
 

@@ -73,7 +73,8 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 |-----|-------|-------|---|-------|
 | run-1781354424217 | 1.00 | 1.20 | +0.20 | OL08 content fix |
 | **run-1781660908** | **0.75** | **2.70** | **+1.95** | **Phase 3.1 canonical** |
-| run-prod-router-1781664681 | — | 2.55 | — | keyword F1=1.0; 5% hall (OL06) |
+| run-prod-router-1781701118 | — | **2.75** | — | keyword F1=1.0; **0% hall** (supersedes 1781664681) |
+| run-prod-router-1781664681 | — | 2.55 | — | keyword F1=1.0; 5% hall (OL06, pre-v1.1.1) |
 
 ---
 
@@ -114,10 +115,10 @@ This document maps **what we can honestly claim** vs threats to internal, constr
 | Priority | Action | Status |
 |----------|--------|--------|
 | P0 | Phase 3.1 replication | ✅ run-1781660908 |
-| P0 | Production router validation | ✅ run-prod-router-1781664681 |
+| P0 | Production router validation | ✅ run-prod-router-1781701118 (B 2.75, hall 0%) |
 | P0 | Bootstrap CI | ✅ bootstrap-ci.mjs |
 | P0 | Synthesis + maintenance docs | ✅ SYNTHESIS.md, oiloop/MAINTENANCE.md |
-| P1 | OL06 prod hallucination | 🔄 workspace-core v1.1.1 scaffold |
+| P1 | OL06 prod hallucination | ✅ v1.1.1 smoke: acc 3, hall false |
 | P1 | Author blind pilot | ✅ human-blind-pilot-oiloop.csv |
 | P2 | Django per-question re-run | ❌ optional |
 | P2 | Independent human re-rate | ❌ conference track |

@@ -50,7 +50,7 @@ Oiloop ships domain-oriented context cores in the chat orchestrator:
 
 | Metric | A | B (gold) | B (keyword) |
 |--------|---|----------|-------------|
-| Accuracy | 0.75 | **2.70** | **2.55** |
+| Accuracy | 0.75 | **2.70** | **2.75** |
 | Hallucination | 30% | 0% | 5% |
 | Router F1 | — | 1.0 | **1.0** |
 

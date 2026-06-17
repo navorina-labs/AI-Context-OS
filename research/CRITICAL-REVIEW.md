@@ -40,7 +40,7 @@
 | Masked decode 75% ≠ human study | **8** — protocol: [human-blind-pilot-oiloop.md](../prompts/human-blind-pilot-oiloop.md) |
 | Django raw run (per-question) | **6** — aggregate export only; [RE-RUN.md](../experiments/django-rest-framework/RE-RUN.md) |
 | Human blind pilot (independent) | **7** — agent-rated 100%; user rating in progress |
-| OL06 prod hallucination (5%) | **3** — v1.1.1 OL06 answer scaffold in workspace-core |
+| OL06 prod hallucination (5%) | ✅ **0** on v1.1.1 smoke — [run-ol06-v111-smoke](../experiments/oiloop/runs/run-ol06-v111-smoke/) |
 
 ---
 
@@ -52,7 +52,7 @@
 | Django REST | run-drf-phase-2.1-aggregate | keyword F1=0.72 | 1.68 | +0.33 | 38× |
 | Navorina | run-1781143403051 | keyword F1=0.87 | — | +19% | 13.7× |
 | **Oiloop** | **run-1781660908** | gold F1=1.0 | **2.70** | **+1.95** | **~12×** |
-| Oiloop prod | run-prod-router-1781664681 | keyword F1=1.0 | 2.55 | — | ~12× |
+| Oiloop prod | run-prod-router-1781701118 | keyword F1=1.0 | **2.75** | — | ~12× |
 
 ---
 
