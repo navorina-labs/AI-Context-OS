@@ -25,7 +25,7 @@ Quality is not uniform across question types. Predicted winner by stratum:
 | Question type | Predicted default | Primary metric |
 |---------------|-------------------|----------------|
 | Single-domain, router F1 ≥ 0.95 | **B** (routed cores) | CCR_tokens, latency |
-| Cross-cutting (2+ cores) | **D or C** (hybrid / graph) | accuracy, hallucination |
+| Cross-cutting (2+ cores) | **B** (multi-core routed) | accuracy, hallucination |
 | Integrated / system-heavy codebases | **C** (graph retrieval) | accuracy, trust |
 | Exploratory / repo-wide | **A or C** | out of H₁ scope |
 | Full repository dump | **Never default** | cost dominated |
@@ -80,7 +80,7 @@ Production keyword router (F1 ≥ 0.85) preserves ≥80% of the accuracy delta (
 - Manual core curation scales indefinitely without tooling
 - One core per question is always sufficient (mixed questions require composition or D)
 - Context cores eliminate hallucination entirely
-- B is the universal production default (C or D wins on integrated / cross-cutting Q)
+- B is the universal production default on Oiloop (H₁f rejected; multi-core B wins cross-cutting)
 
 ---
 
