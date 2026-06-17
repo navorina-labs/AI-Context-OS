@@ -1,7 +1,7 @@
 {
   "name": "context-os",
   "version": "0.1.0",
-  "description": "CLI to scaffold and validate domain-oriented context cores",
+  "description": "CLI to scaffold and validate domain-oriented context cores for AI coding agents",
   "type": "module",
   "bin": {
     "context-os": "./bin/context-os.mjs"
@@ -19,12 +19,25 @@
     "context",
     "llm",
     "cursor",
-    "routing"
+    "routing",
+    "rag",
+    "agents",
+    "context-engineering"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/Alex0nder/AI-Context-OS#readme",
+  "bugs": {
+    "url": "https://github.com/Alex0nder/AI-Context-OS/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Alex0nder/AI-Context-OS.git",
+    "url": "git+https://github.com/Alex0nder/AI-Context-OS.git",
     "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "node bin/context-os.mjs --version"
   }
 }

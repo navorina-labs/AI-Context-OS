@@ -13,8 +13,10 @@ npm run context-os -- init --name myapp --profile saas --cursor-rule
 After publish:
 
 ```bash
-npx context-os init --name myapp --profile saas
+npx context-os init --name myapp --profile saas --cursor-rule
 ```
+
+Publish (maintainers): `./scripts/publish-cli.sh` (requires `npm login`). Name `context-os` is **available** on npm registry.
 
 ## Packages
 

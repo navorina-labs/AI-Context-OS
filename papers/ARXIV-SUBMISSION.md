@@ -53,11 +53,13 @@ Alternative: `pandoc` + `xelatex` if MacTeX is installed.
 
 ## 4. Abstract (copy-paste)
 
-Use the abstract block from [paper-draft.md](paper-draft.md) lines 5–6. Ensure these phrases stay:
+**Plain text file:** [arxiv-abstract.txt](arxiv-abstract.txt) (no markdown bold).
+
+Or use the abstract block from [paper-draft.md](paper-draft.md). Ensure these phrases stay:
 
 - exploratory A/B/C, four codebases, 139 questions
 - CCR_tokens 8×–38×
-- Oiloop Phase 3.1: B 2.70 vs A 0.75, bootstrap CI [+1.60, +2.30]
+- Oiloop Phase 3.1: B 2.70 vs A 0.75; prod router B **2.75**, hall **0%**
 - author-rated blind pilot 60% B-preferred (n=10) — **not** independent experts
 - Django aggregate-only caveat
 - replication repo URL

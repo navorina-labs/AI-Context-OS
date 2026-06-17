@@ -10,9 +10,17 @@ This is not a product. There is no SaaS, UI, API, or runtime engine here — onl
 
 **Research closed?** See [research/SYNTHESIS.md](research/SYNTHESIS.md) — final conclusions and production decision matrix.
 
-**Want to use it in your repo?** See [packages/README.md](packages/README.md) — `context-os init` CLI.
+**Want to use it in your repo?** See [packages/README.md](packages/README.md).
 
----
+```bash
+# from clone
+npm run context-os -- init --name myapp --profile saas --cursor-rule --target ~/Projects/MyApp
+
+# after npm publish (name context-os is available)
+npx context-os init --name myapp --profile saas --cursor-rule
+```
+
+Outreach: [docs/outreach/twitter-posts.md](docs/outreach/twitter-posts.md) · arXiv: [papers/ARXIV-SUBMISSION.md](papers/ARXIV-SUBMISSION.md)
 
 ## Why This Project Exists
 
