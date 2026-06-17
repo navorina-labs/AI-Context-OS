@@ -57,17 +57,17 @@ This experiment evaluates the **AI Context OS** domain-oriented context cores ap
 
 ## Results Summary
 
-Run: [runs/run-1781660908/](runs/run-1781660908/) (Phase 3.1 canonical) · Prior: [run-1781354424217/](runs/run-1781354424217/) (superseded)
+Run: [runs/run-1781660908/](runs/run-1781660908/) (canonical) · Run 3: [run-prod-router-1781664681](runs/run-prod-router-1781664681/) · Run 2: [run-hybrid-1781664794](runs/run-hybrid-1781664794/)
 
-| Metric | Condition A (Full) | Condition B (Cores) | Condition C (Graph) |
-|--------|-------------------|----------------------|---------------------|
-| Accuracy | 0.75 | **2.70** | 2.35 |
-| Hallucination | 30% | **0%** | 10% |
-| Mean input tokens | 76,663 | **6,334** | 8,963 |
-| Latency (mean ms) | 2,512 | **2,086** | 2,651 |
-| Compression | 1× | **29×** | 11× |
+| Metric | Phase 3.1 (gold) | Run 3 (keyword) | Run 2 cross-cutting (B) |
+|--------|------------------|-----------------|---------------------------|
+| B accuracy | **2.70** | **2.55** | **2.875** |
+| B hallucination | 0% | 5% | 0% |
+| Router F1 | 1.0 | **1.0** | 1.0 (gold) |
 
-**Hypothesis:** Fully supported — B **2.70** vs A **0.75**; B hallucination **0%**. Production default: **B**.
+**Production default:** B (keyword router, multi-core). H₁f hybrid D **rejected**.
+
+Prior: [run-1781354424217](runs/run-1781354424217/) (superseded).
 
 Superseded: [run-1781354424217](runs/run-1781354424217/), [run-1781344390027](runs/run-1781344390027/), [run-1781225808172](runs/run-1781225808172/), [run-1781222450776](runs/run-1781222450776/).
 

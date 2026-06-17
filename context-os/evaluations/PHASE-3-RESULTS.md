@@ -4,10 +4,10 @@
 **Date:** 2026-06-13 (initial) · 2026-06-17 (Phase 3.1)  
 **Protocol:** A/B/C within-subjects · gpt-4o-mini · LLM-as-judge + masked decode preference (A vs B)
 
-**Canonical run (Phase 3.1):** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) — 20 Q, workspace-core v1.1.0, fixed gold OL05/OL07. **B 2.70 / C 2.35 / A 0.75**.  
-**Prior canonical:** [run-1781354424217](../../experiments/oiloop/runs/run-1781354424217/) (superseded 2026-06-17).  
-**Pilot:** [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) — 10 Q subset.  
-Superseded: [run-1781344390027](../../experiments/oiloop/runs/run-1781344390027/), [run-1781225808172](../../experiments/oiloop/runs/run-1781225808172/), [run-1781222450776](../../experiments/oiloop/runs/run-1781222450776/).
+**Canonical run (Phase 3.1):** [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) — 20 Q, gold, v1.1 cores. **B 2.70 / C 2.35 / A 0.75**.  
+**Run 3 (production router):** [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) — keyword, B **2.55**, F1 **1.0**.  
+**Run 2 (hybrid):** [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/) — cross-cutting B/C/D; **H₁f rejected**.  
+**Phase 3.1 closed:** [PHASE-3.1-CLOSED.md](../../experiments/oiloop/runs/run-1781660908/PHASE-3.1-CLOSED.md)
 
 ---
 
@@ -21,13 +21,43 @@ Phase 3.1 replicates Oiloop eval with **workspace-core v1.1.0** and corrected go
 
 **Efficiency:** **CCR_tokens ~12×** (76,663 → 6,334); **CCR_core ~29×**. B latency **2.1s** vs A **2.5s**.
 
-**Production default for Oiloop: B (routed cores)** — best accuracy (2.70), zero hallucination, lowest tokens. C (2.35) remains fallback for graph-heavy cross-cutting Qs.
+**Production default for Oiloop: B (keyword router, multi-core)** — validated Run 3: B **2.55**, F1 **1.0**, 5% hallucination. Cross-cutting: B beats C and D (Run 2).
 
-| Variant | Role on Oiloop (Phase 3.1) |
-|---------|----------------------------|
+| Variant | Role on Oiloop (final) |
+|---------|------------------------|
 | **A** | Full repo — never default |
-| **B** | **Production default** — best accuracy + 0% hallucination |
-| **C** | Graph supplement for cross-cutting / when B coverage gaps |
+| **B** | **Production default** — best accuracy; multi-core on cross-cutting Q |
+| **C** | Optional graph path — not default (25% hall on cross-cutting) |
+| **D** | Hybrid — **rejected** (H₁f); B > D > C on cross-cutting accuracy |
+
+---
+
+## Run 3 — Production router (H₁h)
+
+| Metric | Gold [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) |
+|--------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| B accuracy | 2.70 | **2.55** |
+| B hallucination | 0% | **5%** (OL06 only) |
+| Router F1 | 1.0 | **1.0** |
+| B tokens | 6 334 | **6 349** |
+
+**H₁h: Supported** — production keyword router preserves gold routing; accuracy ≥ 80% of gold.
+
+OL08 Δ (3→1) is [judge variance](../../experiments/oiloop/runs/run-prod-router-1781664681/OL08-judge-variance.md), not routing failure.
+
+---
+
+## Run 2 — Hybrid ablation (H₁f)
+
+8 cross-cutting Q · [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/)
+
+| | B | C | D |
+|---|---|---|---|
+| Accuracy | **2.875** | 2.375 | 2.500 |
+| Hallucination | **0%** | 25% | 12.5% |
+| Tokens | **8 547** | 7 905 | 11 984 |
+
+**H₁f: Rejected** — D does not match or exceed C at lower cost than B; **multi-core B wins** cross-cutting.
 
 ---
 
@@ -42,7 +72,9 @@ Phase 3.1 replicates Oiloop eval with **workspace-core v1.1.0** and corrected go
 | run-1781225808172 | superseded | **1.20** | 1.05 | −0.15 | **false** | 0 | OL08 routing bug |
 | run-1781344390027 | superseded | **1.00** | 1.05 | +0.05 | **true** | 0 | B unchanged; OL08 bug |
 | **run-1781354424217** | prior canonical | **1.00** | **1.20** | **+0.20** | **true** | **3** | OL08 fixed |
-| **run-1781660908** | **Phase 3.1 canonical** | **0.75** | **2.70** | **+1.95** | **true** | — | v1.1 cores + gold fix |
+| **run-1781660908** | **Phase 3.1 canonical** | **0.75** | **2.70** | **+1.95** | **true** | 3 | v1.1 cores + gold fix |
+| run-prod-router-1781664681 | Run 3 keyword | — | **2.55** | — | — | 1* | F1=1.0; *OL08 judge variance |
+| run-hybrid-1781664794 | Run 2 B/C/D | — | **2.875**† | — | — | — | †cross-cutting only; B best |
 
 **Interpretation:** OL08 content fix successfully resolved the FilePreviewSheet content gap, elevating B accuracy of OL08 from 0 to 3, and overall B accuracy from 1.05 to 1.20.
 
@@ -179,6 +211,8 @@ Artifacts: [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/)
 | Project | Report | Raw run | Pilot |
 |---------|--------|---------|-------|
 | Oiloop | [oiloop-phase-3.md](oiloop-phase-3.md) | [run-1781660908](../../experiments/oiloop/runs/run-1781660908/) | [run-1781658621476](../../experiments/oiloop/runs/run-1781658621476/) |
+
+**Also:** [run-prod-router-1781664681](../../experiments/oiloop/runs/run-prod-router-1781664681/) · [run-hybrid-1781664794](../../experiments/oiloop/runs/run-hybrid-1781664794/)
 
 **Next eval:** Phase 3.1 — [run-oiloop-phase-3.1-eval.md](../../prompts/run-oiloop-phase-3.1-eval.md) · core fixes: [core-fixes-OL05-OL07.md](core-fixes-OL05-OL07.md)
 
