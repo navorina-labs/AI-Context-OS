@@ -1,7 +1,12 @@
-/** Validate manifest paths and core files exist */
+/** Validate manifest paths, core files, and optional schema structure */
 import fs from "node:fs";
 import path from "node:path";
 import { contextOsDir, loadManifest, parseGlobalFlags } from "../lib/paths.mjs";
+import {
+  validateManifestSchema,
+  validateQuestionsBank,
+  validateRoutingMap,
+} from "../lib/schema-check.mjs";
 
 function checkFile(projectRoot, rel, errors) {
   const full = path.join(projectRoot, rel);
@@ -12,7 +17,22 @@ function checkFile(projectRoot, rel, errors) {
   return true;
 }
 
+function hasFlag(argv, name) {
+  return argv.includes(name);
+}
+
+function readJsonForSchema(filePath, label, errors) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    errors.push(`${label}: invalid JSON (${msg})`);
+    return null;
+  }
+}
+
 export async function cmdValidate(argv) {
+  const checkSchema = hasFlag(argv, "--schema");
   const { opts } = parseGlobalFlags(argv);
   const root = opts.root;
   const cos = contextOsDir(root);
@@ -60,7 +80,33 @@ export async function cmdValidate(argv) {
     errors.push("routing-map.json: routes[] is empty");
   }
 
-  console.log(`Validated ${root}`);
+  if (checkSchema) {
+    const manifestCheck = validateManifestSchema(manifest);
+    const routingCheck = validateRoutingMap(routingMap, manifest);
+    const questionsPath = path.join(root, "context-os/eval/questions.json");
+    const questions = fs.existsSync(questionsPath)
+      ? readJsonForSchema(questionsPath, "questions", errors)
+      : null;
+    const questionsCheck = questions
+      ? validateQuestionsBank(questions, manifest)
+      : { warnings: [], errors: [] };
+    for (const w of [
+      ...manifestCheck.warnings,
+      ...routingCheck.warnings,
+      ...questionsCheck.warnings,
+    ]) {
+      warnings.push(`schema: ${w}`);
+    }
+    for (const e of [
+      ...manifestCheck.errors,
+      ...routingCheck.errors,
+      ...questionsCheck.errors,
+    ]) {
+      errors.push(`schema: ${e}`);
+    }
+  }
+
+  console.log(`Validated ${root}${checkSchema ? " (schema)" : ""}`);
   console.log(`  cores: ${Object.keys(manifest.cores ?? {}).length}`);
   console.log(`  subcores: ${Object.keys(manifest.subcores ?? {}).length}`);
   console.log(`  routes: ${routingMap.routes?.length ?? 0}`);
@@ -69,7 +115,7 @@ export async function cmdValidate(argv) {
 
   if (errors.length) {
     for (const e of errors) console.error(`  error: ${e}`);
-    process.exit(1);
+    process.exitCode = 1;
   }
   console.log("OK");
 }

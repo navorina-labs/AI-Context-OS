@@ -1,6 +1,20 @@
 /** Resolve context-os root inside a project */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+
+function loadProfileDefs() {
+  const p = path.join(packageRoot(), "templates", "profiles.json");
+  return JSON.parse(fs.readFileSync(p, "utf8"));
+}
+
+export const PROFILE_DEFS = loadProfileDefs();
+
+export function profileNames() {
+  return Object.keys(PROFILE_DEFS);
+}
 
 export function parseGlobalFlags(argv) {
   const opts = { root: process.cwd() };
@@ -28,6 +42,10 @@ export function routingMapPath(projectRoot) {
   return path.join(contextOsDir(projectRoot), "router", "routing-map.json");
 }
 
+export function routerEmbeddingsPath(projectRoot) {
+  return path.join(contextOsDir(projectRoot), "router", "embeddings.json");
+}
+
 export function loadManifest(projectRoot) {
   const p = manifestPath(projectRoot);
   if (!fs.existsSync(p)) {
@@ -37,10 +55,9 @@ export function loadManifest(projectRoot) {
 }
 
 export function packageRoot() {
-  return path.resolve(import.meta.dirname, "../..");
+  return path.resolve(moduleDir, "../..");
 }
 
 export function templateProfileDir(profile) {
-  const p = profile === "saas" ? "saas" : "minimal";
-  return path.join(packageRoot(), "templates", p, "context-os");
+  return path.join(packageRoot(), "templates", profile, "context-os");
 }

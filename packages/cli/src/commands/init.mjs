@@ -1,7 +1,7 @@
 /** Scaffold context-os/ from bundled templates */
 import fs from "node:fs";
 import path from "node:path";
-import { contextOsDir, templateProfileDir } from "../lib/paths.mjs";
+import { contextOsDir, profileNames, templateProfileDir } from "../lib/paths.mjs";
 
 function parseInitArgs(argv) {
   const opts = {
@@ -26,7 +26,7 @@ function parseInitArgs(argv) {
 Options:
   --name <project>       Project display name
   --target <dir>         Parent directory (default: cwd)
-  --profile minimal|saas minimal = 4 cores; saas adds revenue/paywall/billing/onboarding subcores
+  --profile <name>       Profile: ${profileNames().join("|")}
   --cursor-rule          Write .cursor/rules/context-os.mdc
   --force                Overwrite existing context-os/
   --dry-run              List files only`);
@@ -36,8 +36,8 @@ Options:
   if (!opts.name) {
     opts.name = path.basename(opts.target) || "my-project";
   }
-  if (opts.profile !== "minimal" && opts.profile !== "saas") {
-    throw new Error(`--profile must be minimal or saas, got: ${opts.profile}`);
+  if (!profileNames().includes(opts.profile)) {
+    throw new Error(`--profile must be one of: ${profileNames().join(", ")}. Got: ${opts.profile}`);
   }
   return opts;
 }
@@ -109,6 +109,24 @@ export async function cmdInit(argv) {
     fs.writeFileSync(destFile, substitute(raw, vars));
   }
 
+  const baselineStub = path.join(destRoot, "eval", "baseline-manifest.stub.json");
+  const baselineDest = path.join(destRoot, "eval", "baseline-manifest.json");
+  if (fs.existsSync(baselineStub) && !fs.existsSync(baselineDest)) {
+    fs.copyFileSync(baselineStub, baselineDest);
+  }
+
+  const graphStub = path.join(destRoot, "graph", "graph-config.stub.json");
+  const graphDest = path.join(destRoot, "graph", "graph-config.json");
+  if (fs.existsSync(graphStub) && !fs.existsSync(graphDest)) {
+    fs.copyFileSync(graphStub, graphDest);
+  }
+
+  const driftStub = path.join(destRoot, "drift-config.stub.json");
+  const driftDest = path.join(destRoot, "drift-config.json");
+  if (fs.existsSync(driftStub) && !fs.existsSync(driftDest)) {
+    fs.copyFileSync(driftStub, driftDest);
+  }
+
   if (opts.cursorRule) {
     const ruleDir = path.join(opts.target, ".cursor", "rules");
     fs.mkdirSync(ruleDir, { recursive: true });
@@ -132,8 +150,12 @@ Before answering project-specific decision questions:
 
   console.log(`Created context-os/ for "${opts.name}" (${opts.profile}) at ${destRoot}`);
   console.log(`Next:`);
-  console.log(`  1. Fill cores in context-os/cores/ (and subcores/ if saas)`);
+  console.log(`  1. Fill cores in context-os/cores/ (and subcores/ if present)`);
   console.log(`  2. Customize context-os/router/routing-map.json`);
   console.log(`  3. context-os validate`);
   console.log(`  4. context-os route "your question here"`);
+  console.log(`  5. context-os eval dry-run  # then eval run --dry-run`);
+  console.log(`  6. context-os graph build   # optional, for Condition C eval`);
+  console.log(`  7. context-os router embed  # optional, for semantic routing`);
+  console.log(`  8. context-os drift check --base main  # after code PRs`);
 }

@@ -11,6 +11,9 @@
     "src",
     "templates"
   ],
+  "dependencies": {
+    "@context-os/eval": "0.1.0"
+  },
   "engines": {
     "node": ">=18"
   },

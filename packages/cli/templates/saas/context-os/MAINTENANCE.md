@@ -11,10 +11,12 @@
 
 ## Workflow
 
-1. Edit the affected `.md` core (bump `version` in Metadata table).
+1. Edit the affected `.md` core; bump `version` and update `last_updated`.
 2. `context-os validate`
 3. Add a row to `eval/questions.json` if routing should change.
 4. `context-os eval route --questions context-os/eval/questions.json`
+5. `context-os cores verify --base origin/main`
+6. `context-os contracts verify --base origin/main`
 
 ## Anti-patterns
 
