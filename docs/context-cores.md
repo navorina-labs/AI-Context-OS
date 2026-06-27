@@ -114,6 +114,12 @@ A core is **valid** when:
 - [ ] Sources are current (audit date within 30 days)
 - [ ] Boundaries are explicit and non-overlapping with sibling cores
 
+For an operational scoring rubric, see [core-quality-rubric.md](core-quality-rubric.md) and run:
+
+```bash
+context-os score
+```
+
 ---
 
 ## Anti-Patterns

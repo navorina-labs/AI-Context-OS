@@ -17,7 +17,8 @@ function readCoreChars(projectRoot, manifest, coreId) {
 
 export async function cmdStats(argv) {
   const { opts, rest } = parseGlobalFlags(argv);
-  const question = rest.join(" ").trim();
+  const json = rest.includes("--json");
+  const question = rest.filter((arg) => arg !== "--json").join(" ").trim();
 
   if (!question) {
     throw new Error('Usage: context-os stats "<question>" [--root DIR]');
@@ -31,6 +32,7 @@ export async function cmdStats(argv) {
   const tokensEst = Math.ceil(totalChars / 4);
 
   const out = {
+    ok: true,
     question,
     cores,
     total_chars: totalChars,
@@ -38,7 +40,7 @@ export async function cmdStats(argv) {
     files: parts.map((p) => ({ core: p.coreId, path: p.rel, chars: p.chars })),
   };
 
-  if (process.stdout.isTTY) {
+  if (!json && process.stdout.isTTY) {
     console.log(`Question: ${question}`);
     console.log(`Cores: ${cores.join(", ")}`);
     for (const p of parts) {

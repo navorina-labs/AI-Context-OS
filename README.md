@@ -1,23 +1,57 @@
 # AI Context OS
 
-**Research project: domain-oriented context cores for AI reasoning.**
+**Framework for domain-oriented context cores in AI-assisted software projects.**
 
-AI Context OS is an open-source research framework for testing whether AI systems perform better with **domain-oriented context cores** (bounded decision contexts) than with full repository dumps or knowledge graphs.
+AI Context OS helps teams scaffold, validate, route, evaluate, and maintain **domain-oriented context cores**: bounded decision contexts that AI agents can read instead of dumping an entire repository into the prompt.
 
-This is not a product. There is no SaaS, UI, API, or runtime engine here — only theory, schemas, experiments, and evaluation methodology.
+The framework currently ships as a Node.js CLI plus schemas, templates, eval tooling, drift checks, and research-backed methodology. It is intentionally not a SaaS or hosted runtime.
 
-**New here?** Start with [How to use this repository](#how-to-use-this-repository) — a 15-minute path to the measured results (no need to read every folder).
+**New here?** Start with [Quick start](#quick-start) if you want to use it in a repo, or [Results](#results) if you want the evidence first.
 
 **Research closed?** See [research/SYNTHESIS.md](research/SYNTHESIS.md) — final conclusions and production decision matrix.
 
-**Want to use it in your repo?** See [packages/README.md](packages/README.md).
+**Framework docs:** See [packages/README.md](packages/README.md), [docs/framework-contracts.md](docs/framework-contracts.md), [docs/cli-api.md](docs/cli-api.md), [docs/maturity-model.md](docs/maturity-model.md), [docs/context-budget.md](docs/context-budget.md), [docs/routing-quality.md](docs/routing-quality.md), [docs/core-lifecycle.md](docs/core-lifecycle.md), [docs/audit-report.md](docs/audit-report.md), and [docs/agent-adapters.md](docs/agent-adapters.md).
+
+**Maintainers:** The package release contract is documented in [docs/releasing.md](docs/releasing.md).
+
+**Reference implementation:** [examples/reference-saas](examples/reference-saas)
+passes score 85+, routing evaluation, dry-run, drift/CI prerequisites, and the
+Operational maturity gate.
 
 ```bash
 # from clone
 npm run context-os -- init --name myapp --profile saas --cursor-rule --target ~/Projects/MyApp
+npm run context-os -- doctor --root ~/Projects/MyApp
 
 # after npm publish (name context-os is available)
 npx context-os init --name myapp --profile saas --cursor-rule
+npx context-os doctor
+```
+
+## Quick start
+
+```bash
+npx context-os init --name myapp --profile minimal --cursor-rule
+npx context-os doctor
+npx context-os validate --schema
+npx context-os score --min 50
+npx context-os profiles validate
+npx context-os check --min-score 75
+npx context-os ci init --min-score 75
+npx context-os audit init
+npx context-os maturity
+npx context-os adapters install agents
+npx context-os route "How do we deploy to production?"
+```
+
+Then fill the generated `context-os/cores/*.md` files and customize `context-os/router/routing-map.json`.
+
+For evaluation and CI:
+
+```bash
+npx context-os eval route
+npx context-os eval dry-run
+npx context-os drift check --base origin/main --strict
 ```
 
 Outreach: [docs/outreach/twitter-posts.md](docs/outreach/twitter-posts.md) · arXiv: [papers/ARXIV-SUBMISSION.md](papers/ARXIV-SUBMISSION.md)
@@ -148,7 +182,7 @@ ai-context-os/
 
 ## How to use this repository
 
-This repo is **research output**, not an app. You do not need to read every file in `context-os/` in order.
+This repo contains both the framework implementation and the research record behind it. You do not need to read every file in `context-os/` in order.
 
 ### Read the results (~15 minutes)
 
@@ -190,7 +224,14 @@ Do not invent metrics not in those files.
 
 ### Replicate on your codebase
 
-See [Getting started (replication)](#getting-started-replication) below and [experiments/README.md](experiments/README.md).
+See [Getting started (replication)](#getting-started-replication) below and [packages/README.md](packages/README.md) for the eval workflow:
+
+```bash
+context-os init --name myapp --profile saas
+context-os eval route && context-os eval run --dry-run --aggregate
+context-os drift check --base origin/main --strict   # в CI на PR
+# full run: OPENAI_API_KEY=... context-os eval run --condition ab
+```
 
 ---
 
@@ -229,4 +270,4 @@ MIT — see [LICENSE](LICENSE).
 
 ## Contributing
 
-This is a research repository. Contributions should extend theory, experiment design, evaluation methodology, or documented examples — not product features.
+Contributions should improve the framework, schemas, templates, reproducibility, documentation, or research evidence. Keep claims tied to measured results and preserve reproducible eval paths.

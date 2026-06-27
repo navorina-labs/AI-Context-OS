@@ -4,11 +4,14 @@
   "description": "JSON schemas for Context Cores and routing rules",
   "type": "module",
   "exports": {
-    "./core": "./core.schema.json",
-    "./routing": "./routing.schema.json"
+    "./core": "./src/core.mjs",
+    "./routing": "./src/routing.mjs",
+    "./manifest": "./src/manifest.mjs",
+    "./questions": "./src/questions.mjs"
   },
   "files": [
-    "*.json"
+    "*.json",
+    "src"
   ],
   "license": "MIT",
   "repository": {
