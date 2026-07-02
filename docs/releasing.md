@@ -27,6 +27,14 @@ The CLI and eval packages declare Node 18 as their minimum runtime. Repository
 CI runs the framework suite on Node 18, 20, and 22. The suite also rejects
 known post-18 JavaScript APIs before packaging.
 
+Before tagging a release, also verify:
+
+- `CHANGELOG.md` has an entry for the release;
+- all three package manifests use the same version;
+- `package-lock.json` was refreshed after version changes;
+- `npm run test:release` passes from the release commit;
+- the release commit is on `main` and the working tree is clean.
+
 ## Versioning
 
 Update the version in all three package manifests and update the CLI dependency
@@ -51,3 +59,18 @@ If publication stops after one package, inspect npm before retrying. npm
 versions are immutable: never overwrite or reuse a partially published version.
 Publish the remaining packages for the same version, or bump all packages to a
 new synchronized version.
+
+## Post-Publish Smoke
+
+After npm publication, test the registry artifacts from an empty directory:
+
+```bash
+npm init --yes
+npm install context-os@0.1.0
+npx context-os --version
+npx context-os init --name registry-smoke --profile minimal --target /tmp/context-os-registry-smoke
+npx context-os doctor --root /tmp/context-os-registry-smoke
+```
+
+If the registry smoke fails, do not republish the same version. Fix the issue,
+bump all package versions together, and publish a new synchronized version.

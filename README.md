@@ -12,7 +12,7 @@ The framework currently ships as a Node.js CLI plus schemas, templates, eval too
 
 **Framework docs:** See [packages/README.md](packages/README.md), [docs/framework-contracts.md](docs/framework-contracts.md), [docs/cli-api.md](docs/cli-api.md), [docs/maturity-model.md](docs/maturity-model.md), [docs/context-budget.md](docs/context-budget.md), [docs/routing-quality.md](docs/routing-quality.md), [docs/core-lifecycle.md](docs/core-lifecycle.md), [docs/audit-report.md](docs/audit-report.md), and [docs/agent-adapters.md](docs/agent-adapters.md).
 
-**Maintainers:** The package release contract is documented in [docs/releasing.md](docs/releasing.md).
+**Maintainers:** See [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md), [SECURITY.md](SECURITY.md), and the package release contract in [docs/releasing.md](docs/releasing.md).
 
 **Reference implementation:** [examples/reference-saas](examples/reference-saas)
 passes score 85+, routing evaluation, dry-run, drift/CI prerequisites, and the
