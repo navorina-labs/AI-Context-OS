@@ -15,7 +15,7 @@
     "technical-core": "context-os/cores/technical-core.md",
     "operational-core": "context-os/cores/operational-core.md"
   },
-  "framework_repo": "https://github.com/Alex0nder/AI-Context-OS",
+  "framework_repo": "https://github.com/navorina-labs/AI-Context-OS",
   "implementation_type": "scaffold-oss-library",
   "read_first_for_agents": [
     "context-os/CANON.md",

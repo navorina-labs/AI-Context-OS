@@ -2,7 +2,7 @@
 
 Система **контекстных ядер** для AI-агентов. Цель — быстрее понимать проект и загружать **минимальный** релевантный контекст вместо всего репозитория.
 
-Построено по модели **[AI Context OS](https://github.com/Alex0nder/AI-Context-OS)** на данных из `docs/`, `AGENTS.md`, `Navorina/`, `server/`, `package.json`. Прототип: `docs/archive/real-project-test/`.
+Построено по модели **[AI Context OS](https://github.com/navorina-labs/AI-Context-OS)** на данных из `docs/`, `AGENTS.md`, `Navorina/`, `server/`, `package.json`. Прототип: `docs/archive/real-project-test/`.
 
 Это **первая заполненная реализация** на реальном проекте (не шаблон). Framework-репозиторий — теория и templates; `navorina/context-os/` — production instance.
 
@@ -127,7 +127,7 @@ Workflow: [`.github/workflows/context-os-ci.yml`](../.github/workflows/context-o
 
 | Репозиторий | Роль |
 |-------------|------|
-| [Alex0nder/AI-Context-OS](https://github.com/Alex0nder/AI-Context-OS) | Theory, `schemas/`, core templates, routing methodology |
+| [navorina-labs/AI-Context-OS](https://github.com/navorina-labs/AI-Context-OS) | Theory, `schemas/`, core templates, routing methodology |
 | `navorina/context-os/` (этот каталог) | Filled cores for Navorina from real code + docs |
 | `docs/archive/real-project-test/` | Archived prototype cores |
 
@@ -139,7 +139,7 @@ Question → Router → Context Core → LLM
 
 ## Sources
 
-- [AI-Context-OS](https://github.com/Alex0nder/AI-Context-OS)
+- [AI-Context-OS](https://github.com/navorina-labs/AI-Context-OS)
 - `docs/archive/real-project-test/`
 - `docs/planning/INDEX.md`
 - `AGENTS.md`

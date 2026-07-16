@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-10  
 **Model:** gpt-4o-mini  
-**Protocol:** [AI-Context-OS](https://github.com/Alex0nder/AI-Context-OS) A vs B  
+**Protocol:** [AI-Context-OS](https://github.com/navorina-labs/AI-Context-OS) A vs B
 **Repo:** Alex0nder/MailAgent @ main
 
 ## Results (35/35 paired)

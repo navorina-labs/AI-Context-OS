@@ -1,6 +1,6 @@
 # Publication pack — AI Context OS
 
-**Repo:** https://github.com/Alex0nder/AI-Context-OS
+**Repo:** https://github.com/navorina-labs/AI-Context-OS
 
 **Image:** [phase-3-twitter-card.png](../../context-os/evaluations/phase-3-twitter-card.png)
 
@@ -70,14 +70,14 @@ npx context-os init --profile saas
 → cores + keyword router in your repo
 → validate · route · stats (no API key)
 
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 **Tweet 6**
 
 ```
 Methods preprint + raw runs:
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 
 Replicate or break it — issues welcome.
 
@@ -97,7 +97,7 @@ Context OS: route coding questions to domain cores instead of full-repo dumps.
 
 CLI: npx context-os init --profile saas
 
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 **arXiv (after ID)**
@@ -108,7 +108,7 @@ Preprint: Domain-Oriented Context Cores for decision-scoped LLM questions.
 8–38× token compression · Oiloop B 2.75 vs A 0.75 · limitations upfront.
 
 arxiv.org/abs/XXXX.XXXXX
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 **CLI hook**
@@ -156,7 +156,7 @@ npx context-os init --profile saas
 
 cores + router для AI-агентов.
 
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 **4**
@@ -173,7 +173,7 @@ github.com/Alex0nder/AI-Context-OS
 ```
 Open replication — if you work on context routing / coding-agent context, would love feedback on the eval protocol.
 
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 Тегай только 2–4 аккаунта с реальной связью с темой. Не спамь в основном твите.
@@ -216,7 +216,7 @@ We release raw run exports (3/4 full; Django is aggregate-only), question banks,
 
   npx context-os init --profile saas
 
-Repo: https://github.com/Alex0nder/AI-Context-OS
+Repo: https://github.com/navorina-labs/AI-Context-OS
 
 Happy to answer methodology questions. Limitations are documented in research/SYNTHESIS.md — this is not a confirmatory clinical trial; we do not claim independent expert rating at scale.
 ```
@@ -226,9 +226,9 @@ Happy to answer methodology questions. Limitations are documented in research/SY
 ```
 Author here. Quick links:
 
-- Synthesis: https://github.com/Alex0nder/AI-Context-OS/blob/main/research/SYNTHESIS.md
-- CLI: https://github.com/Alex0nder/AI-Context-OS/tree/main/packages/cli
-- Example scaffold: https://github.com/Alex0nder/AI-Context-OS/tree/main/examples/scaffold-saas
+- Synthesis: https://github.com/navorina-labs/AI-Context-OS/blob/main/research/SYNTHESIS.md
+- CLI: https://github.com/navorina-labs/AI-Context-OS/tree/main/packages/cli
+- Example scaffold: https://github.com/navorina-labs/AI-Context-OS/tree/main/examples/scaffold-saas
 
 Relevant prior art we are NOT claiming to replace: codebase RAG, GraphRAG, or IDE indexing — we optimize decision-scoped sufficiency, not entity connectivity.
 ```
@@ -255,7 +255,7 @@ Measured on 149 questions / 4 repos (gpt-4o-mini, LLM judge). B (cores) ≥ A (f
 CLI scaffolds this into any repo:
 npx context-os init --profile saas
 
-https://github.com/Alex0nder/AI-Context-OS
+https://github.com/navorina-labs/AI-Context-OS
 
 Caveats: exploratory study, LLM-as-judge, not statistically confirmatory. Graph retrieval won on hallucination for 2/4 projects — YMMV.
 ```
@@ -286,7 +286,7 @@ Key results (exploratory):
 
 We open-sourced the protocol, raw runs, and a CLI to scaffold cores in your repo.
 
-GitHub: https://github.com/Alex0nder/AI-Context-OS
+GitHub: https://github.com/navorina-labs/AI-Context-OS
 
 Not a peer-reviewed confirmatory study — LLM-as-judge, limitations documented. Feedback from teams building agent context welcome.
 ```
@@ -304,7 +304,7 @@ Coding agents часто грузят весь репозиторий в кон�
 
 Итог (exploratory): до 38× меньше API-токенов, accuracy cores ≥ full repo на всех проектах.
 
-CLI для своего репо: github.com/Alex0nder/AI-Context-OS
+CLI для своего репо: github.com/navorina-labs/AI-Context-OS
 
 Ограничения честно в SYNTHESIS.md — не claim на p-value и независимых экспертов.
 ```
@@ -362,7 +362,7 @@ A **Context Core** is a bounded markdown artifact: purpose, key entities, invari
 ### Try it: CLI
 
 ```bash
-git clone https://github.com/Alex0nder/AI-Context-OS
+git clone https://github.com/navorina-labs/AI-Context-OS
 cd AI-Context-OS
 npm run context-os -- init --name myapp --profile saas --target ~/Projects/MyApp
 ```
@@ -378,9 +378,9 @@ Commands: `validate`, `route "question"`, `stats "question"`, `eval route` (rout
 
 ### Links
 
-- Repo: https://github.com/Alex0nder/AI-Context-OS
-- Synthesis: https://github.com/Alex0nder/AI-Context-OS/blob/main/research/SYNTHESIS.md
-- Paper draft: https://github.com/Alex0nder/AI-Context-OS/tree/main/papers
+- Repo: https://github.com/navorina-labs/AI-Context-OS
+- Synthesis: https://github.com/navorina-labs/AI-Context-OS/blob/main/research/SYNTHESIS.md
+- Paper draft: https://github.com/navorina-labs/AI-Context-OS/tree/main/papers
 
 ---
 
@@ -406,7 +406,7 @@ Ships: eval protocol, raw runs, and `npx context-os init` for coding agents.
 Exploratory study — limitations documented.
 ```
 
-**Link:** https://github.com/Alex0nder/AI-Context-OS
+**Link:** https://github.com/navorina-labs/AI-Context-OS
 
 **Gallery:** phase-3-twitter-card.png + screenshot of `context-os route` terminal output
 
@@ -419,7 +419,7 @@ Open eval: domain context cores vs full-repo dumps for coding agents.
 
 149 Q · 4 repos · up to 38× fewer tokens · B ≥ A on accuracy (exploratory).
 
-CLI + raw runs: github.com/Alex0nder/AI-Context-OS
+CLI + raw runs: github.com/navorina-labs/AI-Context-OS
 
 #ContextEngineering #FOSS #LLM
 ```

@@ -60,4 +60,4 @@ Copy `context-os/eval/export/run-<id>/` → `AI-Context-OS/experiments/navorina/
 
 ## Methodology
 
-[evaluation-framework.md](https://github.com/Alex0nder/AI-Context-OS/blob/main/research/evaluation-framework.md)
+[evaluation-framework.md](https://github.com/navorina-labs/AI-Context-OS/blob/main/research/evaluation-framework.md)

@@ -41,7 +41,7 @@
     "duplicate_or_stale_docs": "context-os/audit/duplicate-or-stale-docs.md",
     "risks": "context-os/audit/risks.md"
   },
-  "framework_repo": "https://github.com/Alex0nder/AI-Context-OS",
+  "framework_repo": "https://github.com/navorina-labs/AI-Context-OS",
   "implementation_type": "filled-instance",
   "legacy_agent_docs": {
     "agents_index": "AGENTS.md",

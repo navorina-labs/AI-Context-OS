@@ -21,4 +21,4 @@
 ## Anti-patterns
 
 - Do not paste full source files into cores — use entity names + file pointers.
-- Do not answer-scope bleed (see OL06 pattern in [Oiloop MAINTENANCE](https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/oiloop/MAINTENANCE.md)).
+- Do not answer-scope bleed (see OL06 pattern in [Oiloop MAINTENANCE](https://github.com/navorina-labs/AI-Context-OS/blob/main/experiments/oiloop/MAINTENANCE.md)).

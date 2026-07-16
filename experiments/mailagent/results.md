@@ -26,9 +26,9 @@
 
 | What | URL |
 |------|-----|
-| This summary | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/results.md |
-| **Canonical run (45 Q)** | https://github.com/Alex0nder/AI-Context-OS/tree/main/experiments/mailagent/runs/run-1781319187610 |
-| Metrics | https://github.com/Alex0nder/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781319187610/summary.json |
+| This summary | https://github.com/navorina-labs/AI-Context-OS/blob/main/experiments/mailagent/results.md |
+| **Canonical run (45 Q)** | https://github.com/navorina-labs/AI-Context-OS/tree/main/experiments/mailagent/runs/run-1781319187610 |
+| Metrics | https://github.com/navorina-labs/AI-Context-OS/blob/main/experiments/mailagent/runs/run-1781319187610/summary.json |
 | Gold-router baseline (35 Q) | [run-1781075014160](runs/run-1781075014160/) — optimistic B; superseded for claims |
 | Eval harness | https://github.com/Alex0nder/MailAgent/tree/main/context-os/eval |
 

@@ -19,7 +19,7 @@ B ≥ A on all 4. Up to 38× fewer API tokens (CCR_tokens).
 Oiloop (private): B 2.75 vs A 0.75 — prod keyword router, 0% hallucination.
 
 Open protocol + CLI:
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 
 npx context-os init --name myapp --profile saas
 ```
@@ -48,7 +48,7 @@ Methods preprint: domain-oriented Context Cores for decision-scoped LLM question
 8–38× token compression · Oiloop B 2.75 vs A 0.75 · limitations upfront (LLM judge, exploratory).
 
 arxiv.org/abs/XXXX.XXXXX
-github.com/Alex0nder/AI-Context-OS
+github.com/navorina-labs/AI-Context-OS
 ```
 
 Replace `XXXX.XXXXX` with real ID.
@@ -64,7 +64,7 @@ npx context-os init --profile saas
 
 validate · route · stats (no API key)
 
-github.com/Alex0nder/AI-Context-OS/tree/main/packages/cli
+github.com/navorina-labs/AI-Context-OS/tree/main/packages/cli
 ```
 
 ---

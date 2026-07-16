@@ -315,7 +315,7 @@ struct ContextRouter {
 
 # Data Availability
 
-Research repository: `https://github.com/Alex0nder/AI-Context-OS`
+Research repository: `https://github.com/navorina-labs/AI-Context-OS`
 
 Evaluation dataset: `research/questions.md`
 

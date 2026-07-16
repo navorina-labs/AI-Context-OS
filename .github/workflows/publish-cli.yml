@@ -14,7 +14,7 @@ on:
 
 jobs:
   publish:
-    if: github.repository == 'Alex0nder/AI-Context-OS'
+    if: github.repository == 'navorina-labs/AI-Context-OS'
     runs-on: ubuntu-latest
     permissions:
       contents: read

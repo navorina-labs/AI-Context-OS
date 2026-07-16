@@ -57,4 +57,4 @@
 - [`manifest.json`](./manifest.json)
 - [`router/question-router.md`](./router/question-router.md)
 - [`evaluations/PHASE-2-NAVORINA-RESULTS.md`](./evaluations/PHASE-2-NAVORINA-RESULTS.md)
-- [AI-Context-OS](https://github.com/Alex0nder/AI-Context-OS)
+- [AI-Context-OS](https://github.com/navorina-labs/AI-Context-OS)
