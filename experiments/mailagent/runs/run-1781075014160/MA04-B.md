@@ -6,7 +6,7 @@
 
 - **Target Users**:
   1. **QA Engineers**: Utilizing tools like Playwright/Cypress in CI environments.
-  2. **AI Agents**: Such as Cursor and Codex, using MCP clients.
+  2. **AI Agents**: Such as Codex and other coding agents using MCP clients.
   3. **Integration Developers**: Working with the REST SDK for custom integrations.
   4. **Teams**: Utilizing scoped API keys, billing, and custom domains.
   5. **Operators**: Performing one-time secret configurations. 

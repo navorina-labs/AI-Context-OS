@@ -8,7 +8,6 @@ function parseInitArgs(argv) {
     name: null,
     target: process.cwd(),
     profile: "minimal",
-    cursorRule: false,
     force: false,
     dryRun: false,
   };
@@ -17,7 +16,6 @@ function parseInitArgs(argv) {
     if (a === "--name" && argv[i + 1]) opts.name = argv[++i];
     else if (a === "--target" && argv[i + 1]) opts.target = path.resolve(argv[++i]);
     else if (a === "--profile" && argv[i + 1]) opts.profile = argv[++i];
-    else if (a === "--cursor-rule") opts.cursorRule = true;
     else if (a === "--force") opts.force = true;
     else if (a === "--dry-run") opts.dryRun = true;
     else if (a === "--help" || a === "-h") {
@@ -27,7 +25,6 @@ Options:
   --name <project>       Project display name
   --target <dir>         Parent directory (default: cwd)
   --profile <name>       Profile: ${profileNames().join("|")}
-  --cursor-rule          Write .cursor/rules/context-os.mdc
   --force                Overwrite existing context-os/
   --dry-run              List files only`);
       process.exit(0);
@@ -125,27 +122,6 @@ export async function cmdInit(argv) {
   const driftDest = path.join(destRoot, "drift-config.json");
   if (fs.existsSync(driftStub) && !fs.existsSync(driftDest)) {
     fs.copyFileSync(driftStub, driftDest);
-  }
-
-  if (opts.cursorRule) {
-    const ruleDir = path.join(opts.target, ".cursor", "rules");
-    fs.mkdirSync(ruleDir, { recursive: true });
-    const rulePath = path.join(ruleDir, "context-os.mdc");
-    const rule = `---
-description: Route decision-scoped questions through Context OS cores
-globs:
-alwaysApply: true
----
-
-Before answering project-specific decision questions:
-
-1. Read \`context-os/manifest.json\` and \`context-os/router/question-router.md\`
-2. Route to 1 primary + 0–2 secondary cores — do not load the full repository
-3. Open only Sources listed in the selected core(s)
-4. After code changes affecting entities in a core, update that core per \`context-os/MAINTENANCE.md\`
-`;
-    fs.writeFileSync(rulePath, rule);
-    console.log(`Wrote ${path.relative(opts.target, rulePath)}`);
   }
 
   console.log(`Created context-os/ for "${opts.name}" (${opts.profile}) at ${destRoot}`);

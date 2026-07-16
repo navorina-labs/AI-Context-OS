@@ -19,7 +19,7 @@ Initial framework release candidate.
 - JSON schemas for core manifests, routing maps, and evaluation question banks.
 - Routing evaluation, dry-run budget checks, graph index generation, drift checks, and bootstrap CI utilities.
 - Operational readiness commands: `doctor`, `check`, `maturity`, `audit`, `cores verify`, and `contracts verify`.
-- Agent adapter installers for `AGENTS.md`, `CLAUDE.md`, GitHub Copilot instructions, and Cursor rules.
+- Agent adapter installers for `AGENTS.md`, `CLAUDE.md`, and GitHub Copilot instructions.
 - Reference SaaS implementation that passes the Operational maturity gate.
 - Release verification and tarball install smoke tests for npm packages.
 

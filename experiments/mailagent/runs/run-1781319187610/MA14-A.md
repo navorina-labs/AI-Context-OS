@@ -25,7 +25,7 @@ MCP (Model Context Protocol) integrates with MailAgent in the following ways:
   - MCP tools can emit progress notifications during long-running operations, allowing clients to receive updates on the status of their requests.
 
 - **Integration with Agents**: 
-  - MailAgent's MCP tools are designed to be used by various agents (like Cursor and Codex) to facilitate email verification and other related tasks.
+  - MailAgent's MCP tools are designed for coding agents such as Codex to facilitate email verification and related tasks.
 
 - **Documentation and Discovery**: 
   - MailAgent provides an API discovery endpoint (`GET /v1/agent`) that lists available MCP tools and their usage, along with documentation links.

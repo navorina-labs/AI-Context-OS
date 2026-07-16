@@ -120,7 +120,6 @@ export function readinessChecks(projectRoot) {
     ["graph config", "context-os/graph/graph-config.json"],
     ["graph index", "context-os/graph/graph-index.json"],
     ["semantic embeddings", "context-os/router/embeddings.json"],
-    ["Cursor rule", ".cursor/rules/context-os.mdc"],
     ["AGENTS adapter", "AGENTS.md"],
     ["Claude adapter", "CLAUDE.md"],
     ["Copilot adapter", ".github/copilot-instructions.md"],

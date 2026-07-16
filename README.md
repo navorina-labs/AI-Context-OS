@@ -20,18 +20,18 @@ Operational maturity gate.
 
 ```bash
 # from clone
-npm run context-os -- init --name myapp --profile saas --cursor-rule --target ~/Projects/MyApp
+npm run context-os -- init --name myapp --profile saas --target ~/Projects/MyApp
 npm run context-os -- doctor --root ~/Projects/MyApp
 
 # after npm publish (name context-os is available)
-npx context-os init --name myapp --profile saas --cursor-rule
+npx context-os init --name myapp --profile saas
 npx context-os doctor
 ```
 
 ## Quick start
 
 ```bash
-npx context-os init --name myapp --profile minimal --cursor-rule
+npx context-os init --name myapp --profile minimal
 npx context-os doctor
 npx context-os validate --schema
 npx context-os score --min 50

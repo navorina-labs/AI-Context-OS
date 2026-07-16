@@ -3,7 +3,7 @@
 Output of:
 
 ```bash
-context-os init --name example-saas --profile saas --cursor-rule
+context-os init --name example-saas --profile saas
 ```
 
 Use as reference or copy `context-os/` into your repo.
