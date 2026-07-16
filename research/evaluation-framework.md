@@ -163,8 +163,10 @@ Report **both** metrics — they answer different questions:
 3. Run each question in both A and B (randomized order)
 4. Blind raters to condition
 5. Record all metrics in spreadsheet template
-6. Statistical test: paired t-test or Wilcoxon on accuracy per question
-7. Report effect size (Cohen's d)
+6. Summarize with descriptive means + bootstrap 95% CI on paired accuracy deltas (`context-os eval bootstrap`)
+7. Report mean paired Δ and CI; treat secondary metrics as exploratory
+
+For confirmatory conference claims, add independent human raters and a pre-registered ordinal plan (e.g. Wilcoxon signed-rank) — see [SYNTHESIS.md](SYNTHESIS.md) publication go/no-go.
 
 ---
 
