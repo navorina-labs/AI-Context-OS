@@ -51,15 +51,15 @@ Variants: **A** = full repo · **B** = routed domain cores · **C** = graph retr
 
 ## Human blind pilot (author-rated, n=10)
 
-Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv)
+Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv) · decode: `node research/decode-human-blind-pilot.mjs`
 
 | Preference | Count |
 |------------|-------|
-| B preferred | 6 |
-| Equal | 2 |
-| A preferred | 2 |
+| B preferred | 7 |
+| Equal | 3 |
+| A preferred | 0 |
 
-**60% B-preferred** — directionally consistent with eval. Label as *author-rated blind pilot*, not independent experts.
+**100% B+Equal** (B strict: 70%) — directionally consistent with eval. Label as *author-rated blind pilot*, not independent experts.
 
 ---
 
@@ -77,12 +77,15 @@ Source: [human-blind-pilot-oiloop.csv](human-blind-pilot-oiloop.csv)
 
 | Priority | Action | Owner |
 |----------|--------|-------|
-| P0 | Core maintenance workflow | [experiments/oiloop/MAINTENANCE.md](../experiments/oiloop/MAINTENANCE.md) |
+| P0 | Core maintenance workflow | ✅ [experiments/oiloop/MAINTENANCE.md](../experiments/oiloop/MAINTENANCE.md) |
 | P0 | OL06 answer scaffold in workspace-core v1.1.1 | ✅ smoke verified |
+| P0 | npm publish synchronized `0.1.0` | Open — [docs/releasing.md](../docs/releasing.md); `verify:release` OK |
 | P1 | `ContextCoreLoader` + composer review in prod | Oiloop (shipped) |
-| P1 | arXiv methods preprint | ✅ [ARXIV-SUBMISSION.md](../papers/ARXIV-SUBMISSION.md) — upload PDF |
+| P1 | arXiv methods preprint | PDF ready — upload per [ARXIV-SUBMISSION.md](../papers/ARXIV-SUBMISSION.md) |
+| P1 | GitHub Release + outreach D0 | [PUBLICATION-PACK.md](../docs/outreach/PUBLICATION-PACK.md) |
 | P2 | Django full re-run (paired.csv) | Optional — conference track |
 | P2 | Independent human re-rate (10 Q) | Optional — conference track |
+| P2 | Doc hygiene (overview / routing / Phase 5) | ✅ 2026-07-12 |
 
 ---
 

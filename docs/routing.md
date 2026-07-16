@@ -42,7 +42,8 @@ Output: { cores: [...], context: "...", routing_reason: "..." }
 | Stripe webhook broken | Billing Core | Payment infrastructure failure |
 | Improve onboarding | Onboarding Core | User activation → product onboarding |
 | What is the product? | Product Core | Product definition question |
-| How to deploy? | Technical Core + Operational Core | Implementation + ops procedure |
+| How to deploy? | Operational Core | Deploy / release procedure (R-OPS-001) |
+| How to deploy? (needs arch context) | Technical Core + Operational Core | Architecture first, then ops (R-MIX-001 family) |
 | MRR vs churn analysis | Revenue Core | Business metrics |
 | Trial conversion low | Paywall Core + Onboarding Core | Conversion spans paywall and first-run |
 | API rate limit errors | Technical Core | Implementation / architecture |
@@ -107,6 +108,10 @@ When routing confidence is low:
 ## Routing Rules Format
 
 Rules are documented in [context-os/router/routing-rules.md](../context-os/router/routing-rules.md).
+
+**Canonical deploy rule:** bare deploy/release/rollback → `operational-core` (R-OPS-001). Add `technical-core` only when the question also needs architecture or feature-implementation context (R-MIX-001). See examples in [context-os/router/routing-examples.md](../context-os/router/routing-examples.md).
+
+Ops vs tech boundary table: [research/routing-adjudication.md](../research/routing-adjudication.md).
 
 Schema: [schemas/routing.schema.json](../schemas/routing.schema.json).
 

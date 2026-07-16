@@ -138,7 +138,8 @@ Condition **C** (graph) runs only if `context-os/graph/graph-index.json` exists.
 ## Research → product path
 
 1. **Done:** CLI + eval + graph + semantic router + drift CI
-2. **Later:** GitHub Action template for consumer repos (`.github/workflows/context-os-drift.yml`)
+2. **Done:** Consumer CI via `context-os ci init` (generates `.github/workflows/context-os.yml` for `context-os check`)
+3. **Next:** Publish synchronized `0.1.0` to npm — see [docs/releasing.md](../docs/releasing.md)
 
 See [research/SYNTHESIS.md](../research/SYNTHESIS.md) for measured results.
 

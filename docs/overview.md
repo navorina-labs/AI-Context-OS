@@ -24,7 +24,15 @@ The complete project artifact set: source code, documentation, configs, tests, l
 
 ### Stage 2: Entity Extraction
 
-Identify decision-relevant entities from the project:
+Identify decision-relevant entities from the project. Concrete contract:
+
+| | |
+|--|--|
+| **Input** | Repo artifacts (README, domain docs, configs, key source modules) |
+| **Output** | Named entities tagged by domain (`business` / `product` / `technical` / `operational`) plus a one-line decision relevance note |
+| **Example** | From `stripe.webhook.ts` → entity `StripeWebhookHandler` (`technical`/`billing`) — “owns payment event verification; routes failures to ops alerts” |
+
+Entities become candidates for core sections; they are not dumped wholesale into the LLM prompt.
 
 - Business entities (revenue streams, pricing tiers, customer segments)
 - Product entities (features, user flows, value propositions)
@@ -66,12 +74,16 @@ Routing happens **before** LLM invocation. No reasoning on full repository by de
 
 ### Stage 5: AI Agent
 
-The LLM receives only the selected core(s) plus the question. It reasons within bounded responsibility, producing answers that are:
+The LLM receives only the selected core(s) plus the question. It reasons within bounded responsibility.
 
-- More focused
-- Less hallucination-prone (fewer irrelevant facts to misconnect)
-- Cheaper (smaller context)
-- Auditable (core selection is logged)
+**Expected if domain-core routing holds** (measured descriptively across four codebases — see [research/SYNTHESIS.md](../research/SYNTHESIS.md)):
+
+- More focused answers within core scope
+- Lower hallucination risk when irrelevant repo noise is excluded (project-dependent; graph retrieval sometimes wins on OSS)
+- Cheaper inference (CCR_tokens 8–38× vs full-repo baseline in measured runs)
+- Auditable selection (logged core ids before LLM invocation)
+
+These are conditional outcomes from exploratory A/B/C evals, not guaranteed properties of every installation.
 
 ---
 

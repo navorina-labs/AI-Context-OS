@@ -1,5 +1,7 @@
 # Example: MailAgent Context OS
 
+> **[ILLUSTRATIVE — NOT VALIDATED]** Documentation-only example. Do not treat core snippets or routing below as experimental evidence. Measured MailAgent results live under `experiments/mailagent/`.
+
 Documentation-only example showing how Context OS artifacts would look for MailAgent.
 
 **This is not a working implementation.** It illustrates structure for experiment Phase 1.
@@ -36,8 +38,8 @@ Support decisions about what MailAgent does and how users accomplish email autom
 - LLM prompt internals → technical-core
 
 ## Invariants
-- All outbound email requires user-approved send or auto-send policy
-- Agent never deletes mail without explicit rule
+- [ILLUSTRATIVE — NOT VALIDATED] All outbound email requires user-approved send or auto-send policy
+- [ILLUSTRATIVE — NOT VALIDATED] Agent never deletes mail without explicit rule
 ```
 
 ---

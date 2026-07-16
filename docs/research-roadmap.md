@@ -100,23 +100,26 @@ Phased plan to validate the AI Context OS hypothesis.
 
 ---
 
-## Phase 5: Open-Source Release
+## Phase 5: Replication Package & Community Release
 
-**Goal:** Enable community replication and extension.
+**Status:** In progress (framework RC ready; npm `0.1.0` not yet published)
 
-**Activities:**
+**Goal:** Ship a replicable package so others can run the protocol without reading the whole research tree.
 
-- Publish complete research repository (this repo)
-- Release evaluation question bank and scoring rubrics
-- Document core-building playbook
-- Accept community experiment results
-- Optional: reference implementations in [examples/](../examples/) (documentation only)
+**Done:**
 
-**Exit criteria:**
+- Public research repository with raw runs under `experiments/`
+- Evaluation question banks, gold labels, and scoring outputs
+- Core-building playbook and filled reference cores
+- Versioned JSON schemas (`@context-os/schemas`) + CLI (`context-os`)
+- Reference implementations in [examples/](../examples/) (`reference-saas` at Operational maturity)
 
+**Remaining exit criteria:**
+
+- Synchronized npm publish of `@context-os/schemas`, `@context-os/eval`, `context-os` (`0.1.0`) — [docs/releasing.md](releasing.md)
+- GitHub Release + methods preprint upload (arXiv)
 - At least one external replication reported
-- Issue tracker for methodology questions
-- Versioned schema for cores and routing rules
+- Issue tracker answers for methodology questions
 
 **Duration:** Ongoing
 
@@ -125,14 +128,14 @@ Phased plan to validate the AI Context OS hypothesis.
 ## Timeline Overview
 
 ```
-Phase 1: MailAgent          [████░░░░░░] weeks 1–6
-Phase 2: OSS SaaS           [░░░░████████] weeks 7–18
-Phase 3: Private validation [░░░░░░░░████] weeks 15–22
-Phase 4: Paper              [░░░░░░░░░░████████] weeks 20–32
-Phase 5: OSS release        [░░░░░░░░░░░░░░████████] ongoing
+Phase 1: MailAgent          [██████████] DONE
+Phase 2: OSS SaaS           [██████████] DONE
+Phase 3: Private validation [██████████] DONE (Oiloop)
+Phase 4: Paper              [████████░░] PDF ready — arXiv upload pending
+Phase 5: Replication package[██████░░░░] CLI RC ready — npm 0.1.0 + external replication pending
 ```
 
-Phases 3–4 may overlap.
+Phases 3–4 overlapped; measurement closed 2026-06.
 
 ---
 

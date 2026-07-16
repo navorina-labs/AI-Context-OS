@@ -73,11 +73,14 @@ Q001,business,B,3,5,0,2,4200,380,2100,revenue_core,true,rater_1
 
 ## Statistical Tests
 
-| Comparison | Test |
-|------------|------|
-| Accuracy A vs B | Paired t-test or Wilcoxon signed-rank |
-| Hallucination rate | McNemar's test |
-| Latency | Paired t-test on log-transformed values |
-| Effect size | Cohen's d for accuracy difference |
+**Practice used in published runs:** descriptive means per condition + nonparametric **bootstrap 95% CI** on paired accuracy deltas (`context-os eval bootstrap` / [bootstrap-ci.mjs](bootstrap-ci.mjs)). Primary framing is exploratory / multi-case study — not confirmatory significance claims.
 
-Significance level: α = 0.05. Correct for multiple comparisons (Bonferroni) across domains.
+| Comparison | Test (exploratory) |
+|------------|------|
+| Accuracy A vs B (paired Δ) | Bootstrap 95% CI on mean paired delta (default 10k resamples) |
+| Ordinal accuracy scales (0–3) | Prefer rank/bootstrap summaries over parametric t-tests |
+| Hallucination rate | Descriptive rate + McNemar only if binary paired labels exist |
+| Latency | Descriptive p50/p95; log t-test optional secondary |
+| Effect size | Mean paired Δ + CI width (Cohen's d secondary only) |
+
+Do **not** claim α = 0.05 confirmatory significance without independent human raters and a pre-registered analysis plan. Multiple endpoints are exploratory unless multiplicity-corrected.
