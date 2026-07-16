@@ -3,7 +3,7 @@
 | Example | Description |
 |---------|-------------|
 | [scaffold-saas](scaffold-saas) | **CLI output** — `context-os init --profile saas` (committed, runnable) |
-| [Navorina instance](../experiments/navorina/instance) | Full production Context OS on a SaaS repo (Cursor agents) |
+| [Navorina instance](../experiments/navorina/instance) | Full production Context OS on a SaaS repo (AI coding agents) |
 | [Oiloop](../experiments/oiloop) | Private app + runtime router in Swift |
 
 ## Try the scaffold

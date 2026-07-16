@@ -46,7 +46,7 @@
 | `server/.env.example` | Env template |
 | `e2e/README.md` | Playwright guide |
 | `.github/workflows/nucleus-ci.yml` | CI |
-| `.cursorrules` | Dev cookie/SW notes |
+| Legacy IDE rules | Dev cookie/SW notes |
 
 ## Key docs
 
@@ -88,5 +88,5 @@
 - `docs/planning/OPS_V0.md`
 - `docs/planning/INTEGRATIONS_WHEN_READY.md`
 - `package.json` (scripts)
-- `.cursorrules`
+- Legacy IDE rules (not exported)
 - `e2e/README.md`

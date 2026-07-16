@@ -1,6 +1,6 @@
 # Context OS — Navorina
 
-Система **контекстных ядер** для AI-агентов в Cursor. Цель — быстрее понимать проект и загружать **минимальный** релевантный контекст вместо всего репозитория.
+Система **контекстных ядер** для AI-агентов. Цель — быстрее понимать проект и загружать **минимальный** релевантный контекст вместо всего репозитория.
 
 Построено по модели **[AI Context OS](https://github.com/Alex0nder/AI-Context-OS)** на данных из `docs/`, `AGENTS.md`, `Navorina/`, `server/`, `package.json`. Прототип: `docs/archive/real-project-test/`.
 
@@ -65,7 +65,7 @@ context-os/
 4. Cleanup только через `audit/cleanup-candidates.md` — не удалять без проверки
 5. При конфликте: **код** > `DESIGN_SYSTEM.md` > planning level 3
 
-## Как использовать в Cursor
+## Как использовать с AI-агентом
 
 ### В чате
 
@@ -87,19 +87,13 @@ Use Product Core and explain what Navorina is.
 Use Release Core and prepare release checklist.
 ```
 
-### В правилах (опционально)
-
-Добавить в `.cursorrules` или rule:
-
-> For context, start from `context-os/CANON.md` and `question-router.md` before ops shards.
-
 ### Связь с существующими правилами
 
 - `product-design-system.mdc` — остаётся для UI (дополняет Product Core)
 - `context-os/ops/<shard>.md` — ops после выбора core
 - `real-project-test/README.md` — redirect stub; архив в `docs/archive/real-project-test/`
 
-## How to ask Cursor
+## How to ask an AI agent
 
 Примеры промптов:
 

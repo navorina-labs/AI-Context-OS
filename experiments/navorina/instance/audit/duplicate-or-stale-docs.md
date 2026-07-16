@@ -24,7 +24,7 @@
 
 | Layer | Path | Role |
 |-------|------|------|
-| Rules | `.cursor/rules/product-design-system.mdc` | Always-apply UI rules |
+| Rules | `docs/design-system/DESIGN_SYSTEM.md` | Canonical UI rules |
 | Ops index | `AGENTS.md` | Короткий индекс → ops shards |
 | Ops detail | `context-os/ops/*.md` | API, smoke, env по интеграции |
 | Cores | `context-os/cores/`, `subcores/` | Minimal routed context |
@@ -56,6 +56,6 @@ Marked as historical debugging in INDEX level 3 pattern.
 ## Sources
 
 - `docs/planning/INDEX.md`
-- `.cursor/rules/product-design-system.mdc`
+- `docs/design-system/DESIGN_SYSTEM.md`
 - `real-project-test/README.md`
 - `package.json`

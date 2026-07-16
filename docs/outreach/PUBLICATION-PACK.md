@@ -4,7 +4,7 @@
 
 **Image:** [phase-3-twitter-card.png](../../context-os/evaluations/phase-3-twitter-card.png)
 
-**CLI:** `npx context-os init --profile saas --cursor-rule` (after npm publish)
+**CLI:** `npx context-os init --profile saas` (after npm publish)
 
 **Paper:** [papers/arxiv-paper.pdf](../../papers/arxiv-paper.pdf) · [arxiv-abstract.txt](../../papers/arxiv-abstract.txt)
 
@@ -65,9 +65,9 @@ Hybrid core+graph lost to rich multi-core B on Oiloop cross-cutting Q.
 ```
 We shipped a CLI:
 
-npx context-os init --profile saas --cursor-rule
+npx context-os init --profile saas
 
-→ cores + keyword router + Cursor rule in your repo
+→ cores + keyword router in your repo
 → validate · route · stats (no API key)
 
 github.com/Alex0nder/AI-Context-OS
@@ -114,9 +114,9 @@ github.com/Alex0nder/AI-Context-OS
 **CLI hook**
 
 ```
-One command to scaffold context cores for Cursor agents:
+One command to scaffold context cores for coding agents:
 
-npx context-os init --name myapp --profile saas --cursor-rule
+npx context-os init --name myapp --profile saas
 
 validate · route · stats — no API key needed.
 ```
@@ -152,9 +152,9 @@ Oiloop (prod): B 2.75 vs A 0.75, hallucination 0%.
 ```
 CLI для своего репо:
 
-npx context-os init --profile saas --cursor-rule
+npx context-os init --profile saas
 
-cores + router + правило для Cursor.
+cores + router для AI-агентов.
 
 github.com/Alex0nder/AI-Context-OS
 ```
@@ -171,14 +171,14 @@ github.com/Alex0nder/AI-Context-OS
 ## Reply-твит (теги, отдельно)
 
 ```
-Open replication — if you work on context routing / agent context / Cursor rules, would love feedback on the eval protocol.
+Open replication — if you work on context routing / coding-agent context, would love feedback on the eval protocol.
 
 github.com/Alex0nder/AI-Context-OS
 ```
 
 Тегай только 2–4 аккаунта с реальной связью с темой. Не спамь в основном твите.
 
-**Hashtags (опционально, 1–2):** `#ContextEngineering` `#LLM` `#Cursor` `#RAG`
+**Hashtags (опционально, 1–2):** `#ContextEngineering` `#LLM` `#CodingAgents` `#RAG`
 
 ---
 
@@ -214,7 +214,7 @@ Findings (exploratory; gpt-4o-mini; LLM-as-judge):
 
 We release raw run exports (3/4 full; Django is aggregate-only), question banks, and a CLI:
 
-  npx context-os init --profile saas --cursor-rule
+  npx context-os init --profile saas
 
 Repo: https://github.com/Alex0nder/AI-Context-OS
 
@@ -230,7 +230,7 @@ Author here. Quick links:
 - CLI: https://github.com/Alex0nder/AI-Context-OS/tree/main/packages/cli
 - Example scaffold: https://github.com/Alex0nder/AI-Context-OS/tree/main/examples/scaffold-saas
 
-Relevant prior art we are NOT claiming to replace: codebase RAG, GraphRAG, Cursor indexing — we optimize decision-scoped sufficiency, not entity connectivity.
+Relevant prior art we are NOT claiming to replace: codebase RAG, GraphRAG, or IDE indexing — we optimize decision-scoped sufficiency, not entity connectivity.
 ```
 
 ---
@@ -253,34 +253,11 @@ I open-sourced an eval framework for a context strategy that isn't "more RAG chu
 Measured on 149 questions / 4 repos (gpt-4o-mini, LLM judge). B (cores) ≥ A (full repo) on accuracy everywhere; up to 38× fewer API input tokens.
 
 CLI scaffolds this into any repo:
-npx context-os init --profile saas --cursor-rule
+npx context-os init --profile saas
 
 https://github.com/Alex0nder/AI-Context-OS
 
 Caveats: exploratory study, LLM-as-judge, not statistically confirmatory. Graph retrieval won on hallucination for 2/4 projects — YMMV.
-```
-
-## r/cursor
-
-**Title:** `Context OS CLI – scaffold domain cores + Cursor rule for agents (measured 8–38× token reduction)`
-
-**Body:**
-
-```
-If your agent reads the whole repo for narrow questions, we measured an alternative on 4 codebases:
-
-context-os/ folder with cores + routing-map.json + question-router.md
-Cursor rule tells the agent to route before loading everything.
-
-Results (open eval): domain cores beat full-repo on accuracy with large token savings.
-
-One-liner setup (from the monorepo until npm publish lands):
-
-git clone https://github.com/Alex0nder/AI-Context-OS
-cd AI-Context-OS
-npm run context-os -- init --name myapp --profile saas --cursor-rule --target ~/path/to/your/repo
-
-Full write-up: research/SYNTHESIS.md
 ```
 
 ## r/MachineLearning
@@ -387,7 +364,7 @@ A **Context Core** is a bounded markdown artifact: purpose, key entities, invari
 ```bash
 git clone https://github.com/Alex0nder/AI-Context-OS
 cd AI-Context-OS
-npm run context-os -- init --name myapp --profile saas --cursor-rule --target ~/Projects/MyApp
+npm run context-os -- init --name myapp --profile saas --target ~/Projects/MyApp
 ```
 
 Commands: `validate`, `route "question"`, `stats "question"`, `eval route` (routing F1, no API key).
@@ -424,7 +401,7 @@ We measured 149 questions across 4 codebases:
 • Up to 38× fewer API tokens
 • Domain cores ≥ full-repo accuracy (descriptive)
 
-Ships: eval protocol, raw runs, npx context-os init for Cursor agents.
+Ships: eval protocol, raw runs, and `npx context-os init` for coding agents.
 
 Exploratory study — limitations documented.
 ```
@@ -499,7 +476,7 @@ See research/SYNTHESIS.md
 | D0 | Twitter thread + LinkedIn |
 | D1 | Hacker News Show HN (Tue–Thu, 9–11am US ET) |
 | D2 | Dev.to article |
-| D3 | Reddit r/LocalLLaMA or r/cursor |
+| D3 | Reddit r/LocalLLaMA or r/MachineLearning |
 | D+7 | Product Hunt (if npm published) |
 
 ---

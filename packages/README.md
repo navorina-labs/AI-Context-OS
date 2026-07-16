@@ -7,14 +7,14 @@ Turn the research into a **scaffold + validate + route + eval** toolkit for any 
 From this monorepo:
 
 ```bash
-npm run context-os -- init --name myapp --profile saas --cursor-rule
+npm run context-os -- init --name myapp --profile saas
 npm run context-os -- doctor
 ```
 
 After publish:
 
 ```bash
-npx context-os init --name myapp --profile saas --cursor-rule
+npx context-os init --name myapp --profile saas
 npx context-os doctor
 ```
 
@@ -32,7 +32,7 @@ Framework contracts are documented in [docs/framework-contracts.md](../docs/fram
 
 ```bash
 # 1. Scaffold context boundaries
-context-os init --name myapp --profile minimal --cursor-rule
+context-os init --name myapp --profile minimal
 
 # 2. Check framework readiness
 context-os doctor
@@ -116,7 +116,7 @@ context-os eval bootstrap context-os/eval/results/run-<id>/paired.csv
 | `ci init` | No | Generate GitHub Actions workflow for `context-os check` |
 | `audit init` | No | Generate project-map, cleanup, and risks methodology docs |
 | `maturity` | No | Assess cumulative adoption level and next required action |
-| `adapters install` | No | Install managed instructions for AGENTS, Claude, Copilot, or Cursor |
+| `adapters install` | No | Install managed instructions for AGENTS, Claude, or Copilot |
 | `routing lint` | No | Detect conflicting patterns and question coverage gaps |
 | `audit report` | No | Generate Markdown and JSON framework health snapshots |
 | `audit record/compare` | No | Persist and compare framework metric history |

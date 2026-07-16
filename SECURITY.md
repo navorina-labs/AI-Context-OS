@@ -22,6 +22,6 @@ Security-sensitive areas include:
 - CLI commands that read repository files or write generated artifacts;
 - release and npm publishing workflows;
 - eval commands that may call model providers;
-- generated agent instruction files such as `AGENTS.md`, `CLAUDE.md`, Copilot instructions, and Cursor rules.
+- generated agent instruction files such as `AGENTS.md`, `CLAUDE.md`, and Copilot instructions.
 
 Context OS is a local CLI framework. It should not require secrets for scaffold, validation, routing, scoring, dry-run, drift, or audit workflows. Commands that use external model providers must receive credentials through the environment and should not persist them in generated project files.

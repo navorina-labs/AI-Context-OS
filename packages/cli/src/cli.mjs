@@ -4,7 +4,6 @@ import { cmdInit } from "./commands/init.mjs";
 import { cmdRoute } from "./commands/route.mjs";
 import { cmdValidate } from "./commands/validate.mjs";
 import { cmdEval } from "./commands/eval.mjs";
-import { cmdCursorRule } from "./commands/cursor-rule.mjs";
 import { cmdStats } from "./commands/stats.mjs";
 import { cmdGraph } from "./commands/graph.mjs";
 import { cmdRouter } from "./commands/router.mjs";
@@ -42,9 +41,6 @@ export async function runCli(argv) {
       break;
     case "eval":
       await cmdEval(args.slice(1));
-      break;
-    case "cursor-rule":
-      await cmdCursorRule(args.slice(1));
       break;
     case "stats":
       await cmdStats(args.slice(1));

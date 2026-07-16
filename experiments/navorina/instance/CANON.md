@@ -32,7 +32,6 @@
 | `context-os/ops/*.md` | API, smoke, env, эмуляторы (бывший AGENTS.md §) |
 | `docs/agents/AGENT_HUB.md` | UI/UX workflow (шаги 0–5) |
 | `AGENTS.md` | Короткий индекс → router + ops shards |
-| `.cursor/skills/navorina/SKILL.md` | Правила вёрстки; доки — в product-core **Sources** |
 
 ## Не читать по умолчанию
 

@@ -24,7 +24,6 @@ Usage:
   context-os validate [options]      Check manifest + core files (--schema)
   context-os stats <question>        Estimate routed core size (chars/tokens)
   context-os graph build             Build graph-index.json for Condition C
-  context-os cursor-rule [options]   Install .cursor/rules/context-os.mdc only
   context-os eval route [options]    Routing F1 on questions JSON (no LLM)
   context-os eval dry-run [options]  Condition B context sizes (no API key)
   context-os eval run [options]      A/B/C eval with LLM + judge
@@ -36,7 +35,6 @@ Init options:
   --target <dir>       Where to create context-os/ (default: cwd)
   --profile minimal|saas|agent-tool|oss-library
                        Template profile (default: minimal)
-  --cursor-rule        Also write .cursor/rules/context-os.mdc
   --force              Overwrite existing context-os/
   --dry-run            Print planned files only
 

@@ -3,7 +3,7 @@
   "project": "navorina",
   "updated": "2026-06-11",
   "integrated": true,
-  "description": "AI Context OS — минимальные контекстные ядра для агентов Cursor",
+  "description": "AI Context OS — минимальные контекстные ядра для AI-агентов",
   "canon": "context-os/CANON.md",
   "maintenance": "context-os/MAINTENANCE.md",
   "entry_point": "context-os/README.md",
@@ -43,7 +43,6 @@
   },
   "framework_repo": "https://github.com/Alex0nder/AI-Context-OS",
   "implementation_type": "filled-instance",
-  "cursor_rule": ".cursor/rules/context-os.mdc",
   "legacy_agent_docs": {
     "agents_index": "AGENTS.md",
     "ui_workflow": "docs/agents/AGENT_HUB.md"

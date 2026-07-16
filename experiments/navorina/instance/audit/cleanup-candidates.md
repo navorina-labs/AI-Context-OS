@@ -11,7 +11,7 @@
 | `real-project-test/*.md` | → `docs/archive/real-project-test/` |
 | `docs/optimization/*` | → `docs/archive/optimization/` |
 | `THEME_ICONS_REVIEW.md` | → `docs/archive/reviews/` |
-| Agent integration | `AGENTS.md`, `AGENT_HUB`, `.cursorrules`, `context-os.mdc` |
+| Agent integration | `AGENTS.md`, `AGENT_HUB`, Context OS managed instructions |
 
 ### Pass 2
 | Путь | Действие |

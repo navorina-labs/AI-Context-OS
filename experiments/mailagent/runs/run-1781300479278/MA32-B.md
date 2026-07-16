@@ -101,7 +101,7 @@ Here is the map of the MailAgent repository modules:
 
 ### Skills
 - `skills/mailagent/SKILL.md`: Canonical Agent Skill
-- `.cursor/skills/mailagent-mcp/SKILL.md`: Cursor sync copy
+- Agent skill sync copy
 - `examples/codex/plugin/skills/mailagent/SKILL.md`: Codex plugin copy
 
 ### Examples (`examples/`)

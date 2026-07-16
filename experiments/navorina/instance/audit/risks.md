@@ -42,7 +42,7 @@
 |------|----------|--------|
 | **Many integration keys** | INTEGRATIONS_WHEN_READY index | Partial prod config |
 | **OPS_SECRET exposure** | OPS_V0.md, RELEASE_CHECKLIST | Support API compromise |
-| **localStorage persists in dev** | .cursorrules | Masked onboarding bugs |
+| **localStorage persists in dev** | Legacy IDE rules | Masked onboarding bugs |
 | **E2E flakiness** | Playwright + Firebase + dev stack | Blocked releases |
 | **Doc sprawl** | 229+ files in docs/, INDEX warns 37 planning | Agents read wrong source |
 | ~~Triple agent docs~~ | Сведено: context-os + AGENTS § + AGENT_HUB (2026-06-10) | — |

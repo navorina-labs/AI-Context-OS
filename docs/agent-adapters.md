@@ -8,7 +8,6 @@ routing protocol through instruction files recognized by different tools.
 | `agents` | `AGENTS.md` | `context-os adapters install agents` |
 | `claude` | `CLAUDE.md` | `context-os adapters install claude` |
 | `copilot` | `.github/copilot-instructions.md` | `context-os adapters install copilot` |
-| `cursor` | `.cursor/rules/context-os.mdc` | `context-os adapters install cursor` |
 
 Install every adapter:
 
@@ -17,10 +16,9 @@ context-os adapters install --all
 context-os adapters status
 ```
 
-`agents`, `claude`, and `copilot` use a marked managed block. Existing
+All adapters use a marked managed block. Existing
 instructions outside that block are preserved, and repeated installation only
-updates the Context OS block. Cursor uses a dedicated rule file and requires
-`--force` before replacing content not managed by Context OS.
+updates the Context OS block.
 
 Use `--dry-run` to inspect planned file actions.
 

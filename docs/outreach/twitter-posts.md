@@ -30,7 +30,7 @@ Attach: `phase-3-twitter-card.png`
 
 ## Post 2 — Reply (tags, 2–4 people max)
 
-Pick only accounts whose work you genuinely reference (RAG, agent context, Cursor rules):
+Pick only accounts whose work you genuinely reference (RAG, agent context, coding agents):
 
 ```
 Open replication — feedback welcome from folks working on context routing / coding agents.
@@ -58,9 +58,9 @@ Replace `XXXX.XXXXX` with real ID.
 ## Post 4 — CLI only (short)
 
 ```
-context-os CLI — scaffold domain cores + keyword router for Cursor agents:
+context-os CLI — scaffold domain cores + keyword router for coding agents:
 
-npx context-os init --profile saas --cursor-rule
+npx context-os init --profile saas
 
 validate · route · stats (no API key)
 

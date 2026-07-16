@@ -70,7 +70,7 @@
 - `docs/planning/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md`
 - `docs/reference/MOBBIN.md` — UI research (Mercury)
 - `docs/agents/AGENT_HUB.md` — UI workflow only
-- `.cursor/skills/navorina/SKILL.md`
+- `docs/agents/AGENT_HUB.md`
 
 ## Risks
 
