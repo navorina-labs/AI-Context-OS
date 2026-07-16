@@ -21,7 +21,7 @@
     "billing-core": "context-os/subcores/billing-core.md",
     "onboarding-core": "context-os/subcores/onboarding-core.md"
   },
-  "framework_repo": "https://github.com/Alex0nder/AI-Context-OS",
+  "framework_repo": "https://github.com/navorina-labs/AI-Context-OS",
   "implementation_type": "scaffold-saas",
   "read_first_for_agents": [
     "context-os/CANON.md",

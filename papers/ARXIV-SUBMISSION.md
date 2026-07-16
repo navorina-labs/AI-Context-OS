@@ -14,7 +14,7 @@
 | **Authors** | Alexander Young |
 | **Primary category** | `cs.SE` (Software Engineering) |
 | **Secondary** | `cs.AI` |
-| **Comments** | 12 pages, 4 tables; code and raw runs at https://github.com/Alex0nder/AI-Context-OS |
+| **Comments** | 12 pages, 4 tables; code and raw runs at https://github.com/navorina-labs/AI-Context-OS |
 
 ---
 

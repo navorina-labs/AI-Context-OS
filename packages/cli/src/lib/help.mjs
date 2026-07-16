@@ -63,6 +63,6 @@ Examples:
   context-os cores verify --base origin/main
   context-os contracts verify --base origin/main
 
-Docs: https://github.com/Alex0nder/AI-Context-OS
+Docs: https://github.com/navorina-labs/AI-Context-OS
 `);
 }

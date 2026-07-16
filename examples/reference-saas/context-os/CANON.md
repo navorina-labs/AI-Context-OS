@@ -8,4 +8,4 @@
 
 Default pipeline for this reference: **B** (routed cores). Full-repo context is baseline only.
 
-Research: https://github.com/Alex0nder/AI-Context-OS
+Research: https://github.com/navorina-labs/AI-Context-OS

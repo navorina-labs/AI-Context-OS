@@ -19,4 +19,4 @@ context-os route "How do we deploy to production?"
 
 Initialized with profile: **saas**
 
-Reference implementation: [Navorina instance](https://github.com/Alex0nder/AI-Context-OS/tree/main/experiments/navorina/instance)
+Reference implementation: [Navorina instance](https://github.com/navorina-labs/AI-Context-OS/tree/main/experiments/navorina/instance)

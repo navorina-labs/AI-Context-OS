@@ -14,10 +14,10 @@ Handoff-промпт для запуска formal A/B/C eval в репозито
 
 Navorina — третий проект в cross-project validation (Phase 2). MailAgent и Django REST уже measured. Navorina — infrastructure ready, eval pending. Все est.* нужно заменить на measured.
 
-Методология: https://github.com/Alex0nder/AI-Context-OS/blob/main/research/evaluation-framework.md
-Сводка Phase 2: https://github.com/Alex0nder/AI-Context-OS/blob/main/context-os/evaluations/PHASE-2-RESULTS.md
-Navorina spec: https://github.com/Alex0nder/AI-Context-OS/blob/main/context-os/evaluations/navorina-phase-2.1.md
-Question bank (42 Q): https://github.com/Alex0nder/AI-Context-OS/blob/main/context-os/evaluations/navorina-questions.json
+Методология: https://github.com/navorina-labs/AI-Context-OS/blob/main/research/evaluation-framework.md
+Сводка Phase 2: https://github.com/navorina-labs/AI-Context-OS/blob/main/context-os/evaluations/PHASE-2-RESULTS.md
+Navorina spec: https://github.com/navorina-labs/AI-Context-OS/blob/main/context-os/evaluations/navorina-phase-2.1.md
+Question bank (42 Q): https://github.com/navorina-labs/AI-Context-OS/blob/main/context-os/evaluations/navorina-questions.json
 Референс harness: https://github.com/Alex0nder/MailAgent/tree/main/context-os/eval
 
 ## Профиль проекта (измерено)

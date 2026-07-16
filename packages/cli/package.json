@@ -27,13 +27,13 @@
     "context-engineering"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/Alex0nder/AI-Context-OS#readme",
+  "homepage": "https://github.com/navorina-labs/AI-Context-OS#readme",
   "bugs": {
-    "url": "https://github.com/Alex0nder/AI-Context-OS/issues"
+    "url": "https://github.com/navorina-labs/AI-Context-OS/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alex0nder/AI-Context-OS.git",
+    "url": "git+https://github.com/navorina-labs/AI-Context-OS.git",
     "directory": "packages/cli"
   },
   "publishConfig": {
