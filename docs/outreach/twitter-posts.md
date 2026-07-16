@@ -1,6 +1,11 @@
-# Twitter / X — ready posts (Phase 3.1 + CLI)
+# Outreach — posts & publication content
 
-Image: [phase-3-twitter-card.png](../context-os/evaluations/phase-3-twitter-card.png)
+| File | Contents |
+|------|----------|
+| **[PUBLICATION-PACK.md](PUBLICATION-PACK.md)** | **Full pack:** Twitter thread, HN, Reddit, LinkedIn, Dev.to, Product Hunt, release notes |
+| [twitter-posts.md](twitter-posts.md) | Short Twitter-only snippets |
+
+Image: [phase-3-twitter-card.png](../../context-os/evaluations/phase-3-twitter-card.png)
 
 ---
 

@@ -48,6 +48,26 @@ on `@context-os/eval` to the same exact version. Then refresh `package-lock.json
 
 Release tags may use `v<version>` or the legacy `cli-v<version>` form.
 
+## Secrets
+
+Local keys live in `.env` (gitignored). Start from the committed template:
+
+```bash
+cp .env.example .env
+# edit .env — set NPM_TOKEN / NODE_AUTH_TOKEN from npmjs.com → Access Tokens
+set -a && source .env && set +a
+```
+
+CI publish does **not** read `.env`. Store the same Automation token as a
+repository secret named `NPM_TOKEN`:
+
+```bash
+gh secret set NPM_TOKEN
+# paste token when prompted
+```
+
+The `Publish packages` workflow uses `NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}`.
+
 ## Publishing
 
 Push the release tag or start the `Publish packages` workflow manually. Manual
