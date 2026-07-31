@@ -1,5 +1,8 @@
 # AI Context OS
 
+> [!IMPORTANT]
+> Development has moved to [Context Agent in navorina-labs/AgentsOS](https://github.com/navorina-labs/AgentsOS/tree/main/agents/context-agent). This repository is preserved as a read-only historical snapshot; use AgentsOS for source code, issues, and releases.
+
 **Framework for domain-oriented context cores in AI-assisted software projects.**
 
 AI Context OS helps teams scaffold, validate, route, evaluate, and maintain **domain-oriented context cores**: bounded decision contexts that AI agents can read instead of dumping an entire repository into the prompt.
