@@ -1,89 +1,80 @@
 # Business Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | business-core |
+| version | 2.2.161 |
+| parent_core | null |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Бизнес-контекст Navorina: позиционирование, монетизация, персоны, оси Crypto / Fin Hub, интеграции как revenue-зависимости, retention и non-goals. Для вопросов «зачем», «кому», «что влияет на деньги», «что можно убрать без вреда бизнесу».
+Определяет позиционирование, коммерческие границы, приоритеты и критерии
+keep/archive/remove для Navorina.
 
-## Covers
+## Scope
 
-- Позиционирование: Crypto / Fin Hub, command center (Receive / Send / Account / Deliver)
-- North Star и принципы продукта (roadmap § North Star, § Принципы)
-- Персоны: исследователь, практик, «инструментщик» (PRD §3)
-- Тарифы и monetization contour: free / plus / pro / premium / unlimited
-- Бизнес-оси и статусы фаз (CP*, CFH*, RN*, MD*, Q2, M2, M3, I4)
-- Интеграции как бизнес-блокеры: Stripe, Resend, Push, Crypto PSP, Xero
-- Метрики успеха из PRD: вовлечение ассистента, Nucleus, инструменты, стабильность
-- Non-goals: custody, PSD2-агрегатор, нативные apps, Big4-налоги
-- Ops v0 для support tier (без product UI)
+### In Scope
 
-## Does not cover
+- Crypto / Fin Hub и оси Receive, Send, Account, Deliver
+- Персоны, jobs-to-be-done, retention и revenue logic
+- Free/Plus/Pro packaging и unit economics
+- Live-readiness как бизнес-зависимость
 
-- Детали реализации API, env, webhook handlers → Technical Core + Billing Core
-- Разметка UI, токены, компоненты → Product Core + design-system
-- Команды smoke/e2e, release pipeline → Operational Core + Release Core
-- Матрица feature flags по файлам → Paywall Core
+### Out of Scope
 
-## Key entities
+- API/webhook implementation
+- UI tokens и layout
+- Release command chains
 
-| Сущность | Описание |
-|----------|----------|
-| **Navorina** | Crypto / Fin Hub — ассистент + инструменты + Nucleus workspace |
-| **Nucleus** | Financial Mirror workspace (учёт, invoicing, payments hub) |
-| **Receive / Send / Account / Deliver** | Четыре бизнес-оси хаба |
-| **Plus / Pro** | Платные тарифы (Stripe Q2) |
-| **CP0–CP8** | Криптоплатежи через PSP-партнёра |
-| **CFH1–CFH5** | Crypto Fin Hub flows (ledger bridge, payouts, month close) |
-| **RN1–RN8** | Quote-to-cash / invoicing delivery |
-| **Ops v0** | Support API для tier и digest dry-run |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Navorina | Финансовый command center для freelancers и малых команд |
+| Nucleus | Financial Mirror workspace |
+| Plus / Pro | Платные product packages |
+| Money rails | «Окно и пульт»: Navorina показывает деньги и готовит действия, деньги у пользователя или лицензированного сервиса; этапы 0–4 в `docs/planning/strategy/MONEY_MODEL_AND_STAGES_2026-10-20.md` |
+| Business plan | Схема этапов, три слоя дохода, расходы, сценарии 50/200/1000 и решения владельца: `docs/planning/strategy/BUSINESS_PLAN_2026-10.md` |
+| Custody (Carabaas) | later: sandbox и казна Navorina; деньги клиентов — no-go (держатель кошигнера = кастодиан, managed-варианта нет; `carabaas-runbook.md` §4a). Sandbox €0 хватает; Starter €99 не нужен, Base только на Business €499, для своей казны дешевле Safe на Base (§12) |
+| Founder cohort | Основная retention/GTM evidence loop |
 
-| Путь | Роль |
-|------|------|
-| `docs/planning/PRD_NAVORINA.md` | Scope, персоны, MVP, non-goals |
-| `docs/planning/NAVORINA_ROADMAP_TIMELINE.md` | Фазы, North Star, принципы |
-| `docs/planning/CRYPTO_FIN_HUB_FLOW.md` | Карта Receive/Send/Account/Deliver |
-| `docs/planning/INTEGRATIONS_WHEN_READY.md` | Индекс live-интеграций |
-| `docs/planning/OPS_V0.md` | Support tier API |
-| `docs/planning/FINANCIAL_PAIN_POINTS.md` | Jobs-to-be-done |
-| `server/paywall/index.js` | Матрица tier → features (бизнес-упаковка) |
-| `Navorina/subscribe.html` | Pricing surface |
+## Invariants
 
-## Key docs
+- Navorina не является банком, custody wallet или универсальным чат-продуктом; USDC wallet signed (EIP-191).
+- Code/emulator не равен live revenue rail без production evidence.
+- Packaging и server entitlement matrix описывают одну коммерческую границу.
+- Инициатива усиливает одну из четырёх осей или retention.
+- Защита регистрации (disposable/MX) не требует платных провайдеров; бот-слой — Turnstile (ключи владельца).
+- Provider/API costs совместимы с unit economics тарифа.
 
-- `docs/planning/INDEX.md` — уровни 1–3 планирования
-- `docs/planning/STRIPE_WHEN_READY.md`, `RESEND_WHEN_READY.md`, `PUSH_WHEN_READY.md`, `XERO_WHEN_READY.md`, `CP0_PARTNER_WHEN_READY.md`
-- `docs/planning/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md` — UI-термины crypto
-- `docs/tracking/EVENT_TRACKING_SETUP.md` — задел аналитики
+## Current Packaging Snapshot
 
-## Risks
+- Free $0 (manual product), Pro $29/$23 (no limits, imports, reports, AI), Plus $99/$79
+  (API and webhooks, team of 5; USDC and payouts "soon"). Production checkout on since 2026-10-23, Stripe Tax off.
+  Source: `docs/product/PLANS.md`. Gaps against the business model: `docs/planning/strategy/BUSINESS_PLAN_2026-10.md` (M1–M10).
+- Preview testing never touches production customer accounts.
 
-- **CP0 live ⬜** — Receive без live PSP ограничивает реальный crypto revenue
-- **Фрагментация точек входа** — лендинг, assistant, tools, Nucleus (roadmap § Аудит)
-- **API-cost rule** — AI-фичи должны укладываться в 10–20% подписки (roadmap принцип #5)
-- **Двойное хранение подписок** — Supabase + file store + emulator (см. Technical/Billing risks)
-- **Зависимость от внешних keys** — Stripe Georgia, Resend, VAPID, Xero, crypto partner
+## Exclusions
 
-## Dependencies
+- Generated output и local runtime data
+- Архивные инициативы вне current-year plan
+- Pixel-level product decisions
 
-- Product Core — модули, которые монетизируются
-- Paywall Core + Billing Core — конверсия и MRR
-- Revenue Core — метрики и воронки
-- Operational Core — pilot verification перед go-live
+## Typical Outputs
 
-## AI summary
-
-Navorina — не чат-обёртка и не кошелёк, а **Crypto / Fin Hub** для freelancers/малых команд: invoicing, crypto receive/send, ledger, month close. Деньги: **Plus/Pro через Stripe**, Pro unlocks crypto invoicing и полный AI. Custody у PSP. При вопросах о revenue/churn/удалении фич — сначала оси Receive/Send/Account/Deliver и тарифная матрица в `server/paywall/index.js`, затем roadmap статусы (✅/🟡/⬜).
+- Scope verdict, revenue/retention impact, приоритет по осям, keep/archive/remove
 
 ## Sources
 
-- `docs/planning/PRD_NAVORINA.md`
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md`
-- `docs/planning/CRYPTO_FIN_HUB_FLOW.md`
-- `docs/planning/INDEX.md`
-- `docs/planning/OPS_V0.md`
-- `docs/planning/INTEGRATIONS_WHEN_READY.md`
-- `docs/planning/FINANCIAL_PAIN_POINTS.md`
-- `AGENTS.md`
-- `server/paywall/index.js`
-- `server/paywall/tier-packaging.test.js`
+| Type | Reference | Description |
+|---|---|---|
+| truth | docs/planning/CURRENT_PRODUCT_HANDOFF.md | Shipped state and live boundaries |
+| scope | docs/planning/PRD_NAVORINA.md | Personas, metrics, and non-goals |
+| roadmap | docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md | Current priorities |
+| roadmap | docs/planning/NEXT_NO_KEYS_2026-10-21.md | Next batch with no third-party keys, ranked, in parallel chunks |
+| packaging | server/paywall/index.js | Executable feature matrix |
+| operations | docs/planning/operations/integrations/integrations-index.md | External readiness |

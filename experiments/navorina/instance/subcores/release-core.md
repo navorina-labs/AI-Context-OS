@@ -1,73 +1,97 @@
 # Release Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | release-core |
+| version | 2.3.105 |
+| parent_core | operational-core |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Контекст релиза: pre-release gates, smoke, e2e, env checks, integration pilots, CI. Subcore Operational.
+Контекст release gates, smoke/E2E, integration pilots и environment evidence.
 
-## Covers
+## Scope
 
-- `npm run pre:release` — full gate
-- `ci:local`, `ci:local:full`, `ci:local:integrations`, `ci:local:e2e`
-- Integration pilots: `verify:cp-pilot`, `verify:q2-pilot`, `verify:delivery-pilot`, `verify:xero-pilot`, `verify:integrations-pilot`
-- Live checks: `setup:*-live-check`, `setup:services-check`, `setup:integrations-live-check`
-- Release checklist manual smoke steps
-- GitHub CI: `.github/workflows/nucleus-ci.yml`
-- Post-release: roadmap status update for live keys
+### In Scope
 
-## Does not cover
+- `pre:release`, `ci:local:*` and domain verification
+- Integration/live readiness checks
+- Navorina and changed AgentsOS CI boundaries
 
-- Product feature scope decisions → Business Core
-- How features work → Product/Nucleus Core
+### Out of Scope
 
-## Key entities
+- Product prioritization
+- Feature implementation
+- Secret values
 
-| Сущность | Описание |
-|----------|----------|
-| **pre:release** | `scripts/pre-release.mjs` |
-| **nucleus-smoke** | CI job name |
-| **VERIFY_INTEGRATIONS_E2E** | Env for e2e in pilot |
-| **DIGEST_CRON_SECRET** | Cron auth |
-| **RELEASE_CHECKLIST** | Human steps |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Release gate | Aggregate automated and manual evidence |
+| Integration pilot | Bounded non-general-availability proof |
+| Live check | Target-environment readiness proof |
+| Regression suite | Narrow evidence for changed boundaries |
 
-| Путь | Роль |
-|------|------|
-| `scripts/pre-release.mjs` | Orchestrator |
-| `scripts/verify-integrations-pilot.mjs` | All pilots |
-| `package.json` | ci:local:* scripts |
-| `.github/workflows/nucleus-ci.yml` | CI |
-| `e2e/*.spec.ts` | Playwright suites |
-| `docs/planning/RELEASE_CHECKLIST.md` | Checklist |
+## Invariants
 
-## Key docs
+- Emulator/demo success never certifies a live integration.
+- Evidence matches target revision, environment and migrations.
+- Production money actions cannot synthesize success.
+- Agent packages run independent checks and releases.
+- Auth email changes ship Pages first, then Supabase templates, then email rate limit.
+- D1 migrations 0049 and 0051–0054 apply before the Worker reading them.
 
-- `docs/planning/RELEASE_CHECKLIST.md`
-- `docs/planning/INTEGRATIONS_WHEN_READY.md`
-- `e2e/README.md`
-- `docs/planning/STRIPE_WHEN_READY.md` (+ Resend, Push, Xero, CP0)
+## Current Gate
 
-## Risks
+- The 2026-10-08 local gate is green: 7/7 required AI agents, 20/20 golden
+  cases, 18/18 core contracts, 7/7 core browser journeys and 24/24 release E2E.
+- Nucleus CI runs the current release journeys; triage a red `nucleus-smoke` to the end of the job.
+- Before every merge: `npm run e2e:local` (13 browser scenarios on the real Worker + local D1, stand
+  `scripts/e2e-local/stand.mjs`, no outside network). Required while GitHub Actions is off.
+- A green PR is deployable code evidence only. Production deployment and live
+  provider/money mutations require separate operator authorization and proof.
+- For web UI, edited, tested, pushed and deployed are separate states. Public
+  readiness requires the immutable deployment and custom domain to serve the
+  same revision and asset-version chain.
+- Embedded/mobile preview releases also require `ui-reliability-core` and
+  `$navorina-production-proof`.
+- `npm run check:cloudflare-production-readiness` no longer reports
+  `production-auth-isolation` once the preview Supabase project is live.
+  Releases that touch `generate-cloudflare-pages-config.cjs` compare the
+  production `config.js` (Supabase host, key hash, auth redirect) before deploy.
+- Production Pages deploy is `npm run deploy:cloudflare-pages:production` from the
+  repo root; a plain `build:cloudflare` is the preview target and must never reach
+  `navorina-production` (2026-10-17 incident).
+- Email template changes: re-run `node scripts/build-email-templates.mjs` (DS Emails section + Supabase templates) before the PR; images the emails use must be live on navorina.ai before the Worker sends them.
+- Sign-up hook rollout: `SUPABASE_AUTH_HOOK_SECRET` on the Worker first, then enable the Supabase hook; roll back by disabling the hook (`signup-protection-runbook.md`).
+- Start every release with `node scripts/release-preflight.mjs <target>` (rollback points).
 
-- **Long ci:local** — may timeout in agent sessions
-- **E2E requires chromium** — `npx playwright install chromium`
-- **Live keys not in CI** — pilots run emulator mode only
-- **Post-PMF surfaces** — K1/K6 not release blockers
+## Exclusions
 
-## Dependencies
+- Archived release plans
+- Provider credentials/customer data
 
-- operational-core
-- billing-core, nucleus-core (domain smokes)
+## Typical Outputs
 
-## AI summary
-
-Before release: `npm run pre:release` or stepwise `ci:local:full` + `verify:integrations-pilot` + `ci:local:e2e`. Manual: RELEASE_CHECKLIST §3 (dev smoke 7 steps). After live keys: update roadmap + run `setup:integrations-live-check`. E2E list in `package.json` `ci:local:e2e`.
+- Release checklist
+- Failed-gate triage
+- Code→emulator→pilot→production gap
 
 ## Sources
 
-- `docs/planning/RELEASE_CHECKLIST.md`
-- `package.json`
-- `scripts/pre-release.mjs`
-- `.github/workflows/nucleus-ci.yml`
-- `e2e/README.md`
-- `context-os/ops/dev-and-release.md`
+| Type | Reference | Description |
+|---|---|---|
+| checklist | docs/planning/operations/release-checklist.md | Canonical gate |
+| secrets | docs/planning/operations/secrets-and-kill-switch-runbook.md | Kill switches |
+| crypto | docs/planning/operations/integrations/crypto-provider-runbook.md | BVNK/Cryptopay keys, KYB |
+| cryptopay | docs/planning/operations/integrations/cryptopay-runbook.md | Cryptopay sandbox on canary: keys, callback URL, E2E, no payouts, refunds by email (payer_email), GET signing check script, payouts via infra/egress-relay (static IP) |
+| carabaas | docs/planning/operations/integrations/carabaas-runbook.md | Carabaas sandbox keys, go/no-go, sales questions, outgoing orders, TRON, treasury view, Starter recommendation (§9–§13) |
+| integrations | docs/planning/operations/integrations/integrations-index.md | Live sequence |
+| e2e | e2e/README.md | Browser verification |
+| scripts | package.json | Aggregate commands |
+| incident | docs/agents/retrospectives/2026-10-14-ui-preview-reliability.md | UI release evidence failure and prevention |

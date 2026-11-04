@@ -5,10 +5,11 @@
 ## Правила
 
 1. Определи **тип вопроса** (бизнес / продукт / техника / операции / домен).
-2. Открой **primary subcore** если есть; иначе **primary core**.
-3. Добавь **secondary** только если вопрос пересекает границы (например webhook = billing + technical).
+2. В `routing-map.json` первый элемент `cores[]` — primary context.
+3. Остальные `cores[]` загружай только для явно пересекающихся границ
+   (например webhook = billing + technical + paywall).
 4. **avoid: full-project** — не грузить AGENTS.md целиком для узких вопросов; используй `context-os/manifest.json`.
-5. Для UI-правок в `Navorina/**` — добавь `docs/agents/AGENT_HUB.md` + `UX_PRINCIPLES.md` (не отдельный core, но обязательный слой).
+5. Для UI-правок в `Navorina/**` — добавь `docs/agents/AGENT_HUB.md` + `UX_PRINCIPLES.md`. Для глобального UI, preview, skeleton, iframe и production-only дефектов добавь `ui-reliability-core`.
 
 ## Core selection matrix
 
@@ -27,10 +28,14 @@
 | Churn / retention | business-core | product-core, revenue-core | server agents |
 | Что удалить / cleanup | business-core | product-core | — |
 | UI / формы / Nucleus tabs | product-core | nucleus-core | package.json scripts |
+| Глобальные таблицы / островки / spacing | ui-reliability-core | product-core | page-local overrides |
+| Landing preview / skeleton / iframe / mobile mockup | ui-reliability-core | release-core | desktop-only proof |
+| UI отличается в production / cache | ui-reliability-core | release-core | source-only proof |
 | Env / emulators | operational-core | technical-core | roadmap timeline |
 | Crypto payments UX | nucleus-core | product-core | stripe routes |
 | Xero / accounting export | nucleus-core | release-core | assistant-core |
 | Ops / support tier | operational-core | business-core | design-system |
+| AgentsOS / reusable agents | technical-core | operational-core | product runtime internals |
 
 ## Примеры маршрутизации
 
@@ -48,6 +53,8 @@
 | Почему не работает accept crypto | **nucleus-core** + paywall-core + billing-core |
 | INP на assistant странице | **assistant-core** + product-core + MWG |
 | Month close export пустой | **nucleus-core** + technical-core |
+| Скелет mobile preview не завершается на iPhone | **ui-reliability-core** + release-core |
+| Применить отступ ко всем таблицам | **ui-reliability-core** + product-core |
 
 ## Файлы по приоритету
 
@@ -66,11 +73,12 @@
 - `npm run mwg:search -- "<task>"`
 
 ### Операции (дополнительно)
-- `context-os/ops/<shard>.md` — API, smoke, env (индекс: `AGENTS.md`)
+- `AGENTS.md` — только нужная секция (billing, crypto, etc.)
 
 ## Machine-readable routing
 
-См. [`routing-map.json`](./routing-map.json) для pattern → core mapping.
+См. [`routing-map.json`](./routing-map.json) для Context Agent-compatible
+`patterns[] → cores[]` mapping. Fallback: `technical-core`.
 
 ## Sources
 

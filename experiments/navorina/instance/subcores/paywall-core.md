@@ -1,71 +1,60 @@
 # Paywall Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | paywall-core |
+| version | 2.2.18 |
+| parent_core | business-core |
+| project | Navorina |
+| last_updated | 2026-10-26 |
+
 ## Purpose
 
-Контекст paywall: tier → feature access, upgrade CTA, trial/free limits, pricing surfaces, conversion logic. Subcore Business + Product.
+Контекст tier→feature access, upgrade surfaces и server entitlement enforcement.
 
-## Covers
+## Scope
 
-- Tier matrix: free / plus / pro / premium (legacy) / unlimited
-- Feature flags: `monthly_brief_ai`, `invoice_accept_crypto`, `financial_verdict_ai`, export, etc.
-- Server enforcement: `checkFeatureAccess`, middleware на FM AI routes
-- Client: paywall prompts, workspace context tier display
-- Pricing pages: `subscribe.html`, `ru/subscribe.html`, `es/subscribe.html`
-- Settings → Plan upgrade flow
-- Tests: `test:paywall`, `tier-packaging.test.js`, e2e billing emulator
+### In Scope
 
-## Does not cover
+- Free/Plus/Pro and legacy tier normalization
+- Server checks, workspace tier context and upgrade prompts
+- Packaging consistency tests
 
-- Stripe checkout session creation → Billing Core
-- AI token counting internals → Assistant Core + `ai-limits.js`
+### Out of Scope
 
-## Key entities
+- Stripe event processing
+- AI usage counters
+- Crypto settlement
 
-| Сущность | Описание |
-|----------|----------|
-| **FEATURE_ACCESS** | `server/paywall/index.js` |
-| **getUserTier** | Supabase + local override |
-| **fetchSubscriptionTier** | `db/user-subscription-tier.js` |
-| **nucleus-paywall-prompt** | Client upgrade UI |
-| **workspace/context** | Tier + services in one API |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Feature matrix | Executable tier policy |
+| Upgrade prompt | Client conversion surface |
 
-| Путь | Роль |
-|------|------|
-| `server/paywall/index.js` | Canonical paywall |
-| `server/db/user-subscription-tier.js` | Tier fetch |
-| `server/routes/financial-mirror-features.test.js` | Features route tests |
-| `server/routes/financial-mirror-workspace-context.test.js` | Context API tests |
-| `Navorina/src/utils/nucleus-paywall-prompt.ts` | Client prompts |
-| `Navorina/settings.html` | Plan settings |
-| `e2e/settings-billing-emulator.spec.ts` | E2E upgrade |
+## Invariants
 
-## Key docs
+- Worker `plan-entitlements.ts` / `plan-limits.ts` are executable truth; disabled UI is not security.
+- Free / Pro / Plus names, stored tiers and prices have one tested mapping; legacy aliases → Plus.
+- Copy sells only what is live; the rest says "soon" (`docs/product/PLANS.md`).
+- Plus sells "API and webhooks" (live, B4); `/api/v1` checks Plus on every call.
+- Plus sells "Team of 5 with roles" (live, Team 4a/4b; Company and Nonprofit workspaces); USDC and payouts still say "soon".
 
-- `docs/development/PLAN_RATE_LIMITING_PAYWALL.md`
-- `docs/planning/IMPROVEMENT_PLAN.md` (FM paywall sections)
-- `AGENTS.md` (Billing emulator, Settings → Plan)
+## Exclusions
 
-## Risks
+- Marketing claims without matrix support
+- Secrets and generated output
 
-- **premium = pro** — legacy Stripe naming
-- **Client-only gating** — must match server enforcement
+## Typical Outputs
 
-## Dependencies
-
-- billing-core (subscription state)
-- revenue-core (business impact)
-- assistant-core (AI feature gates)
-
-## AI summary
-
-Paywall truth: **`server/paywall/index.js`**. Plus = snapshots+brief+export; Pro = all AI + invoice email + crypto accept. Tier from Supabase or `BILLING_EMULATOR`. Client reads `GET /api/financial-mirror/workspace/context`.
+- Tier/feature, gating or packaging-mismatch review
 
 ## Sources
 
-- `server/paywall/index.js`
-- `server/paywall/tier-packaging.test.js`
-- `server/routes/financial-mirror-features.test.js`
-- `Navorina/src/utils/nucleus-paywall-prompt.ts`
-- `docs/development/PLAN_RATE_LIMITING_PAYWALL.md`
+| Type | Reference | Description |
+|---|---|---|
+| policy | cloudflare/worker/src/plan-entitlements.ts | Server gate |
+| plans | docs/product/PLANS.md | Packaging and copy |

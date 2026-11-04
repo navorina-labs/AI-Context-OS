@@ -1,83 +1,76 @@
 # Assistant Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | assistant-core |
+| version | 2.2.1 |
+| parent_core | product-core |
+| project | Navorina |
+| last_updated | 2026-10-18 |
+
 ## Purpose
 
-Контекст AI-ассистента: чат, Sphere, голос, AI usage limits, prompts, structured memory RAG. Subcore Product + Technical.
+Контекст Assistant chat, Sphere/voice, financial prompts, structured memory и AI quotas.
 
-## Covers
+## Scope
 
-- Assistant page: `assistant.html`, React mount
-- Chat: `chat.ts`, `Chat`, `ChatInput`, `ChatMessage`
-- 3D Sphere: `Sphere`, `sphere-microphone.ts`, `sphere-visibility.ts`
-- Voice: STT/TTS utils, audio analyzer
-- Message limits: `message-limits` settings
-- AI agents server-side: verdict, money leak, trade review, brief, OCR hints
-- AI limits: `ai-limits.js`, `fm-ai-usage.js`, per-tier monthly caps
-- Structured memory RAG: `structured-memory-prompt.js`, client sync
-- App Suite: command palette, in-app tool open (⌘K)
-- Prompts: `prompts.ts`
+### In Scope
 
-## Does not cover
+- `Navorina/assistant.html`, `Navorina/src/core/chat.ts`, React components и voice utilities
+- Product financial agents, prompts и structured-memory RAG
+- Tier gating, monthly usage limits и graceful degradation
 
-- Nucleus tab UI (non-chat) → Nucleus Core
-- Stripe billing → Billing Core
+### Out of Scope
 
-## Key entities
+- Non-chat Nucleus UI
+- Stripe lifecycle
+- Money-rail implementation
 
-| Сущность | Описание |
-|----------|----------|
-| **Sphere** | 3D particle visualization |
-| **fm-ai-usage** | Monthly AI call tracking |
-| **ai-limits.js** | Per-agent limits by tier |
-| **financial_verdict_ai** | Pro AI feature |
-| **structured memory** | RAG context for chat |
-| **appsuite-command-palette** | ⌘K tool search |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Assistant | Chat and voice surface |
+| Product agents | Financial verdicts, briefs, explanations and OCR hints |
+| AI limits | Tier/month usage enforcement |
+| Structured memory | User-scoped RAG context |
 
-| Путь | Роль |
-|------|------|
-| `Navorina/assistant.html` | Entry page |
-| `Navorina/src/core/chat.ts` | Chat engine |
-| `Navorina/src/components/Sphere.tsx` | 3D sphere |
-| `Navorina/src/utils/prompts.ts` | System prompts |
-| `Navorina/src/utils/message-limits.ts` | Chat limits |
-| `Navorina/src/utils/nucleus-structured-memory-hub.ts` | Memory hub |
-| `server/ai-limits.js` | Server limits |
-| `server/db/fm-ai-usage.js` | Usage DB |
-| `server/agents/` | LLM agents |
-| `Navorina/src/utils/appsuite-command-palette.ts` | Command palette |
+## Invariants
 
-## Key docs
+- Server enforces entitlement and quota; client visibility grants nothing.
+- Financial answers do not invent balances, transactions or provider state.
+- Memory is identity-bound and never crosses users.
+- Unavailable model/voice/quota produces an explicit recoverable state.
 
-- `docs/planning/DEVELOPMENT_PLAN_LLMs_in_Finance.md`
-- `docs/planning/AGENTS_ARCHITECTURE.md`
-- `docs/guides/VOICE_SETTINGS_GUIDE.md`
-- `docs/guides/AI_OPTIMIZATION_GUIDE.md`
-- `package.json` keywords (offline, ollama, whisper — legacy positioning)
+## Current Entitlement Snapshot
 
-## Risks
+- Free receives one monthly brief; Pro and Plus receive up to 100 AI briefs per
+  month under the canonical plan catalog.
+- Pro adds financial verdict, portfolio risk, money-leak, periodic review,
+  trade review and transaction explanation capabilities.
+- Plus additionally enables tax, batch categorization and crypto reconciliation
+  briefs. Unknown or exhausted capabilities fail closed on the server.
+- The customer UI must not expose internal agent diagnostics or imply model,
+  voice or memory availability before the corresponding contract resolves.
 
-- **API cost** — Pro users can hit limits (`ai-limits.js`)
-- **Chat vs Nucleus context** — roadmap says contextual AI in FM, not isolated chat
-- **Offline LLM setup** — docs mention ollama/whisper; may be stale vs cloud AI path
+## Exclusions
 
-## Dependencies
+- Legacy offline setup as product truth
+- Provider secrets and generated output
 
-- paywall-core (AI feature gates)
-- nucleus-core (FM context for RAG)
-- technical-core (AI routes)
+## Typical Outputs
 
-## AI summary
-
-Assistant = `assistant.html` + `chat.ts` + **Sphere** + voice utils. Server AI: `server/agents/*` guarded by **paywall** + **ai-limits.js**. Memory: structured-memory hub + RAG. For limits errors: check tier + `fm-ai-usage`. App Suite palette links tools — `appsuite-command-palette.ts`.
+- Chat/agent request trace
+- Quota or entitlement diagnosis
+- Prompt/memory boundary review
 
 ## Sources
 
-- `Navorina/assistant.html`
-- `Navorina/src/core/chat.ts`
-- `server/ai-limits.js`
-- `server/agents/`
-- `docs/planning/AGENTS_ARCHITECTURE.md`
-- `docs/planning/DEVELOPMENT_PLAN_LLMs_in_Finance.md`
-- `package.json`
+| Type | Reference | Description |
+|---|---|---|
+| architecture | docs/planning/AGENTS_ARCHITECTURE.md | Product agents |
+| client | Navorina/src/core/chat.ts | Chat engine |
+| limits | server/ai-limits.js | Quota policy |
+| agents | server/agents | Financial agents |

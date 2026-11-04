@@ -2,12 +2,13 @@
 
 ## UI-термины
 
-Обязательно: [`docs/planning/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md`](../../docs/planning/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md) — не merchant/account/settlement в интерфейсе.
+Обязательно: [`docs/planning/archive-legacy-2026-06/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md`](../../docs/planning/archive-legacy-2026-06/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md) — не merchant/account/settlement в интерфейсе.
 
 ## Карта флоу
 
-- [`docs/planning/CRYPTO_FIN_HUB_FLOW.md`](../../docs/planning/CRYPTO_FIN_HUB_FLOW.md)
-- Runey benchmark: [`docs/planning/RUNEY_BENCHMARK.md`](../../docs/planning/RUNEY_BENCHMARK.md)
+- [`docs/planning/systems/21-crypto-infrastructure.md`](../../docs/planning/systems/21-crypto-infrastructure.md)
+- [`docs/planning/archive-legacy-2026-06/CRYPTO_FIN_HUB_FLOW.md`](../../docs/planning/archive-legacy-2026-06/CRYPTO_FIN_HUB_FLOW.md)
+- Runey benchmark: [`docs/planning/archive-legacy-2026-06/RUNEY_BENCHMARK.md`](../../docs/planning/archive-legacy-2026-06/RUNEY_BENCHMARK.md)
 - i18n: `dashboard.cryptoPayments.*`
 
 ## API
@@ -22,9 +23,9 @@
 
 - `CRYPTO_PAYMENTS_EMULATOR=1` в `server/development.defaults.env` — intent без ключей партнёра; webhook header `x-crypto-payments-secret: dev-emulator`.
 - Partner stub: `CRYPTO_PAYMENTS_PARTNER_STUB=1` + `CRYPTO_PAYMENTS_EMULATOR=0` — [`docs/setup/LOCAL_CRYPTO_PAYMENTS.md`](../../docs/setup/LOCAL_CRYPTO_PAYMENTS.md).
-- Live sandbox: [`docs/planning/CP0_PARTNER_WHEN_READY.md`](../../docs/planning/CP0_PARTNER_WHEN_READY.md).
+- Live sandbox: [`docs/planning/archive-legacy-2026-06/CP0_PARTNER_WHEN_READY.md`](../../docs/planning/archive-legacy-2026-06/CP0_PARTNER_WHEN_READY.md).
 - Env: `CRYPTO_PAYMENTS_PROVIDER`, `CRYPTO_PAYMENTS_API_KEY`, `CRYPTO_PAYMENTS_WEBHOOK_SECRET`, опц. `CRYPTO_PAYMENTS_API_BASE`, `CRYPTO_PAYMENTS_PARTNER_STUB`, `CRYPTO_PAYMENTS_STORE_PATH`.
-- Спека: [`docs/planning/CP_CRYPTO_MERCHANT_B2B_SPEC.md`](../../docs/planning/CP_CRYPTO_MERCHANT_B2B_SPEC.md).
+- Спека: [`docs/planning/archive-legacy-2026-06/CP_CRYPTO_MERCHANT_B2B_SPEC.md`](../../docs/planning/archive-legacy-2026-06/CP_CRYPTO_MERCHANT_B2B_SPEC.md).
 
 ## UI surfaces
 

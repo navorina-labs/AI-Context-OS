@@ -1,76 +1,75 @@
 # Revenue Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | revenue-core |
+| version | 2.2.18 |
+| parent_core | business-core |
+| project | Navorina |
+| last_updated | 2026-10-26 |
+
 ## Purpose
 
-Контекст монетизации и revenue-метрик: что влияет на деньги, какие поверхности конвертируют, что можно убрать без revenue impact. Subcore Business Core.
+Контекст revenue drivers, subscription conversion, churn и monetization dependencies.
 
-## Covers
+## Scope
 
-- Тарифы free / plus / pro и revenue-bearing features
-- Поверхности: `subscribe.html`, Settings → Plan, paywall prompts
-- Revenue streams: Stripe subscriptions (Q2), Pro crypto invoicing, API-cost discipline
-- Метрики PRD: конверсия инструментов, Nucleus retention, assistant engagement
-- Аналитика: Amplitude (`amplitude-analytics.ts`), event tracking setup
-- Churn drivers: paywall gates, AI limits, integration gaps (no live keys)
-- «Что можно удалить» — фичи вне Plus/Pro matrix и non-goals
+### In Scope
 
-## Does not cover
+- Plus/Pro revenue-bearing features
+- Subscribe→paid→retained funnel
+- Product usage signals, AI/provider costs and live gaps
 
-- Webhook implementation → Billing Core
-- UI paywall components detail → Paywall Core
-- Full product module map → Product Core
+### Out of Scope
 
-## Key entities
+- Webhook implementation
+- Pixel-level pricing UI
+- Full product map
 
-| Сущность | Описание |
-|----------|----------|
-| **Plus** | Snapshots, brief, export, periodic review |
-| **Pro** | Full AI crew + invoice email + accept crypto |
-| **invoice_accept_crypto** | Pro-only revenue differentiator |
-| **monthly_brief_ai** | Plus+ digest AI |
-| **Amplitude** | Product analytics client |
-| **MRR / Upgrade Rate** | Roadmap goals (universe research dataset) |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| MRR | Live recurring subscription revenue |
+| Upgrade | Free→paid entitlement transition |
+| Retention | Repeated value after activation |
+| Paid feature | Tier-bound capability with measurable adoption |
 
-| Путь | Роль |
-|------|------|
-| `server/paywall/index.js` | Feature → tier matrix |
-| `server/paywall/tier-packaging.test.js` | Plus/Pro tests |
-| `Navorina/subscribe.html` | Pricing page |
-| `Navorina/src/utils/nucleus-paywall-prompt.ts` | Upgrade CTAs |
-| `Navorina/src/utils/amplitude-analytics.ts` | Analytics |
-| `Navorina/src/utils/nucleus-workspace-context-client.ts` | Tier in workspace context |
-| `server/services/workspace-context.js` | Server bundle |
+## Invariants
 
-## Key docs
+- Revenue separates payment state, entitlement, refund, churn and usage.
+- Emulator/test transactions are excluded from live MRR.
+- Paid proposals name tier, signal, expected effect and delivery cost.
+- Removal cannot cross revenue/retention dependency without evidence.
 
-- `docs/planning/PRD_NAVORINA.md` §2 (метрики)
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md` (принцип API-cost)
-- `docs/tracking/EVENT_TRACKING_SETUP.md`
-- `docs/planning/STRIPE_WHEN_READY.md`
-- `docs/development/PLAN_RATE_LIMITING_PAYWALL.md`
+## Current Monetization Snapshot
 
-## Risks
+- Conversion path is registration → explicit Free/compare choice → Plans →
+  Billing review → Stripe Checkout → signed webhook entitlement.
+- Pro monetizes connected data and recurring intelligence; Plus monetizes
+  operational execution, team workflows, invoice/payment rails and handoff.
+- Yearly pricing is $23/month equivalent for Pro and $79/month equivalent for
+  Plus; checkout and receipts retain the yearly billing interval.
+- Test/emulator activation proves workflow behavior but never counts as MRR or
+  controlled live-payment evidence.
 
-- **Нет единого revenue dashboard в репо** — метрики размазаны (Amplitude, Supabase events)
-- **Free tier generous** — monthly_snapshot true на free
-- **Crypto revenue blocked** — CP0 live ⬜
-- **Tool pages** — трафик без явной monetization path
+## Exclusions
 
-## Dependencies
+- Speculative revenue without product evidence
+- Secrets and generated data
 
-- business-core, paywall-core, billing-core
+## Typical Outputs
 
-## AI summary
-
-Revenue = **Stripe Plus/Pro** + **Pro-only** (crypto invoicing, full AI). Матрица: `server/paywall/index.js`. При падении revenue: (1) conversion subscribe→paid, (2) Pro feature usage, (3) churn после paywall hit, (4) live integration gaps. Удалять безопасно: non-goals PRD, level-3 planning docs, experiments — не Plus/Pro gates.
+- Revenue-driver/leakage analysis; Tier monetization assessment; Evidence-backed churn hypothesis
 
 ## Sources
 
-- `server/paywall/index.js`
-- `docs/planning/PRD_NAVORINA.md`
-- `docs/tracking/EVENT_TRACKING_SETUP.md`
-- `Navorina/src/utils/amplitude-analytics.ts`
-- `Navorina/src/utils/nucleus-paywall-prompt.ts`
-- `project-universe-research/src/data/navorina-universe.ts` (goals dataset)
+| Type | Reference | Description |
+|---|---|---|
+| scope | docs/planning/PRD_NAVORINA.md | Metrics and boundaries |
+| roadmap | docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md | Monetization state |
+| tracking | docs/tracking/EVENT_TRACKING_SETUP.md | Events |
+| packaging | server/paywall/index.js | Paid feature matrix |
+| plan | docs/planning/strategy/BUSINESS_PLAN_2026-10.md | Revenue layers, costs, 50/200/1000 scenarios, break-even |

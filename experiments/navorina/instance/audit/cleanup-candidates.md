@@ -1,58 +1,59 @@
-# Cleanup Candidates
+# Cleanup Registry
 
-Статус после pass 2 (2026-06-10).
+**Last reviewed:** 2026-08-15
 
-## Выполнено ✅
+Удаление выполняется только после определения canonical source, проверки
+tracked inventory и подтверждения, что target не является runtime dependency.
 
-### Pass 1
-| Путь | Действие |
-|------|----------|
-| `server/paywall.js` | Удалён |
-| `real-project-test/*.md` | → `docs/archive/real-project-test/` |
-| `docs/optimization/*` | → `docs/archive/optimization/` |
-| `THEME_ICONS_REVIEW.md` | → `docs/archive/reviews/` |
-| Agent integration | `AGENTS.md`, `AGENT_HUB`, Context OS managed instructions |
+## Выполнено
 
-### Pass 2
-| Путь | Действие |
-|------|----------|
-| `docs/planning/` level-3 (10 файлов) | → `docs/archive/planning/` |
-| `package.json` name | `ai-voice-assistant` → **`navorina`** |
-| `package.json` description/keywords | Обновлены под Crypto / Fin Hub |
-| `INDEX.md`, `MIGRATION_GUIDE.md`, `ROADMAP` | Ссылки на архив |
+| Pass | Результат |
+|---|---|
+| 2026-06 pass 1 | Удалён legacy `server/paywall.js`; prototypes cores перенесены в `docs/archive/real-project-test/`; agent workflow сведён к Context OS + AGENTS/Agent Hub boundaries |
+| 2026-06 pass 2 | Planning level-3 перенесён в archive; root package metadata сменена с voice assistant на Navorina Crypto / Fin Hub |
+| 2026-07 pass 3 | Design snapshots, legacy ideas, backup fragments и Universe research перенесены в canonical archive locations |
+| 2026-08 pass 4 | Project map обновлён для AgentsOS; root README очищен от legacy voice positioning; cores мигрированы на Context Agent metadata/quality contract; добавлены drift и graph configs |
 
-### Pass 3 (2026-06-11) — Context OS canon
+## Намеренно остаётся
 
-| Путь | Действие |
-|------|----------|
-| `context-os/CANON.md`, `MAINTENANCE.md` | Добавлены |
-| `context-os/ops/*.md` | Ops shards из AGENTS.md |
-| `AGENTS.md` | Сжат до индекса |
-| `context-os/validate.mjs` | `npm run context-os:validate` |
-| `context-os/eval-harness-tmp/` | Удалён (дубликат eval/) |
+| Путь | Решение | Контроль |
+|---|---|---|
+| `Navorina/dist-ts/` | Keep: compiled client artifacts подключаются текущими страницами | Build drift gates обязаны подтверждать соответствие `src/` |
+| `Navorina/experiments/gamified-dashboard-2d/` | Quarantine: tracked experiment вне PRD scope | Не включать в production navigation/build без отдельного product decision |
+| `docs/planning/cryptopay-screenshots/` | Keep: evidence для benchmark docs | Не загружать по умолчанию через router |
+| `docs/planning/runey-screenshots/` | Keep: evidence для benchmark docs | Не загружать по умолчанию через router |
+| `archive/`, `docs/archive/` | Keep: исторические evidence и rollback/reference material | Не считать current source of truth |
+| `docs/planning/NAVORINA_ROADMAP_TIMELINE.md` | Keep only as compatibility pointer | Current plan — `docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md` |
 
-### Pass 4 (2026-06-11) — CI + README + framework export
+## Локальные/generated targets
 
-| Путь | Действие |
-|------|----------|
-| `.github/workflows/context-os-ci.yml` | validate + router F1 gate |
-| `context-os/eval/router-baseline.json` | min F1 0.75 |
-| `README.md` | Сжат; legacy → archive |
-| `context-os/export-framework.mjs` | `npm run context-os:export-framework` |
+| Target | Статус | Причина |
+|---|---|---|
+| root `project-universe-research/` | Trashed 2026-08-15 | Неканонические `node_modules`, `dist`, `.DS_Store`; source остаётся tracked в `archive/research/project-universe-research/` |
+| root `prototypes/` | Trashed 2026-08-15 | Содержал только пустое дерево каталогов |
+| `build/`, `build-demo/`, `test-results/`, `tmp/`, `outputs/` | Regenerable | Удалять только как локальную cleanup-операцию, не как source migration |
 
-## Остаётся (не трогали)
+## Не удалять автоматически
 
-| Путь | Риск | Примечание |
-|------|------|------------|
-| `project-universe-research/` | low | Research UI |
-| `Navorina/experiments/gamified-dashboard-2d/` | low | Experimental |
-| `Navorina/dist-ts/` | medium | Compiled output in git |
-| `docs/planning/cryptopay-screenshots/` | low | Benchmark assets |
-| `docs/planning/runey-screenshots/` | low | Benchmark assets |
-| ~~`README.md` legacy voice block~~ | — | → `docs/archive/README_VOICE_ASSISTANT_LEGACY.md` (2026-06-11) |
-| `examples/navorina` в AI-Context-OS repo | — | External publish |
+- любой tracked source без replacement map;
+- `.env`, keys, runtime stores и user data только потому, что они ignored;
+- current handoff/roadmap при наличии старого документа с похожим названием;
+- generated artifacts, если production page прямо подключает их и build gate ещё
+  не подтверждён.
+
+## Verification
+
+```sh
+npm run context-os:validate
+npm --prefix agents-os/agents/context-agent run context-os -- doctor --root "$PWD"
+npm --prefix agents-os/agents/context-agent run context-os -- check --root "$PWD" --min-score 85
+```
 
 ## Sources
 
-- `docs/archive/README.md`
-- `docs/planning/INDEX.md` § Уровень 3
+| Type | Reference | Description |
+|---|---|---|
+| project map | context-os/audit/project-map.md | Canonical project/module classification |
+| planning | docs/planning/INDEX.md | Canonical and legacy planning layers |
+| architecture | docs/architecture/AGENTS_OS_WORKSPACE.md | Agent workspace boundaries |
+| inventory | .gitignore | Generated and local path policy |

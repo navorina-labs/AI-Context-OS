@@ -1,74 +1,81 @@
 # Onboarding Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | onboarding-core |
+| version | 2.3.115 |
+| parent_core | product-core |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Контекст активации: first value, welcome flow, workspace setup, Nucleus checklist/wizard, assistant onboarding. Subcore Product.
+Контекст signup, first value, onboarding checklist/wizard и guest→auth workspace merge.
 
-## Covers
+## Scope
 
-- Nucleus onboarding checklist (B4): income → expense → snapshot → invoice
-- Onboarding wizard (`nucleus-onboarding-wizard.ts`) + server test
-- Guest workspace merge (`test:nucleus-guest-workspace-merge`)
-- Auth/signup flow: `signup.html`, `auth.html`, Firebase
-- Workspace setup: FM init, `financial-mirror:ready` event
-- Assistant welcome message removal in chat
-- Setup guide pages: stripe, resend, push, xero, crypto-payments
-- Dev onboarding: `docs/setup/START_HERE.md`
+### In Scope
 
-## Does not cover
+- Auth/signup and fresh-user workspace readiness
+- Income→expense→snapshot→invoice activation path
+- Guest data merge and recovery states
 
-- Paywall conversion post-trial → Paywall Core
-- Full FM data model → Nucleus Core
+### Out of Scope
 
-## Key entities
+- Full ledger schema
+- Post-activation plan conversion
+- Developer onboarding
 
-| Сущность | Описание |
-|----------|----------|
-| **ONBOARDING_DISMISS_KEY** | localStorage dismiss |
-| **OnboardingStepId** | income, expense, snapshot, invoice |
-| **guest workspace** | Merge on signup |
-| **nucleus-onboarding-wizard** | Goal step wizard |
-| **TEST_CREDENTIALS** | Dev login |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Guest workspace | Pre-auth user data |
+| Verified identity | Active production Supabase user |
+| Workspace profile | Owner-scoped onboarding record persisted in D1 |
+| First value | Useful workspace outcome based on real user data |
+| Checklist | Activation path; it must reflect durable backend state |
 
-| Путь | Роль |
-|------|------|
-| `Navorina/src/utils/nucleus-onboarding-checklist.ts` | Dashboard checklist |
-| `Navorina/src/utils/nucleus-onboarding-wizard.ts` | Wizard UI |
-| `server/agents/nucleus-onboarding-wizard-goal.test.js` | Wizard test |
-| `Navorina/scripts/nucleus-guest-workspace-merge.test.mjs` | Guest merge |
-| `Navorina/signup.html` | Signup |
-| `Navorina/auth.html` | Auth |
-| `Navorina/src/utils/financial-mirror.ts` | Workspace init |
-| `e2e/nucleus-guest-workspace-merge.spec.ts` | E2E |
+## Invariants
 
-## Key docs
+- Merge targets only the currently verified identity.
+- Workspace readiness belongs to the active user, not stale prior state.
+- First value does not require every integration.
+- Failure preserves recoverable input and never reports premature success.
+- Authenticated workspace basics are persisted by the owner-scoped Cloudflare
+  onboarding contract before the first Dashboard visit.
+- A returning owner restores the existing workspace profile instead of seeing
+  a repeated fake setup or browser-only state.
+- Subscription activation is not part of onboarding while the core product is
+  still being completed.
+- Confirm link or 8-digit code signs in without the password again; expired links offer a resend.
+- The email confirmation link signs in on any device via `auth-confirm.html`.
+- K7: the sign-in email changes with Supabase's own `updateUser({ email })` and the session (secure change: a link to each address); `email_change` lands on `profile.html?email=changed` and the Worker's `GET /api/profile/email` moves Navorina's copies of the address.
+- Sign-up shows the email policy message from the pre-check and from the Supabase hook (403 → `NV_SIGNUP_EMAIL_REJECTED`); Google/Apple sign-ins skip the domain checks.
+- Setup asks 5–7 skippable chip questions, saves each step (D1 0054) and picks the first Dashboard step.
 
-- `docs/setup/START_HERE.md`
-- `docs/setup/AUTH_SETUP.md`
-- `Navorina/docs/setup/TEST_CREDENTIALS.md`
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md` (B4 onboarding)
+## Exclusions
 
-## Risks
+- Live provider onboarding
+- Paid conversion and generated data
 
-- **localStorage onboarding state** — persists across dev sessions (masks fresh-user UX)
-- **Fragmented entry points** — landing vs assistant vs nucleus (roadmap P1)
-- **Setup pages proliferation** — many *-setup.html without unified checklist
+## Typical Outputs
 
-## Dependencies
-
-- product-core, nucleus-core
-- operational-core (dev credentials)
-
-## AI summary
-
-Activation = **Nucleus checklist** (4 steps) + **guest→user workspace merge** + **FM ready event**. Keys in `nucleus-onboarding-checklist.ts`. Assistant: welcome message in `chat.ts`. Dev test user: `TEST_CREDENTIALS.md`. For «improve onboarding» — read checklist + wizard + roadmap B1–B7, not entire FM.
+- First-value blocker analysis
+- Merge safety review
+- Activation acceptance criteria
 
 ## Sources
 
-- `Navorina/src/utils/nucleus-onboarding-checklist.ts`
-- `Navorina/src/utils/nucleus-onboarding-wizard.ts`
-- `docs/setup/START_HERE.md`
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md`
-- `e2e/nucleus-guest-workspace-merge.spec.ts`
+| Type | Reference | Description |
+|---|---|---|
+| truth | docs/planning/CURRENT_PRODUCT_HANDOFF.md | Auth/merge behavior |
+| setup | docs/setup/START_HERE.md | Supported entry |
+| client | Navorina/src/utils/nucleus-onboarding-checklist.ts | Checklist |
+| client | Navorina/src/utils/cloudflare-preview-guidance.ts | Production workspace setup form |
+| api | cloudflare/worker/src/workspace-onboarding.ts | Owner-scoped workspace profile contract |
+| schema | cloudflare/worker/migrations/d1/0015_workspace_onboarding.sql | Durable workspace profile table |
+| tests | cloudflare/worker/test/workspace-onboarding-integration.test.mjs | Persistence, validation, auth and owner isolation |
+| e2e | e2e/nucleus-guest-workspace-merge.spec.ts | Merge journey |

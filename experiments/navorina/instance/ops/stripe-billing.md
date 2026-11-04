@@ -8,6 +8,6 @@
 
 ## Stripe (test mode / live)
 
-- Гайд: [`docs/setup/STRIPE_GEORGIA.md`](../../docs/setup/STRIPE_GEORGIA.md), чеклист: [`docs/planning/STRIPE_WHEN_READY.md`](../../docs/planning/STRIPE_WHEN_READY.md), страница `Navorina/stripe-setup.html` (Settings → Plan).
+- Гайд: [`docs/setup/STRIPE_GEORGIA.md`](../../docs/setup/STRIPE_GEORGIA.md), страница `Navorina/stripe-setup.html` (Settings → Plan).
 - При полном `STRIPE_*` эмулятор отключается; иначе checkout через эмулятор (см. выше).
 - Canonical paywall: `server/paywall/index.js`.

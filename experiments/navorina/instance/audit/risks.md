@@ -1,66 +1,61 @@
-# Risks
+# Current Risks
 
-Риски по четырём слоям — только из реальных данных репозитория.
+**Last reviewed:** 2026-08-15
 
-## Business risks
+Риски ниже описывают текущее состояние, а не исторический phase backlog.
 
-| Риск | Evidence | Impact |
-|------|----------|--------|
-| **CP0 live не подключён** | Roadmap: Receive ✅ pilot, ⬜ CP0 live | Нет реального crypto revenue |
-| **Stripe live blocked** | `STRIPE_WHEN_READY.md`, Georgia setup | MRR только через emulator в dev |
-| **Фрагментация entry points** | Roadmap § Аудит: landing, assistant, tools, Nucleus | Размытая активация и конверсия |
-| **API-cost vs subscription** | Roadmap принцип #5: API &lt; 10–20% подписки | Margin squeeze на Pro AI |
-| **Non-custody dependency** | PRD non-goals; CP через PSP | Partner risk, KYC delays (CP0 doc) |
-| **Tool traffic без monetization** | PRD persona «инструментщик»; roadmap P6 ⬜ | SEO traffic, низкий LTV |
+## Business
 
-## Product risks
+| Risk | Evidence | Impact |
+|---|---|---|
+| Live subscription cutover remains | Stripe account/readiness contracts exist; production webhook, entitlement and revenue/refund QA remain | Implemented billing does not yet prove recurring production revenue |
+| Crypto and fiat rails need controlled pilots | Direct-chain and provider-neutral contracts are implemented; live adapters/pilots remain gated | Core money journeys cannot be marketed as generally live |
+| GTM evidence is behind product operability | Founder cohorts and retention gates remain in current-year sequence | Risk of building breadth without proving repeated value |
+| Provider/compliance dependency | Fiat and crypto availability depends on written eligibility, adapters and approvals | Timeline and geographic scope remain externally constrained |
 
-| Риск | Evidence | Impact |
-|------|----------|--------|
-| **AI chat изолирован от FM** | Roadmap M1–M4; fragmented AI | Слабый sticky workflow |
-| **Treasury view ⬜ CFH4** | Roadmap North Star pillar 6 | Неполный command center UX |
-| **i18n drift** | `ru/`, `es/` partial mirrors | Broken locales, support burden |
-| **42 nucleus hubs** | `Navorina/src/utils/nucleus-*-hub.ts` | Cognitive load, inconsistent patterns |
-| **experiments/ в Navorina** | gamified-dashboard-2d | Scope creep |
-| **Paywall UX vs server mismatch** | paywall-core: client+server must align | False upgrade prompts or leaks |
+## Product
 
-## Technical risks
+| Risk | Evidence | Impact |
+|---|---|---|
+| Two product shells | Dashboard and Nucleus share capabilities but still have shell-specific adapters and remaining duplicate paths | Behavior and copy can drift |
+| Large Nucleus surface | 45 `nucleus-*-hub.ts` modules plus modern entry adapters | High cognitive load and inconsistent state handling |
+| Legacy regression surface remains locally | `nucleus-legacy-regression.html` is localhost-only pending final persistence evidence | Old behavior can be mistaken for current product truth |
+| i18n mirrors can drift | EN/RU/ES pages and copy contracts are not uniformly generated | Broken or inconsistent localized journeys |
+| Live-readiness language | Code, emulator, demo, pilot and production are separate states | Users/operators may infer availability that is not proven |
 
-| Риск | Evidence | Impact |
-|------|----------|--------|
-| **Firestore + Supabase + localStorage** | architecture, roadmap P4 | Data sync bugs, split brain |
-| ~~Legacy paywall.js~~ | Удалён 2026-06-10 | — |
-| **dist-ts in repo** | Compiled JS alongside src | Stale builds in prod |
-| **Dual auth documentation** | Firebase + Supabase migrations | Agent/dev confusion |
-| **Webhook failures** | stripe-billing.js, crypto webhooks | Tier/payment desync |
-| **Emulator ≠ prod** | development.defaults.env | False confidence from green CI |
-| **Long ci:local** | package.json single chain | Skipped checks before release |
+## Technical
 
-## Operational risks
+| Risk | Evidence | Impact |
+|---|---|---|
+| Multiple persistence layers | Firestore, Supabase, local stores and localStorage have different responsibilities | Isolation, restore and split-brain defects |
+| Compiled output is tracked | `Navorina/dist-ts/` coexists with TypeScript source | Stale client code if compile/build drift gates are skipped |
+| Money-rail complexity | Idempotency, reservations, migrations, reconciliation, webhooks and emergency controls cross domains | Small contract drift can create financial inconsistency |
+| AgentsOS migration is still active | Workspace source and root CI were added recently; standalone checkout is retained temporarily | Duplicate ownership or release assumptions |
 
-| Риск | Evidence | Impact |
-|------|----------|--------|
-| **Many integration keys** | INTEGRATIONS_WHEN_READY index | Partial prod config |
-| **OPS_SECRET exposure** | OPS_V0.md, RELEASE_CHECKLIST | Support API compromise |
-| **localStorage persists in dev** | Legacy IDE rules | Masked onboarding bugs |
-| **E2E flakiness** | Playwright + Firebase + dev stack | Blocked releases |
-| **Doc sprawl** | 229+ files in docs/, INDEX warns 37 planning | Agents read wrong source |
-| ~~Triple agent docs~~ | Сведено: context-os + AGENTS § + AGENT_HUB (2026-06-10) | — |
+## Operational
 
-## Cross-layer top 5 (priority)
+| Risk | Evidence | Impact |
+|---|---|---|
+| External credentials and approvals | Stripe, Push, Xero, crypto and fiat providers have separate readiness gates | Partial configuration can look like a complete release |
+| Demo/production confusion | Both environments are deployed, but demo is simulated and intentionally blocks live egress | Wrong environment may be used as live evidence |
+| Long aggregate verification | Full product, integrations, E2E and agent checks are independent and expensive | Developers may run an incomplete subset |
+| Documentation volume | 236+ Markdown files remain despite canonical routing | Stale documents can still override current evidence if routing is bypassed |
+| Context drift enforcement was previously absent | Context Agent found old routing schema and no drift config before 2026-08-15 migration | Future source changes need CI enforcement to keep cores trustworthy |
 
-1. **Live monetization blocked** (Stripe + CP0) — business + operational
-2. **Data layer fragmentation** (Firestore/Supabase/localStorage) — technical + product
-3. **Documentation sprawl** — operational + all cores
-4. **Entry point fragmentation** — product + onboarding
-5. ~~README legacy voice block~~ — archived `docs/archive/README_VOICE_ASSISTANT_LEGACY.md` (2026-06-11)
+## Priority order
+
+1. Complete controlled crypto/fiat pilots without weakening fail-closed gates.
+2. Complete Stripe production webhook, entitlement and revenue/refund evidence.
+3. Preserve identity/data isolation across every persistence adapter.
+4. Finish AgentsOS migration verification.
+5. Enforce Context Agent check, lifecycle and drift in root CI.
 
 ## Sources
 
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md`
-- `docs/planning/PRD_NAVORINA.md`
-- `docs/planning/INTEGRATIONS_WHEN_READY.md`
-- `docs/architecture/OVERVIEW.md`
-- `server/paywall.js`, `server/paywall/index.js`
-- `docs/planning/RELEASE_CHECKLIST.md`
-- `docs/planning/INDEX.md`
+| Type | Reference | Description |
+|---|---|---|
+| product truth | docs/planning/CURRENT_PRODUCT_HANDOFF.md | Shipped state and open evidence |
+| roadmap | docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md | Current sequence and live boundaries |
+| architecture | docs/architecture/OVERVIEW.md | Runtime contracts |
+| agents | docs/architecture/AGENTS_OS_WORKSPACE.md | Workspace migration status |
+| release | docs/planning/operations/release-checklist.md | Operational gates |

@@ -1,79 +1,66 @@
 # Billing Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | billing-core |
+| version | 2.2.14 |
+| parent_core | technical-core |
+| project | Navorina |
+| last_updated | 2026-10-26 |
+
 ## Purpose
 
-Контекст биллинга: Stripe Checkout, webhooks, subscription state, emulator, failed payments. Subcore Technical + Business.
+Контекст Stripe Checkout, webhooks, subscription state и billing emulator.
 
-## Covers
+## Scope
 
-- Stripe Plus/Pro checkout (`stripe-billing.js`)
-- Webhook → `user_subscriptions` (Supabase upsert)
-- Price IDs, tier normalization (`stripe-billing-tier.js`)
-- Billing emulator: instant upgrade in dev (`billing-emulator.js`)
-- File store: `server/.data/user-subscriptions.json`
-- Ops override: `PUT /api/ops/users/:userId/subscription`
-- CLI: `npm run subscription:upsert`
-- Smoke: `smoke:stripe-billing`, `smoke:billing-emulator`, `verify:q2-pilot`
-- Setup pages: `stripe-setup.html`
+### In Scope
 
-## Does not cover
+- Pro/Plus monthly and yearly checkout and price mapping
+- Signed webhook→subscription mutation
+- Local emulator/file store and billing verification
 
-- Feature matrix (what Plus unlocks) → Paywall Core
-- Crypto payments billing → Nucleus Core (CP*)
+### Out of Scope
 
-## Key entities
+- Feature packaging decisions
+- Crypto invoice settlement
+- Marketing pricing copy
 
-| Сущность | Описание |
-|----------|----------|
-| **STRIPE_SECRET_KEY** | Live Stripe |
-| **STRIPE_WEBHOOK_SECRET** | Webhook verify |
-| **BILLING_EMULATOR** | Dev mode flag |
-| **checkout session** | Plus/Pro purchase |
-| **user_subscriptions** | Supabase table |
-| **upsertUserSubscriptionByExternalId** | Webhook handler |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Checkout session | Server-created subscription purchase |
+| Stripe webhook | Signed lifecycle input |
+| Subscription store | Durable entitlement state |
+| Billing emulator | Development-only upgrade path |
 
-| Путь | Роль |
-|------|------|
-| `server/routes/stripe-billing.js` | Checkout + webhook |
-| `server/routes/stripe-billing-tier.js` | Tier/price resolution |
-| `server/routes/billing-emulator.js` | Dev billing API |
-| `server/db/upsert-user-subscription.js` | DB write |
-| `server/db/user-subscription-file-store.js` | Dev file store |
-| `scripts/smoke-stripe-billing.mjs` | Smoke |
-| `scripts/setup-stripe-check.mjs` | Env check |
-| `Navorina/stripe-setup.html` | Setup guide UI |
+## Invariants
 
-## Key docs
+- Signature/order validation precedes entitlement mutation.
+- Web Billing and the phone plan sheet open Checkout only when `/api/billing/status` says `checkoutEnabled` (phone: `setCheckoutOpen`).
+- M3: `STRIPE_MANAGED_PAYMENTS_ENABLED=1` adds `managed_payments[enabled]=true` to new Checkout Sessions (Stripe/Link is merchant of record, prices include tax); runbook `stripe-managed-payments-runbook.md`.
+- Pilot members (`pilot_access`, not revoked) have Plus for `PILOT_DAYS` from joining (`pilotPlanGrant`); paid or complimentary Plus wins; checkout sells from `paidTier`.
+- Funnel (D1 `funnel_events`, once per owner): `checkout_started` on a new Checkout Session, `subscription_paid` on grant, `subscription_canceled` when a paid plan ends; the weekly report adds paying now and MRR from `PLAN_PRICES`.
+- Server owns tier/price mapping; monthly and yearly prices are never
+  substituted for one another.
+- Emulator events never count as live revenue evidence.
+- Retries remain idempotent and user-bound.
 
-- `docs/setup/STRIPE_GEORGIA.md`
-- `docs/setup/LOCAL_BILLING_EMULATOR.md`
-- `docs/planning/STRIPE_WHEN_READY.md`
-- `context-os/ops/stripe-billing.md`
+## Exclusions
 
-## Risks
+- Secret values and customer data
+- Client-only entitlement logic
 
-- **Emulator auto-off** when full STRIPE_* set — can surprise devs
-- **Webhook failures** — tier desync between Stripe and Supabase
-- **Georgia business registration** — blocker for live Stripe (STRIPE_WHEN_READY)
-- **external_user_id** migration — Supabase schema drift
+## Typical Outputs
 
-## Dependencies
-
-- paywall-core (tier consumption)
-- operational-core (smoke/verify)
-- technical-core (env, routes)
-
-## AI summary
-
-Billing path: Settings → Plan → **Stripe Checkout** or **emulator** → webhook/upsert → `getUserTier`. Debug: check `BILLING_EMULATOR`, `server/.data/user-subscriptions.json`, `npm run smoke:billing-emulator`. Live: `STRIPE_WHEN_READY.md` + `setup:stripe-live-check`.
+- Checkout→webhook→tier trace, emulator vs production diagnosis
 
 ## Sources
 
-- `server/routes/stripe-billing.js`
-- `server/routes/billing-emulator.js`
-- `docs/setup/LOCAL_BILLING_EMULATOR.md`
-- `docs/planning/STRIPE_WHEN_READY.md`
-- `context-os/ops/stripe-billing.md`
-- `e2e/settings-billing-emulator.spec.ts`
+| Type | Reference | Description |
+|---|---|---|
+| route | cloudflare/worker/src/billing.ts | Checkout, webhook, subscription |
+| emulator | docs/setup/LOCAL_BILLING_EMULATOR.md | Local workflow |

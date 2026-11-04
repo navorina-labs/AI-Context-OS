@@ -1,108 +1,88 @@
 # Product Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | product-core |
+| version | 2.2.168 |
+| parent_core | null |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Продуктовый контекст: что такое Navorina, модули, страницы, пользовательские флоу, UX-рамки, глоссарий. Для вопросов «что строим», «какой экран», «какой модуль», «что ядро продукта».
+Определяет, что входит в Navorina, для кого строится продукт и какие
+пользовательские journeys являются каноническими.
 
-## Covers
+## Scope
 
-- Продуктовое резюме: ассистент + tools + Nucleus (Financial Mirror)
-- UX-принципы: calm fintech, progressive disclosure, anti-patterns
-- Модули PRD: маркетинг, ассистент, App Suite, Nucleus FM, инструменты, аккаунт
-- Nucleus hubs и слои (42 `nucleus-*-hub.ts` в `src/utils/`)
-- Crypto / Fin Hub оси в UI: Payments, Invoicing, Accounting, Insights, Time, Settings
-- i18n: `ru/`, `es/` path mirrors
-- Дизайн-система: токены, формы, Nucleus tabs
-- Глоссарий и терминология crypto UI
+### In Scope
 
-## Does not cover
+- Main Dashboard, Nucleus, Assistant и public/account surfaces
+- Payments, Invoicing, Accounting, Insights, Time и Settings
+- Product UX boundaries, onboarding и module ownership
+- EN/RU/ES product mirrors
 
-- Stripe webhooks, env keys → Billing Core
-- CI, smoke scripts → Release Core
-- Детали Firestore schema → Technical Core + Nucleus Core
-- Бизнес-метрики MRR/churn → Business Core + Revenue Core
+### Out of Scope
 
-## Key entities
+- Billing/webhook internals
+- CI и production secrets
+- Full database schema
 
-| Сущность | Описание |
-|----------|----------|
-| **Assistant** | `assistant.html` — чат + 3D Sphere + голос |
-| **Nucleus** | `nucleus.html` — hub Financial Mirror |
-| **Financial Mirror** | Доходы, расходы, snapshots, workspace |
-| **Magic Inbox** | Receipt intake + OCR hints |
-| **Invoicing** | Quotes, invoices, delivery, crypto accept |
-| **Payments** | Receive, Send, Treasury hub |
-| **Accounting** | Export, Xero, month close pack |
-| **Insights** | Briefing, digest, trade journal |
-| **Tools** | invoice, QR, calculators, document generators |
-| **Settings** | Plan, delivery, crypto compliance, security |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Main Dashboard | Balance/history и быстрые money actions |
+| Nucleus | Domain workspace вокруг Financial Mirror |
+| Assistant | Chat, Sphere, voice и financial context |
+| Financial Mirror | Ledger, snapshots и workspace state |
+| Tools | Generators и calculators вне core workspace |
 
-| Путь | Роль |
-|------|------|
-| `Navorina/nucleus.html` | Nucleus hub entry |
-| `Navorina/assistant.html` | Assistant entry |
-| `Navorina/index.html` | Landing |
-| `Navorina/settings.html` | Settings shell |
-| `Navorina/src/utils/financial-mirror.ts` | FM core client |
-| `Navorina/src/utils/nucleus-dashboard.ts` | Dashboard |
-| `Navorina/src/utils/nucleus-onboarding-checklist.ts` | Onboarding checklist B4 |
-| `Navorina/src/utils/nucleus-onboarding-wizard.ts` | Onboarding wizard |
-| `Navorina/css/variables.css` | Design tokens |
-| `Navorina/src/core/chat.ts` | Chat logic |
-| `Navorina/src/components/` | React: Chat, Sphere, widgets |
+## Invariants
 
-## Key docs
+- Это один продукт; Nucleus, Assistant и domain pages не отдельные проекты.
+- Dashboard и Nucleus используют общие capability/use-case contracts.
+- Money UI не показывает success без server capability и durable lifecycle.
+- Navorina не хранит private keys и не заявляет custody.
+- Carabaas (MPC-кастоди) — только sandbox и казна Navorina; кастодиальных кошельков пользователей нет до лицензии.
+- Регистрация с временных и несуществующих почтовых доменов блокируется на сервере (Supabase hook), не только в браузере.
+- `agents-os/` не входит в product runtime; finance agents остаются в `server/agents/`.
 
-- `docs/planning/PRD_NAVORINA.md`
-- `docs/planning/PBR_NAVORINA_V2.md` — IA v2 (Home / Get paid / Pay / Account)
-- `docs/planning/CRYPTO_FIN_HUB_FLOW.md`
-- `docs/design-system/UX_PRINCIPLES.md`
-- `docs/design-system/DESIGN_SYSTEM.md`
-- `docs/design-system/NAVORINA_BOLD_V3.md` — Bold v3 shell
-- `docs/planning/PBR_BOLD_V3_OVERLAYS.md` — sheet/drawer/search overlays
-- `docs/design-system/MOBILE_APP_SHELL.md` — mobile <= 800px
-- `docs/design-system/COMPONENT_MAP.md`
-- `docs/design-system/COMPONENT_LIBRARY.md`
-- `docs/design-system/NUCLEUS_TOKENS_COMPONENTS.md`
-- `docs/planning/FRONTEND_NUCLEUS.md`
-- `docs/planning/CP_CRYPTO_PAYMENTS_TERMINOLOGY.md`
-- `docs/reference/MOBBIN.md` — UI research (Mercury)
-- `docs/agents/AGENT_HUB.md` — UI workflow only
-- `docs/agents/AGENT_HUB.md`
+## Current Product Snapshot
 
-## Risks
+- Canonical customer plans are Free, Pro and Plus. Plans compares packages;
+  Billing owns checkout review, subscription status and return navigation.
+- Account Security: password, email sign-in links (`docs/auth/AUTH_EMAIL_FLOW.md`), passkeys, global sign-out; no 2FA,
+  recovery-code or device-history claims.
+- Empty and loading states fail closed: a lower tier never flashes paid metrics
+  or populated workspace data before entitlement resolution.
+- Settings, Help Center and integration surfaces expose only implemented
+  customer actions; operator diagnostics and fictional defaults are excluded.
+- Team is a Plus access-planning surface, not a live invitation system: saved
+  drafts do not create identities, grant access, send email or add paid seats.
 
-- **PRD vs код** — часть roadmap 🟡/⬜ ещё не в UI (Treasury CFH4, live CP0)
-- **Много nucleus hubs** — риск дублирования логики между layer/hub файлами
-- **Статические tool pages** — слабая связь с FM (roadmap P6)
-- **i18n drift** — EN/RU/ES зеркала могут расходиться
-- **experiments/** — `gamified-dashboard-2d` вне основного PRD scope
+## Exclusions
 
-## Dependencies
+- Archived prototypes и experiments
+- Generated builds/dependencies
+- Полные server implementation details
 
-- Business Core — scope и non-goals
-- Nucleus Core — FM детали
-- Assistant Core — чат/голос/AI UX
-- Onboarding Core — activation flows
-- Paywall Core — gated UI surfaces
+## Typical Outputs
 
-## AI summary
-
-Продукт = **Assistant** (чат+сфера) + **Nucleus** (FM workspace с табами Payments/Invoicing/Accounting/Insights) + **статические tools**. UX: calm fintech, оси Receive/Send/Account/Deliver. Перед UI-правками: `UX_PRINCIPLES.md`, `variables.css`, `COMPONENT_MAP.md`, `npm run mwg:search`. Shared header/footer — exact copy rule. Nucleus логика в `Navorina/src/utils/nucleus-*-hub.ts` и `financial-mirror.ts`.
+- Module/journey map
+- Feature scope recommendation
+- UI brief с canonical entry point
+- Product vs module vs experiment classification
 
 ## Sources
 
-- `docs/planning/PRD_NAVORINA.md`
-- `docs/planning/NAVORINA_ROADMAP_TIMELINE.md`
-- `docs/planning/PBR_NAVORINA_V2.md`
-- `docs/planning/CRYPTO_FIN_HUB_FLOW.md`
-- `docs/design-system/UX_PRINCIPLES.md`
-- `docs/design-system/DESIGN_SYSTEM.md`
-- `docs/design-system/NAVORINA_BOLD_V3.md`
-- `docs/design-system/MOBILE_APP_SHELL.md`
-- `docs/planning/FRONTEND_NUCLEUS.md`
-- `docs/agents/AGENT_HUB.md`
-- `Navorina/*.html` (инвентарь страниц)
-- `Navorina/src/utils/nucleus-*-hub.ts`
+| Type | Reference | Description |
+|---|---|---|
+| truth | docs/planning/CURRENT_PRODUCT_HANDOFF.md | Current journeys |
+| scope | docs/planning/PRD_NAVORINA.md | Modules and non-goals |
+| roadmap | docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md | Current status |
+| roadmap | docs/planning/NEXT_NO_KEYS_2026-10-21.md | Next batch with no third-party keys, ranked, in parallel chunks |
+| architecture | docs/architecture/OVERVIEW.md | Runtime boundaries |
+| design | docs/design-system/UX_PRINCIPLES.md | UX invariants |

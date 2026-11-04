@@ -1,128 +1,222 @@
-# Project Map
+# Карта проектов Navorina
 
-Сжатая карта репозитория `navorina`. Не исчерпывающий список файлов — группировка по смыслу.
+**Актуально на:** 2026-08-15
 
-## Верхний уровень
+**Назначение:** отделить самостоятельные проекты от модулей Navorina, deploy-контуров,
+служебных систем и архивных экспериментов.
 
-| Путь | Назначение |
-|------|------------|
-| `Navorina/` | Публикуемый фронт: HTML, CSS, TS, assets |
-| `server/` | Express API, agents, paywall, integrations |
-| `docs/` | Продукт, DS, setup, planning, security |
-| `e2e/` | Playwright specs |
-| `scripts/` | dev, build, smoke, verify, env |
-| `context-os/` | AI Context OS (эта система) |
-| `docs/archive/real-project-test/` | Архив прототипа cores |
-| `real-project-test/README.md` | Redirect stub → `context-os/` |
-| `project-universe-research/` | Research UI для universe model (не prod) |
-| `archive/` | Архивные ассеты |
-| `AGENTS.md` | Agent ops index → `context-os/ops/` |
-| `context-os/ops/` | Ops shards (API, smoke, env) |
+## Короткий ответ
 
-## Продуктовые модули
+В репозитории находится **один основной продукт — Navorina** и **пять
+переиспользуемых проектов AgentsOS** с независимыми зависимостями и проверками.
 
-### Marketing & account
-- `index.html`, `docs.html`, `contact.html`, `privacy.html`, `terms.html`
-- `auth.html`, `signup.html`, `reset-password.html`, `settings.html`, `subscribe.html`
-- Локали: `ru/`, `es/`
+| Уровень учёта | Итого | Что входит |
+|---|---:|---|
+| Пользовательские продукты | 1 | Navorina |
+| Самостоятельные engineering/release units | 6 | Navorina + 5 агентов AgentsOS |
+| Активные служебные системы | 1 | заполненный `context-os/` для Navorina |
+| Tracked research/experiments | 2 | Universe Engine archive + gamified dashboard |
 
-### Assistant
-- `assistant.html`
-- `src/core/chat.ts`, `src/components/` (Chat, Sphere)
-- Voice/utils: `sphere-*.ts`, `audioAnalyzer.ts`, `prompts.ts`
+`Nucleus`, `Assistant`, `Payments`, `Invoicing` и другие разделы ниже — это
+**модули Navorina**, а не отдельные проекты. `frontend`, `server`, `functions` и
+`functions-demo` — **deploy/runtime-контуры** одного продукта. `AgentsOS` —
+workspace-зонтик, но каждый агент внутри него сохраняет собственную границу
+версий, зависимостей, тестов и возможного релиза.
 
-### Nucleus / Financial Mirror
-- Entry: `nucleus.html`, `nucleus-dashboard.html`, `nucleus-budget.html`, `nucleus-income.html`, `nucleus-transactions.html`, `nucleus-taxes.html`
-- Core: `financial-mirror.ts`, `financial-mirror-firestore.ts`, `nucleus-dashboard.ts`
-- 42 hubs: `nucleus-*-hub.ts` (invoicing, billpay, magic inbox, accounting, crypto treasury, trade journal, …)
+## Общая карта
 
-### Tools (static)
-- `invoice.html`, `qr-generator.html`, `document-generator.html`, `quote-generator.html`, `proposal-generator.html`
-- `calculator/` subtree
-- App Suite utils (no `appsuite.html` page — utils only)
+```mermaid
+flowchart TD
+    R["Репозиторий navorina"]
 
-### Payer / public
-- `invoice-pay.html`, `crypto-checkout.html`, `contact-form.html` (noindex)
+    R --> P["Navorina — основной продукт"]
+    P --> PF["Web frontend"]
+    P --> PA["Financial API"]
+    P --> PC["Production Functions"]
+    P --> PD["Isolated demo sandbox"]
+    P --> PM["Продуктовые финансовые AI-агенты"]
 
-### Integration setup pages
-- `stripe-setup.html`, `resend-setup.html`, `push-setup.html`, `xero-setup.html`, `crypto-payments-setup.html`
+    R --> AO["AgentsOS — изолированный workspace"]
+    AO --> AC["Context Agent"]
+    AO --> AD["Design Agent"]
+    AO --> AM["Marketing & SEO Agent"]
+    AO --> AS["Safety Agent"]
+    AO --> AE["Mail Agent"]
 
-## Технические модули (server)
+    R --> CO["context-os — контекст Navorina"]
+    AC -. "framework / CLI" .-> CO
+    CO -. "описывает и маршрутизирует" .-> P
 
-| Модуль | Путь |
-|--------|------|
-| API entry | `financial-api-server.js` |
-| Paywall | `paywall/index.js`, `ai-limits.js` |
-| Billing | `routes/stripe-billing.js`, `routes/billing-emulator.js` |
-| Workspace | `services/workspace-context.js`, `routes/financial-mirror-workspace-context*` |
-| FM REST | `db/financial-mirror-rest.js`, `financial-mirror/` |
-| Invoicing | `routes/financial-mirror-invoicing*` |
-| Crypto | `routes/financial-mirror-crypto-payments*`, `services/crypto-payments-*` |
-| Digest/Email | `services/digest-email.js`, `services/resend-*` |
-| Push | `services/web-push-*` |
-| Xero | `routes/xero-accounting.js` |
-| Ops | `routes/ops.js`, `middleware/ops-auth.js` |
-| AI agents | `server/agents/*.js` (20+ agents) |
-| Contact | `routes/contact.js` |
+    R --> X["Research и experiments"]
+    X --> XU["Universe Engine — archive"]
+    X --> XG["Gamified Dashboard 2D"]
 
-## Документация (ключевые)
+    AO -. "не входит в runtime" .-> P
+    PM -. "не является частью AgentsOS" .-> AO
+```
 
-| Кластер | Путь |
-|---------|------|
-| Agent workflow | `docs/agents/AGENT_HUB.md`, `MODERN_WEB_GUIDANCE.md` |
-| Planning L1 | `docs/planning/PRD_NAVORINA.md`, `NAVORINA_ROADMAP_TIMELINE.md`, `INDEX.md` |
-| Design system | `docs/design-system/*` |
-| Architecture | `docs/architecture/OVERVIEW.md`, `DATA_STORAGE_AND_FLOW.md` |
-| Setup | `docs/setup/START_HERE.md`, `LOCAL_DEV_EMULATORS.md` |
-| Release | `docs/planning/RELEASE_CHECKLIST.md`, `INTEGRATIONS_WHEN_READY.md` |
-| Firebase | `docs/firebase/FINANCIAL_MIRROR_FIRESTORE.md` |
-| Security | `docs/security/*` |
+## 1. Navorina — основной продукт
 
-## Интеграции
+**Что это:** Crypto / Fin Hub для freelancers и небольших команд: финансовый
+workspace, invoicing, receive/send, учёт, month close и AI-помощник.
 
-| Сервис | Client | Server | Setup doc |
-|--------|--------|--------|-----------|
-| Firebase Auth/FM | `financial-mirror-firestore.ts` | nucleus-firebase-verify | `AUTH_SETUP.md` |
-| Supabase | migrations in `Navorina/supabase_migrations/` | `db/supabase-client.js` | security docs |
-| Stripe Q2 | `stripe-setup.html` | `stripe-billing.js` | `STRIPE_WHEN_READY.md` |
-| Resend M2 | `resend-setup.html` | `resend-email-emulator.js` | `RESEND_WHEN_READY.md` |
-| Web Push M3 | `push-setup.html` | `web-push-delivery.js` | `PUSH_WHEN_READY.md` |
-| Crypto CP* | `crypto-payments-setup.html` | crypto-payments routes | `CP0_PARTNER_WHEN_READY.md` |
-| Xero I4 | `xero-setup.html` | `xero-accounting.js` | `XERO_WHEN_READY.md` |
+**Продуктовая модель:** один продукт с несколькими пользовательскими областями и
+двумя основными оболочками — Main Dashboard и Nucleus. Деньги и операции должны
+проходить через общие capability/use-case contracts; оболочки не должны иметь
+две независимые реализации одного действия.
 
-## API (основные префиксы)
+**Корень:** репозиторий целиком; основной клиентский исходник — `Navorina/`.
 
-- `GET/POST /api/financial-mirror/*` — workspace, AI, digest, push, features
-- `GET/POST /api/financial-mirror/invoicing/*` — invoicing, email, reminders
-- `GET/POST /crypto-payments/*` — register, intent, checkout, webhook, audit
-- `POST /crypto-payouts/*` — submit, list, webhook
-- `GET/POST /api/accounting/xero/*` — OAuth, journal push
-- `GET/PUT /api/ops/*` — subscription override, integrations summary
+### Продуктовые модули Navorina
 
-## Тесты
+| Модуль | Назначение | Основные точки входа |
+|---|---|---|
+| Marketing и account | Лендинг, auth, signup, подписка, настройки, legal/help | `Navorina/index.html`, `auth.html`, `signup.html`, `settings.html`, `subscribe.html` |
+| Main Dashboard | Баланс, история и быстрые Deposit / Send / Swap / Buy / Invoice | `Navorina/dashboard.html` |
+| Nucleus / Financial Mirror | Финансовый workspace, ledger, snapshots и доменная навигация | `Navorina/nucleus.html`, `Navorina/src/utils/financial-mirror.ts` |
+| Payments | Receive, Send, crypto collections, treasury и payout flows | `Navorina/payments.html`, `nucleus-*-payments*.ts`, `nucleus-*-treasury*.ts` |
+| Invoicing | Quotes, invoices, payment links, partial pay, crypto accept и reminders | `Navorina/invoicing.html`, `invoice-pay.html`, `crypto-checkout.html` |
+| Accounting | Импорт банковских файлов, journal, export, Xero и month close pack | `Navorina/accounting.html`, `nucleus-accounting-*.ts` |
+| Insights | Weekly Briefing, alerts, AI summaries и Trade Journal | `Navorina/insights.html`, `nucleus-trade-journal-*.ts` |
+| Assistant | Чат, voice/sphere и финансовый intent routing | `Navorina/assistant.html`, `Navorina/src/core/chat.ts`, `Navorina/src/components/` |
+| Tools | Invoice/quote/proposal/document/QR generators и calculators | `Navorina/*-generator.html`, `Navorina/calculator/` |
+| Settings и delivery | Tier, security, email, push, crypto compliance и integration setup | `Navorina/settings.html`, `*-setup.html` |
 
-| Слой | Где |
-|------|-----|
-| Nucleus unit | `Navorina/scripts/nucleus-*.test.mjs` |
-| Server unit | `server/**/*.test.js` |
-| Root smoke | `scripts/smoke-*.mjs`, `scripts/verify-*-pilot.mjs` |
-| E2E | `e2e/*.spec.ts` |
-| CI aggregate | `npm run ci:local`, `pre:release` |
+Это модульная декомпозиция продукта. Она **не означает десять отдельных
+репозиториев, компаний или release trains**.
 
-## Скрипты (группы)
+### Runtime и deploy-контуры Navorina
 
-- **Dev:** `dev-all.sh`, `dev-verify.mjs`
-- **Build:** `build-production.cjs`
-- **Smoke:** `smoke-*.mjs` (per integration)
-- **Verify:** `verify-*-pilot.mjs`, `setup-*-check.mjs`
-- **Env:** `env-pull.mjs`, `netlify-env-import.mjs`
-- **Data:** `firestore-sync-*.cjs`, `seed-*.cjs`
+| Контур | Путь | Роль | Самостоятельный продукт? |
+|---|---|---|---|
+| Web frontend | `Navorina/` | HTML/CSS/TS, локали и assets; production build | Нет |
+| Financial API | `server/` | Authenticated API, FM, money rails, billing, integrations и cron | Нет |
+| Production Functions | `functions/` | Firebase Functions proxy/entry для production | Нет |
+| Product AI agents | `server/agents/` | Финансовые summaries, verdicts, explanations и reconciliation | Нет; доменный слой Navorina |
+| Browser E2E | `e2e/` | Playwright journeys и live/emulator gates | Нет; verification layer |
 
-## Sources
+### Главные внешние зависимости
 
+| Направление | Сервисы / механизм | Текущая граница |
+|---|---|---|
+| Identity и product data | Firebase, Firestore | Принадлежат runtime Navorina |
+| Durable server data | Supabase/Postgres + локальные stores/emulators | Не отдельный продукт |
+| Billing | Stripe | Live cutover отделён от наличия кода/emulator |
+| Delivery | Resend, Web Push | Отдельные readiness gates |
+| Accounting | Xero | Интеграция Navorina |
+| Money rails | direct-chain Base, crypto providers, fiat providers, Stripe Connect | Fail closed до соответствующего controlled/live pilot |
+
+## 2. AgentsOS — workspace переиспользуемых агентов
+
+**Что это:** организационный workspace внутри Navorina. Он не включён в корневой
+npm workspace и не является частью product runtime. У каждого агента свои
+dependencies, тесты, версии и release boundary.
+
+**Корень:** `agents-os/`
+
+**Общая проверка:** `npm run agents-os:verify`
+
+**Архитектурная граница:** `docs/architecture/AGENTS_OS_WORKSPACE.md`
+
+| Проект | Путь | Что делает | Тип |
+|---|---|---|---|
+| Context Agent | `agents-os/agents/context-agent/` | Framework и CLI для context cores, routing, validation, eval и drift checks | Node.js CLI/framework |
+| Design Agent | `agents-os/agents/design-agent/` | UI/UX specification, critique, design-system knowledge и verification workflow | Skill + Python tooling/evals |
+| Marketing & SEO Agent | `agents-os/agents/marketing-agent/` | Positioning, SEO/content/conversion audits и growth plans | Skill + Python auditor |
+| Safety Agent | `agents-os/agents/safety-agent/` | Crypto lifecycle posture, PQC, threat models, scanning и policy gates | TypeScript CLI |
+| Mail Agent | `agents-os/agents/mail-agent/` | Temporary inboxes, OTP/magic-link QA, MCP/REST и communication workflows | Independently deployable Cloudflare service |
+
+### Жёсткие границы AgentsOS
+
+- reusable agents не импортируют продуктовый код Navorina;
+- финансовое поведение Navorina остаётся в `server/agents/` и domain services;
+- корневой релиз Navorina не означает релиз любого агента;
+- `agents-os/.github/workflows/` — migration references; исполняются только
+  workflows из корневого `.github/workflows/`;
+- Mail Agent может иметь собственный runtime, домены и клиентов, поэтому его
+  миграция домена ведётся отдельно от Navorina.
+
+## 3. Context OS Navorina — служебная система, не новый продукт
+
+**Путь:** `context-os/`
+
+Это заполненный экземпляр Context OS именно для этого репозитория: router,
+business/product/technical/operational cores, узкие subcores, audit и eval.
+Framework и CLI находятся отдельно в `agents-os/agents/context-agent/`.
+
+```text
+Context Agent framework/CLI
+        ↓ создаёт, проверяет и обслуживает
+context-os/ instance Navorina
+        ↓ маршрутизирует вопросы к
+business / product / technical / operational cores
+```
+
+Поэтому `context-os/` учитывается как активная служебная система, но не как
+седьмой релизуемый продукт.
+
+## 4. Research, prototypes и experiments
+
+| Объект | Канонический путь | Статус | Пояснение |
+|---|---|---|---|
+| Universe Engine / Project Universe Research | `archive/research/project-universe-research/` | Архивный research prototype | Проверял nested living systems и AI Context Snapshot; не production runtime |
+| Gamified Dashboard 2D | `Navorina/experiments/gamified-dashboard-2d/` | Experimental | Альтернативный UI-концепт вне основного PRD scope |
+
+Локальные каталоги `project-universe-research/` и `prototypes/`, если они есть в
+рабочем checkout, не являются каноническими tracked-проектами. Каноническая
+версия Universe research уже перенесена в `archive/research/`.
+
+## 5. Что не считать отдельными проектами
+
+| Категория | Примеры | Почему не проект |
+|---|---|---|
+| Generated output | `build/`, `build-demo/`, `Navorina/dist-ts/`, `functions*/dist/` | Результат сборки исходного проекта |
+| Runtime/local data | `server/.data/`, `test-results/`, `outputs/`, `tmp/` | Локальное состояние, отчёты или временные файлы |
+| Documentation systems | `docs/`, `context-os/graph/`, `context-os/eval/` | Описывают или проверяют проекты |
+| Test layers | `tests/`, `e2e/`, `Navorina/scripts/*.test.mjs` | Проверяют runtime, но не поставляются как продукт |
+| Integration setup pages | `stripe-setup.html`, `xero-setup.html`, другие `*-setup.html` | Экраны и runbooks одного продукта |
+| Product domains | Nucleus, Assistant, Payments, Invoicing, Accounting, Insights | Модули Navorina с общей product/release boundary |
+
+## 6. Карта каталогов верхнего уровня
+
+| Путь | Владелец / назначение |
+|---|---|
+| `Navorina/` | Клиент основного продукта |
+| `server/` | API и доменная логика основного продукта |
+| `functions/` | Production Firebase Functions |
+| `functions-demo/` | Изолированные demo Firebase Functions |
+| `agents-os/` | Пять reusable agent projects |
+| `context-os/` | Контекстная модель этого репозитория |
+| `docs/` | Product, architecture, design, setup, security и planning docs |
+| `scripts/` | Root build/smoke/verify/deploy orchestration |
+| `e2e/`, `tests/` | Browser и integration verification |
+| `archive/` | История, snapshots и research; не current source of truth |
+| `Navorina/experiments/` | Необязательные product experiments |
+
+## 7. Правило добавления нового проекта
+
+Новый каталог считается самостоятельным проектом, только если у него есть
+большинство следующих признаков:
+
+1. отдельная цель и аудитория;
+2. собственный manifest или явный executable contract;
+3. независимые dependencies и verification commands;
+4. собственная release/deploy boundary;
+5. явно описанный владелец и границы импорта;
+6. он не является generated output, тестовой фикстурой или модулем Navorina.
+
+Если этих признаков нет, новый код следует классифицировать как модуль Navorina,
+часть существующего агента, эксперимент или служебный слой — без создания ещё
+одного псевдопроекта.
+
+## Источники истины
+
+- `context-os/cores/product-core.md`
+- `context-os/cores/business-core.md`
+- `docs/planning/CURRENT_PRODUCT_HANDOFF.md`
+- `docs/planning/roadmap/2026-CURRENT-YEAR-PLAN.md`
 - `docs/architecture/OVERVIEW.md`
-- `docs/planning/INDEX.md`
-- `package.json`
-- `AGENTS.md`
-- `Navorina/*.html`
-- `server/financial-api-server.js`
+- `docs/architecture/AGENTS_OS_WORKSPACE.md`
+- `agents-os/AGENTS.md`
+- `package.json` и вложенные manifests
+- tracked file inventory (`git ls-files`)

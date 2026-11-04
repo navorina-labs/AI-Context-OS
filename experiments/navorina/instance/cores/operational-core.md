@@ -1,92 +1,95 @@
 # Operational Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | operational-core |
+| version | 2.2.118 |
+| parent_core | null |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Операционный контекст: dev workflow, эмуляторы, smoke/e2e, release, ops API, env management. Для вопросов «как запустить», «как проверить», «что перед деплоем», «как дебажить без keys».
+Определяет поддерживаемые dev, emulator, verification, environment и
+independent AgentsOS workflows.
 
-## Covers
+## Scope
 
-- Dev: `npm run dev`, порты 5501/3001, полное обновление страницы
-- Dev wipe rules: cookie/SW сброс при restart; localStorage сохраняется
-- Эмуляторы: billing, Resend, Push, crypto payments/payouts
-- Pilot verification: `verify:*-pilot`, `setup:*-check`, `setup:*-live-check`
-- CI local: `ci:local`, `ci:local:full`, `pre:release`
-- E2E: Playwright в `e2e/`, `ci:local:e2e`
-- Ops v0: `OPS_SECRET`, support tier CLI
-- Env pull: `env:pull`, Supabase/Netlify scripts
-- Release checklist и integration when-ready docs
+### In Scope
 
-## Does not cover
+- `npm run dev`, emulators и local verification
+- Integration pilots, readiness checks, E2E и release inputs
+- Demo sandbox isolation и Ops surfaces
+- AgentsOS install/verify boundary
 
-- Продуктовый scope фич → Business/Product Core
-- Детали Stripe API → Billing Core
-- FM business logic → Nucleus Core
+### Out of Scope
 
-## Key entities
+- Product feature scope
+- Domain implementation details
+- Billing policy
 
-| Сущность | Описание |
-|----------|----------|
-| **dev-all.sh** | Vite + server + defaults |
-| **development.defaults.env** | BILLING/RESEND/PUSH/CRYPTO emulators = 1 |
-| **pre:release** | Full pre-release gate |
-| **verify:integrations-pilot** | CP+Q2+Delivery+Xero без live keys |
-| **nucleus-ci.yml** | GitHub CI workflow |
-| **OPS v0** | Support API + digest dry-run |
-| **TEST_CREDENTIALS** | Firebase test login |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Dev emulators | Billing, Resend, Push и money-rail substitutes |
+| Integration pilot | Evidence without general live availability |
+| Demo sandbox | Isolated simulated environment |
+| Readiness gate | Exact environment/capability verification |
+| AgentsOS verify | Independent reusable-agent checks |
 
-| Путь | Роль |
-|------|------|
-| `scripts/dev-all.sh` | Dev orchestration |
-| `scripts/pre-release.mjs` | Pre-release runner |
-| `scripts/verify-integrations-pilot.mjs` | Integration pilot |
-| `scripts/smoke-*.mjs` | Smoke tests |
-| `server/development.defaults.env` | Dev emulator defaults |
-| `server/.env.example` | Env template |
-| `e2e/README.md` | Playwright guide |
-| `.github/workflows/nucleus-ci.yml` | CI |
-| Legacy IDE rules | Dev cookie/SW notes |
+## Invariants
 
-## Key docs
+- Emulator, sandbox, pilot и production — разные evidence states.
+- Production money rails fail closed without exact readiness and approvals.
+- Demo не получает production data, credentials или live-rail egress.
+- Secrets не коммитятся и не выводятся; ротация через `scripts/rotate-secret.sh`.
+- Disposable-список обновляется `node scripts/update-disposable-domains.mjs` (pinned commit, PR); откат sign-up hook — выключить hook в Supabase.
+- AgentsOS не добавляется в root dependency graph автоматически.
 
-- `docs/setup/START_HERE.md`
-- `docs/setup/LOCAL_DEV_EMULATORS.md`
-- `docs/setup/LOCAL_BILLING_EMULATOR.md`
-- `docs/setup/LOCAL_RESEND_EMULATOR.md`
-- `docs/setup/LOCAL_PUSH_EMULATOR.md`
-- `docs/setup/LOCAL_CRYPTO_PAYMENTS.md`
-- `docs/planning/RELEASE_CHECKLIST.md`
-- `docs/planning/INTEGRATIONS_WHEN_READY.md`
-- `docs/planning/OPS_V0.md`
-- `Navorina/docs/setup/TEST_CREDENTIALS.md`
+## Current Verification Snapshot
 
-## Risks
+- `npm run pre:release` is the canonical local aggregate gate: AI baseline,
+  unit/integration pilot, core operability and current release E2E.
+- Release browser coverage contains 24 current customer journeys; heavy
+  passkey payment scenarios are serialized and use explicit external fixtures.
+- Product routes at <=800px redirect to `Navorina/mobile.html`; e2e that assert the
+  narrow web layout pass `desktop=1`.
+- Production builds verify referenced assets, including the tracked Labs motion
+  videos; ignored local media does not satisfy the build contract.
+- Live Stripe purchases/refunds, production delivery, Xero authorization and
+  money rails remain manual HOLD evidence even when local gates are green.
+- Provider keys go in only by the owner's hidden-input `scripts/put-*-secrets.sh`.
+- Carabaas sandbox: `node scripts/carabaas-sandbox.mjs keygen`, then `setup` (key in `~/.navorina/carabaas`, subscribes `incoming` + `outgoing`, canary secret `CARABAAS_CREDENTIALS` with `treasury`), `address --network tron-shasta`, `send` (one testnet order; demo quorum 0/0, no cosigner). E2E: `e2e/local/treasury.spec.ts` (personas `treasury` operator, `treasurynone`).
+- Preview/canary auth uses its own Supabase project
+  (`scripts/apply-preview-supabase-secrets.mjs`); `cloudflare-preview-auth-isolation`
+  and the readiness gate fail if preview points at production again.
+- Auth emails: `scripts/apply-auth-email-templates.mjs` (dry run, preview by default; `--production` explicit).
+- Email previews: `node scripts/build-email-templates.mjs` rewrites the DS Emails section and Supabase templates; `--check` runs in the Worker and DS tests.
+- Onboarding-writes UI verify drafts the invoice in the editor drawer.
+- Release E2E includes the segmentation onboarding (`e2e/onboarding-segmentation.spec.ts`).
 
-- **Emulator ≠ production** — успех smoke не гарантирует live keys
-- **Длинный ci:local** — много последовательных smoke; легко пропустить блок
-- **OPS_SECRET** — production-only, не коммитить
-- **E2E flakiness** — Playwright зависит от dev stack и Firebase
-- **localStorage persistence** — dev state может маскировать баги onboarding
+## Exclusions
 
-## Dependencies
+- Secret values
+- Generated output/local data
+- Product roadmap decisions
 
-- Technical Core — что именно тестируется
-- Release Core — детальный release gate
-- Billing Core — Stripe/emulator smoke
+## Typical Outputs
 
-## AI summary
-
-Локально: `npm install` → `npm run dev` → full page reload. Без keys работают **эмуляторы** из `server/development.defaults.env`. Перед релизом: `npm run pre:release` или `ci:local:full` + `verify:integrations-pilot`. Интеграции: `INTEGRATIONS_WHEN_READY.md`. Ops: `OPS_V0.md` + `npm run smoke:ops-api`. Не просить пользователя чистить cookies — достаточно restart dev + hard refresh.
+- Minimal dev/emulator workflow
+- Environment-specific verification checklist
+- Readiness-gap diagnosis
+- Narrow AgentsOS install/test sequence
 
 ## Sources
 
-- `AGENTS.md`
-- `docs/setup/START_HERE.md`
-- `docs/setup/LOCAL_DEV_EMULATORS.md`
-- `docs/planning/RELEASE_CHECKLIST.md`
-- `docs/planning/OPS_V0.md`
-- `docs/planning/INTEGRATIONS_WHEN_READY.md`
-- `package.json` (scripts)
-- Legacy IDE rules (not exported)
-- `e2e/README.md`
+| Type | Reference | Description |
+|---|---|---|
+| setup | docs/setup/START_HERE.md | Supported local entry |
+| emulators | docs/setup/LOCAL_DEV_EMULATORS.md | No-key workflow |
+| release | docs/planning/operations/release-checklist.md | Release gate |
+| integrations | docs/planning/operations/integrations/integrations-index.md | Readiness map |
+| agents | docs/architecture/AGENTS_OS_WORKSPACE.md | Agent operations boundary |

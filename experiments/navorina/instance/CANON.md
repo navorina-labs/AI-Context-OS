@@ -12,13 +12,15 @@
                          docs/agents/AGENT_HUB.md (workflow, не списки доков)
 ```
 
-**Default eval lane (Phase 2.1):** Condition **C** (graph retrieval) + **semantic router** — лучший trust profile (hallucination ~7%).
+**Default routing lane:** versioned keyword router + routed core Sources. Semantic
+routing is optional and must not use a stale embeddings index; rebuild it only
+with a valid configured embedding provider and re-run the same question bank.
 
 ## Иерархия при конфликте
 
 1. **Код** (`Navorina/css/variables.css`, `server/paywall/index.js`, routes)
 2. `docs/design-system/DESIGN_SYSTEM.md`
-3. Planning **уровень 1** (`docs/planning/INDEX.md` § обязательно)
+3. Planning **уровень 1** (`docs/planning/vision/04-century-charter.md` + `README.md` + `roadmap/2026-CURRENT-YEAR-PLAN.md`)
 4. **Cores** (`context-os/cores/`, `context-os/subcores/`)
 5. **Ops shards** (`context-os/ops/`)
 6. `docs/reference/`, archive
@@ -32,11 +34,12 @@
 | `context-os/ops/*.md` | API, smoke, env, эмуляторы (бывший AGENTS.md §) |
 | `docs/agents/AGENT_HUB.md` | UI/UX workflow (шаги 0–5) |
 | `AGENTS.md` | Короткий индекс → router + ops shards |
+| `.cursor/skills/navorina/SKILL.md` | Правила вёрстки; доки — в product-core **Sources** |
 
 ## Не читать по умолчанию
 
 - Весь `AGENTS.md` целиком — только нужный ops shard
-- Все 37 файлов `docs/planning/` — только INDEX level 1 + core **Key docs**
+- Все файлы `docs/planning/` — только README + текущий год + core **Key docs**
 - `docs/archive/planning/PHASE*`, `docs/archive/optimization/`
 - `docs/archive/real-project-test/` (заменён `context-os/`)
 
@@ -45,8 +48,10 @@
 | Задача | Читать |
 |--------|--------|
 | Правка `Navorina/**` | router → `product-core` / `nucleus-core` → AGENT_HUB §2 |
+| Глобальный UI / все tables или islands | `ui-reliability-core` → `$navorina-ui-parity` |
+| Preview / skeleton / iframe | `ui-reliability-core` → `$navorina-preview-reliability` |
 | Stripe / CP / Resend / Xero | router → subcore → `context-os/ops/<shard>.md` |
-| Релиз / smoke | `release-core` → `ops/dev-and-release.md` |
+| Релиз / smoke | `release-core` → `$navorina-production-proof` → `ops/dev-and-release.md` |
 
 ## Обновление канона
 

@@ -1,112 +1,48 @@
 {
-  "revenue_drop": {
-    "question_patterns": ["revenue упал", "MRR упал", "выручка упала", "revenue dropped", "monetization", "mrr drop", "affects navorina revenue", "monetization work"],
-    "primary_core": "revenue-core",
-    "secondary_cores": ["business-core", "billing-core"],
-    "avoid": ["full-project", "all-e2e"],
-    "reason": "Revenue questions need monetization context first, not full repository context."
-  },
-  "stripe_webhook_failure": {
-    "question_patterns": ["stripe webhook", "webhook упал", "checkout failed", "subscription not updated", "stripe plus checkout", "stripe webhook failed"],
-    "primary_core": "billing-core",
-    "secondary_cores": ["technical-core", "paywall-core"],
-    "avoid": ["product-marketing", "design-system"],
-    "reason": "Webhook issues are billing route + env + Supabase upsert path."
-  },
-  "product_identity": {
-    "question_patterns": ["что такое navorina", "ядро продукта", "what is navorina", "product scope", "product core", "modules exist", "nucleus hub entry", "prd scope"],
-    "primary_core": "product-core",
-    "secondary_cores": ["business-core"],
-    "avoid": ["server-agents", "ci-scripts"],
-    "reason": "Product definition lives in PRD + module map, not server internals."
-  },
-  "onboarding_improvement": {
-    "question_patterns": ["onboarding", "activation", "first value", "welcome flow", "workspace setup", "guest workspace merge"],
-    "primary_core": "onboarding-core",
-    "secondary_cores": ["product-core"],
-    "avoid": ["crypto-cp-spec", "xero-setup"],
-    "reason": "Activation is checklist/wizard/guest-merge, not integrations."
-  },
-  "pre_release_checklist": {
-    "question_patterns": ["перед релизом", "release checklist", "что проверить", "pre-release", "go live", "before release", "pre:release", "integration pilots"],
-    "primary_core": "release-core",
-    "secondary_cores": ["operational-core"],
-    "avoid": ["prd-full", "roadmap-full"],
-    "reason": "Release gate is scripted in package.json + RELEASE_CHECKLIST.md."
-  },
-  "financial_mirror_how": {
-    "question_patterns": ["financial mirror", "как работает nucleus", "month close", "ledger", "fm workspace", "invoicing hub", "quote-to-cash", "magic inbox"],
-    "primary_core": "nucleus-core",
-    "secondary_cores": ["technical-core"],
-    "avoid": ["assistant-chat", "landing-seo"],
-    "reason": "FM logic is financial-mirror.ts + nucleus hubs + server FM routes."
-  },
-  "safe_to_delete": {
-    "question_patterns": ["что можно удалить", "cleanup", "dead code", "unused feature", "safely cleaned", "duplicate or stale", "documentation is duplicate"],
-    "primary_core": "business-core",
-    "secondary_cores": ["product-core"],
-    "avoid": ["immediate-delete"],
-    "reason": "Deletion requires business scope + product module map; see audit/cleanup-candidates.md."
-  },
-  "churn_analysis": {
-    "question_patterns": ["churn", "отток", "retention упал", "users leaving", "retention levers"],
-    "primary_core": "business-core",
-    "secondary_cores": ["product-core", "revenue-core"],
-    "avoid": ["server-test-files"],
-    "reason": "Churn ties to personas, paywall, and Nucleus habit loops."
-  },
-  "backend_dev_onboarding": {
-    "question_patterns": ["новый backend", "backend developer", "server setup", "api onboarding", "server api entry", "api entry structure"],
-    "primary_core": "technical-core",
-    "secondary_cores": ["operational-core"],
-    "avoid": ["planning-level-3", "benchmark-screenshots"],
-    "reason": "Backend entry is server/ + START_HERE + emulators."
-  },
-  "paywall_conversion": {
-    "question_patterns": ["paywall", "upgrade cta", "trial", "pricing page", "conversion", "plus pro", "accept crypto blocked", "canonical paywall", "ai features gated", "workspace context tier"],
-    "primary_core": "paywall-core",
-    "secondary_cores": ["revenue-core", "billing-core"],
-    "avoid": ["legacy-paywall-js"],
-    "reason": "Use server/paywall/index.js as source of truth."
-  },
-  "assistant_ai_limits": {
-    "question_patterns": ["ai limit", "chat limit", "sphere", "voice", "assistant", "llm usage", "ai usage limits", "chat stack", "assistant chat isolated"],
-    "primary_core": "assistant-core",
-    "secondary_cores": ["paywall-core", "technical-core"],
-    "avoid": ["invoicing-routes"],
-    "reason": "Assistant stack is chat.ts + agents + ai-limits.js."
-  },
-  "ui_nucleus_edit": {
-    "question_patterns": ["nucleus ui", "nucleus tab", "fm form", "nucleus style", "editing nucleus ui", "form heights", "fm forms match", "design system"],
-    "primary_core": "product-core",
-    "secondary_cores": ["nucleus-core"],
-    "extra_docs": ["docs/agents/AGENT_HUB.md", "docs/design-system/UX_PRINCIPLES.md"],
-    "avoid": ["billing-routes"],
-    "reason": "UI requires design system + exact layout rules."
-  },
-  "integration_pilot": {
-    "question_patterns": ["integrations pilot", "verify pilot", "live keys", "emulator", "billing emulator", "workspace services", "dev emulators"],
-    "primary_core": "operational-core",
-    "secondary_cores": ["release-core"],
-    "avoid": ["prd-personas"],
-    "reason": "Integration readiness is INTEGRATIONS_WHEN_READY + verify:* scripts."
-  },
-  "crypto_payments": {
-    "question_patterns": ["crypto payment", "accept crypto", "checkout token", "cp5", "cp8", "cp8 crypto compliance", "crypto payment fails", "cross-cutting"],
-    "primary_core": "nucleus-core",
-    "secondary_cores": ["business-core", "technical-core"],
-    "avoid": ["assistant-voice"],
-    "reason": "CP flows span nucleus hubs + server crypto routes + terminology doc."
-  },
-  "ai_features_gated_by_tier": {
-    "question_patterns": [
-      "ai features are gated",
-      "ai features gated by tier",
-      "what ai features are gated by tier"
-    ],
-    "primary_core": "paywall-core",
-    "secondary_cores": ["assistant-core"],
-    "avoid": ["invoicing-routes"],
-    "reason": "AI features gated by tier needs both paywall-core and assistant-core context."
-  }
+  "version": "2.2.0",
+  "project": "navorina",
+  "fallback_core": "technical-core",
+  "routes": [
+    { "id": "revenue_drop", "patterns": ["mrr drop", "mrr упал", "revenue dropped", "revenue упал", "why did mrr drop"], "cores": ["revenue-core", "business-core", "billing-core"] },
+    { "id": "revenue_drivers", "patterns": ["affects navorina revenue", "revenue most", "revenue drivers"], "cores": ["revenue-core", "business-core"] },
+    { "id": "monetization_model", "patterns": ["monetization work", "монетизация navorina", "monetization model"], "cores": ["revenue-core", "paywall-core", "billing-core"] },
+    { "id": "stripe_webhook_failure", "patterns": ["stripe webhook failed", "webhook failed", "subscription not updated", "webhook упал"], "cores": ["billing-core", "technical-core", "paywall-core"] },
+    { "id": "local_billing_checkout", "patterns": ["stripe plus checkout work locally", "checkout work locally", "stripe checkout locally"], "cores": ["billing-core", "operational-core"] },
+    { "id": "paywall_enforcement", "patterns": ["canonical paywall enforcement", "paywall upgrade cta", "workspace context tier fetched", "canonical paywall"], "cores": ["paywall-core", "billing-core"] },
+    { "id": "product_identity", "patterns": ["what is navorina", "что такое navorina", "product core", "ядро продукта"], "cores": ["product-core", "business-core"] },
+    { "id": "product_modules", "patterns": ["modules exist", "modules exist in navorina", "prd scope", "модули navorina"], "cores": ["product-core"] },
+    { "id": "nucleus_entry", "patterns": ["nucleus hub entry", "nucleus entry point"], "cores": ["product-core", "nucleus-core"] },
+    { "id": "onboarding_activation", "patterns": ["onboarding activation", "first value", "welcome flow", "improve onboarding"], "cores": ["onboarding-core", "product-core"] },
+    { "id": "guest_workspace_merge", "patterns": ["guest workspace merge", "workspace merge work"], "cores": ["onboarding-core", "technical-core"] },
+    { "id": "release_readiness", "patterns": ["verify before release", "what to verify before release", "release checklist", "перед релизом"], "cores": ["release-core", "operational-core"] },
+    { "id": "pre_release_contents", "patterns": ["pre:release include", "what does npm run pre:release include"], "cores": ["release-core"] },
+    { "id": "integration_pilots", "patterns": ["integration pilots run without live keys", "integrations pilot verification", "run integrations pilot", "verify:integrations-pilot"], "cores": ["operational-core", "release-core"] },
+    { "id": "financial_mirror", "patterns": ["financial mirror work", "month close and export pack", "month close work", "как работает nucleus"], "cores": ["nucleus-core", "technical-core"] },
+    { "id": "invoicing_hub", "patterns": ["invoicing hub and quote-to-cash", "where is invoicing hub", "quote-to-cash"], "cores": ["nucleus-core"] },
+    { "id": "magic_inbox", "patterns": ["magic inbox ocr", "magic inbox flow"], "cores": ["nucleus-core", "assistant-core"] },
+    { "id": "cleanup", "patterns": ["safely cleaned up", "safe to clean", "documentation is duplicate or stale", "duplicate or stale", "что можно удалить"], "cores": ["business-core", "product-core"] },
+    { "id": "churn", "patterns": ["churn increasing", "user churn", "отток растёт"], "cores": ["business-core", "product-core", "revenue-core"] },
+    { "id": "retention", "patterns": ["retention levers", "рычаги retention"], "cores": ["business-core", "product-core"] },
+    { "id": "backend_onboarding", "patterns": ["new backend developer onboard", "backend developer", "новый backend"], "cores": ["technical-core", "operational-core"] },
+    { "id": "api_structure", "patterns": ["server api entry structure", "api entry structure"], "cores": ["technical-core"] },
+    { "id": "dev_emulators", "patterns": ["dev emulators work without stripe resend vapid", "emulators without stripe", "emulators work without"], "cores": ["operational-core", "technical-core"] },
+    { "id": "crypto_tier_block", "patterns": ["accept crypto blocked on plus", "crypto blocked on plus tier"], "cores": ["paywall-core", "revenue-core", "billing-core"] },
+    { "id": "tiered_ai", "patterns": ["ai features are gated by tier", "ai features gated by tier"], "cores": ["paywall-core", "assistant-core"] },
+    { "id": "assistant_limits", "patterns": ["assistant ai usage limits", "ai usage limits", "chat limit"], "cores": ["assistant-core", "paywall-core"] },
+    { "id": "assistant_stack", "patterns": ["ai chat stack work", "chat stack", "assistant stack"], "cores": ["assistant-core", "technical-core"] },
+    { "id": "assistant_isolation", "patterns": ["assistant chat isolated from financial mirror", "assistant chat isolated"], "cores": ["assistant-core", "product-core"] },
+    { "id": "nucleus_ui", "patterns": ["editing nucleus ui tabs", "nucleus ui tabs", "nucleus tab"], "cores": ["product-core", "nucleus-core"] },
+    { "id": "nucleus_form_tokens", "patterns": ["nucleus form heights and selects", "form heights and selects"], "cores": ["product-core"] },
+    { "id": "fm_design_system", "patterns": ["fm forms match design system", "forms match design system"], "cores": ["product-core", "nucleus-core"] },
+    { "id": "billing_emulator_flag", "patterns": ["env flags enable billing emulator", "billing emulator flag"], "cores": ["operational-core"] },
+    { "id": "services_without_keys", "patterns": ["check workspace services without live keys", "workspace services without keys"], "cores": ["operational-core", "technical-core"] },
+    { "id": "invoice_accept_crypto", "patterns": ["accept crypto on invoices work", "accept crypto on invoices"], "cores": ["nucleus-core", "business-core", "technical-core"] },
+    { "id": "crypto_compliance", "patterns": ["cp8 crypto compliance", "crypto compliance in settings"], "cores": ["nucleus-core", "business-core"] },
+    { "id": "crypto_cross_cutting", "patterns": ["crypto payment fails at paywall during month close", "crypto fails at paywall during month close"], "cores": ["nucleus-core", "paywall-core", "billing-core", "technical-core"] },
+    { "id": "agents_workspace", "patterns": ["agentsos workspace", "agents os workspace", "reusable agents in navorina"], "cores": ["technical-core", "operational-core"] },
+    { "id": "global_ui_contract", "patterns": ["all tables", "all islands", "all stats", "во всех таблицах", "везде одинаковый паддинг", "global ui spacing"], "cores": ["ui-reliability-core", "product-core"] },
+    { "id": "preview_loading", "patterns": ["skeleton never stops", "preview is blank", "dark screen preview", "white screen preview", "скелет не останавливается", "темный экран", "белый экран", "mobile mockup"], "cores": ["ui-reliability-core", "release-core"] },
+    { "id": "embedded_webview", "patterns": ["ios webview", "gmail browser", "instagram browser", "iframe preview", "embedded browser"], "cores": ["ui-reliability-core", "release-core", "technical-core"] },
+    { "id": "production_ui_cache", "patterns": ["local works production broken", "production serves old ui", "cache busting ui", "в проде старый интерфейс"], "cores": ["ui-reliability-core", "release-core"] }
+  ]
 }

@@ -1,94 +1,80 @@
 # Technical Core
 
+## Metadata
+
+| Field | Value |
+|---|---|
+| id | technical-core |
+| version | 2.3.188 |
+| parent_core | null |
+| project | Navorina |
+| last_updated | 2026-10-28 |
+
 ## Purpose
 
-Технический контекст: стек, архитектура, данные, API, env, сборка, auth. Для вопросов «как устроено», «где код», «какой endpoint», «почему не работает интеграция на уровне кода».
+Маршрутизирует вопросы об архитектуре, API, auth, persistence и границах кода.
 
-## Covers
+## Scope
 
-- Репозиторий: `Navorina/` (статика+Vite+TS), `server/` (Express API), `docs/`, `e2e/`, `scripts/`
-- Frontend: HTML, CSS tokens, TypeScript → `dist-ts/`, React 18 для assistant
-- Backend: `financial-api-server.js`, routes, agents, services, paywall, ai-limits
-- Данные: Firestore (FM), Supabase (subscriptions, AI usage), localStorage, `server/.data/`
-- Auth: Firebase (документация + client), Supabase RLS migrations
-- API namespaces: `/api/financial-mirror/*`, `/api/ops/*`, `/api/accounting/xero/*`, crypto-payments, invoicing
-- Dev stack: `npm run dev` → Vite :5501 + server :3001 + эмуляторы
-- Build: `npm run build`, Netlify deployment docs
+### In Scope
 
-## Does not cover
+- `Navorina/` frontend, Worker/D1 API и `server/` adapters
+- Supabase identity, D1 product data и local stores
+- Paywall, AI limits, idempotency, routes, integrations
+- Граница product agents и `agents-os/`
 
-- Release checklist порядок → Release Core
-- Бизнес-обоснование тарифов → Business Core
-- UX copy и термины crypto UI → Product Core
-- Пошаговый onboarding пользователя → Onboarding Core
+### Out of Scope
 
-## Key entities
+- Priorities, UI composition, release sequence
 
-| Сущность | Описание |
-|----------|----------|
-| **financial-api-server.js** | Main Express entry |
-| **paywall/index.js** | Tier + feature access |
-| **ai-limits.js** | Per-agent monthly limits |
-| **workspace-context.js** | Paywall + subscription + services bundle |
-| **financial-mirror-rest.js** | FM REST/DB layer |
-| **fm-ai-usage.js** | AI usage tracking Supabase |
-| **user-subscription-file-store.js** | Dev billing file store |
-| **agents/** | LLM agents (verdict, brief, OCR, digest, …) |
-| **FinancialMirrorAPI** | Client API layer in `financial-mirror.ts` |
+## Key Entities
 
-## Key files
+| Entity | Description |
+|---|---|
+| Product API | Worker composition root and domain handlers |
+| Supabase identity | Authenticated product identity |
+| Cloudflare D1 | Canonical migrated product store |
+| Compatibility API | Legacy Express adapters, unmigrated |
+| Financial Mirror | Client/server workspace contract |
+| Paywall | Free/Pro/Plus entitlements |
+| AgentsOS | Reusable packages outside the product |
 
-| Путь | Роль |
-|------|------|
-| `package.json` | Root scripts: dev, ci, smoke, tests |
-| `server/package.json` | Server tests |
-| `server/financial-api-server.js` | API mount |
-| `server/development.defaults.env` | Default emulator flags |
-| `server/.env.example` | Production env template |
-| `server/routes/stripe-billing.js` | Stripe checkout + webhook |
-| `server/routes/billing-emulator.js` | Dev billing |
-| `server/routes/financial-mirror-*.js` | FM routes |
-| `server/routes/ops.js` | Ops v0 |
-| `Navorina/vite.config.js` | Vite build |
-| `Navorina/src/utils/financial-mirror-firestore.ts` | Firestore client |
-| `scripts/dev-all.sh` | Dev orchestration |
+## Invariants
 
-## Key docs
+- Domain routers владеют endpoints; composition root не поглощает бизнес-логику.
+- Money mutations имеют idempotency, durable status и fail-closed adapters.
+- Client ID не заменяет verified Supabase identity for sensitive mutations.
+- A capability has one owner; Worker and Express do not silently dual-write.
+- `dist-ts/` соответствует TypeScript source через compiled/build gates.
+- `src/` targets `lib: ES2020` (no `.at()`); fixed drawers size in `%`, not `100vw`.
+- Reusable agents не импортируют product code; finance behavior остаётся в Navorina.
+- Landing autoplay mutates each reused iframe once (no replays, DOM growth, detached frames).
+- Emails: `shared/email`, `img/email`.
+- Tools handoff: dashboard → Nucleus API.
+- Public API v1 `/api/v1/*`: workspace keys (SHA-256 only), webhooks queued by D1 triggers (0083), HMAC-signed, cron retries.
+- Carabaas sandbox: `cloudflare/worker/src/carabaas.ts` (RS256 self-signed JWT, Ed25519 Standard Webhooks: `incoming` → one received row per deposit, `outgoing` → one sent row per order keyed `order:<orderId>`, impossible moves skipped, not 409); flags (`enabled`, `treasury`) live in the `CARABAAS_CREDENTIALS` secret, always off in production. `GET /api/ops/carabaas/treasury` (operators) feeds the Accounts Treasury island: DS `shared/treasury.{js,css,d.ts}` → `Navorina/js/ds/treasury.js` via `sync-ds-invoice-document.mjs`, entry `src/utils/accounts-treasury-entry.ts` (shown only when `/api/health` says carabaas ready).
+- Sign-up email policy is server-side: Supabase Before User Created hook → Worker `/api/auth/hooks/before-user-created` (Standard Webhooks, vendored CC0 disposable list in `cloudflare/worker/src/data/`, DoH MX check that fails open).
+- Public pages in six languages (SEO wave 3): `/ka/`, `/kk/`, `/uz/` landing, hub, tax calculator (static generators) and rates (Worker `public-rates-locales.ts`); DS `shared/public-locale.js` holds languages, dates, numbers and hreflang; the bar has the language switcher; `Navorina/scripts/locales.test.mjs` keeps hreflang reciprocal and equal to the sitemap. Review sheet: `docs/product/2026-10-locales-review.md`.
+- Public pages: build `scripts/public-head.cjs` adds base style, OG/Twitter, theme-color; decorative auth copy is CSS `data-text` (Safari Reader skips it).
 
-- `docs/architecture/OVERVIEW.md`
-- `docs/architecture/DATA_STORAGE_AND_FLOW.md`
-- `docs/firebase/FINANCIAL_MIRROR_FIRESTORE.md`
-- `docs/setup/START_HERE.md`
-- `docs/setup/LOCAL_DEV_EMULATORS.md`
-- `docs/deployment/DEPLOYMENT.md`
-- `docs/security/` — RLS, policies
-- `server/README.md`
-- `server/financial-mirror/README.md`
+## Exclusions
 
-## Risks
+- Secrets, runtime data, builds, dependencies, vendor claims
 
-- **Firestore + Supabase + localStorage** — три слоя данных, риск рассинхрона (roadmap P4)
-- **dist-ts/** committed — drift с `src/` если забыть compile
-- **Dual auth docs** — Firebase primary в architecture, Supabase в migrations/tracking
+## Typical Outputs
 
-## Dependencies
-
-- Operational Core — как запускать и проверять
-- Billing Core — Stripe/emulator routes
-- Nucleus Core — FM client + hubs
-- Assistant Core — chat, AI routes, limits
-
-## AI summary
-
-Стек: **статический фронт** (`Navorina/`, Vite, TS→dist-ts) + **Node Express** (`server/`). Данные: **Firestore** для FM workspace, **Supabase** для subscriptions/AI usage, **localStorage** на клиенте. API под `/api/financial-mirror/`. Dev: `npm run dev`. Paywall: `server/paywall/index.js`; AI limits: `server/ai-limits.js`. Не читать весь репо — идти от route → service → client util.
+- Entry→route→service→client
+- Root cause and impact map
+- Navorina vs AgentsOS placement
 
 ## Sources
 
-- `docs/architecture/OVERVIEW.md`
-- `docs/architecture/DATA_STORAGE_AND_FLOW.md`
-- `docs/setup/START_HERE.md`
-- `docs/planning/PRD_NAVORINA.md` §7
-- `package.json`, `server/package.json`
-- `AGENTS.md`
-- `server/financial-api-server.js`
-- `server/README.md`
+| Type | Reference | Description |
+|---|---|---|
+| architecture | docs/architecture/OVERVIEW.md | Runtime topology |
+| data | docs/architecture/DATA_STORAGE_AND_FLOW.md | Persistence paths |
+| execution | docs/planning/IMPLEMENTATION_ORDER.md | Release gates |
+| agents | docs/architecture/AGENTS_OS_WORKSPACE.md | Workspace boundary |
+| setup | docs/setup/START_HERE.md | Developer entry |
+| runtime | cloudflare/worker/src/index.ts | Canonical migrated API composition root |
+| landing lifecycle | products/design-system/docs/handoff/2026-10-14-landing-preview-lifecycle.md | Preview lifecycle |

@@ -4,7 +4,7 @@
 
 - `npm run dev` — статика + Vite; после правок — полное обновление страницы (cookie/SW сбрасываются при перезапуске dev).
 - Тестовый Firebase-логин: [`Navorina/docs/setup/TEST_CREDENTIALS.md`](../../Navorina/docs/setup/TEST_CREDENTIALS.md).
-- Pre-release: `npm run pre:release` (unit + integrations + e2e); без e2e: `npm run ci:local:full`. Чеклист: [`docs/planning/RELEASE_CHECKLIST.md`](../../docs/planning/RELEASE_CHECKLIST.md).
+- Pre-release: `npm run pre:release` (unit + integrations + e2e); без e2e: `npm run ci:local:full`. Чеклист: [`docs/planning/operations/release-checklist.md`](../../docs/planning/operations/release-checklist.md).
 
 ## E2E (Playwright)
 
@@ -17,7 +17,7 @@
 - API: `GET /api/financial-mirror/workspace/services` (публично), `GET /api/financial-mirror/workspace/context` (с `userId` — paywall + subscription + services).
 - Клиент: `Navorina/src/utils/nucleus-workspace-context-client.ts`; Settings и setup-страницы используют один запрос.
 - Проверка env + API: `npm run setup:services-check` (Stripe + Resend + VAPID); smoke: `npm run smoke:workspace-services`.
-- **Pilot всех интеграций:** `npm run verify:integrations-pilot` (CP + Q2 + Delivery + Xero без live keys); live: `npm run setup:integrations-live-check`; индекс: [`docs/planning/INTEGRATIONS_WHEN_READY.md`](../../docs/planning/INTEGRATIONS_WHEN_READY.md).
+- **Pilot всех интеграций:** `npm run verify:integrations-pilot` (CP + Q2 + Delivery + Xero без live keys); live: `npm run setup:integrations-live-check`; индекс: [`docs/planning/operations/integrations/integrations-index.md`](../../docs/planning/operations/integrations/integrations-index.md).
 - A2 автотесты: `npm run test:nucleus-guest-workspace-merge`, `npm run test:nucleus-month-lock`.
 
 ## Dev emulators (без Stripe / Resend / VAPID)
