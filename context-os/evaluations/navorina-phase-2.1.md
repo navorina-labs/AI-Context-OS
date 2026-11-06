@@ -1,7 +1,7 @@
 # Navorina — Phase 2.1 Results
 
 **Status:** Measured  
-**Questions:** 42 · **Cores:** 11 · **Run:** [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/)  
+**Questions:** 42 · **Cores:** 11 · **Run:** `run-1781143403051` ([summary](../../experiments/navorina/runs/run-1781143403051/summary.json))  
 **Commit:** `413acd41`
 
 ---
@@ -28,7 +28,7 @@
 | Cores | 11 |
 | Router F1 (keyword) | **0.872** |
 | Router F1 (semantic) | **0.837** |
-| Production canon | [experiments/navorina/instance](../../experiments/navorina/instance/) |
+| Production canon | private (not published) |
 | Core compression | **14×** (13.7× measured) |
 | Hypothesis (B > A) | **supported** |
 | Run verified | 2026-06-11 |

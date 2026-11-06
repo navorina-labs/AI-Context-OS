@@ -104,9 +104,14 @@ key_finding: (one sentence)
 
 ```bash
 npm run eval:context-os:export -- context-os/eval/results/run-<id>
-cp -R context-os/eval/export/run-<id> \
-  ../AI-Context-OS/experiments/navorina/runs/
+mkdir -p ../AI-Context-OS/experiments/navorina/runs/run-<id>
+cp context-os/eval/export/run-<id>/{summary.json,tokens-summary.json,paired.csv,tokens-paired.csv} \
+  ../AI-Context-OS/experiments/navorina/runs/run-<id>/
 ```
+
+Публикуются только числовые итоги. Ядра Navorina, ответы по вопросам (`NV*.md`),
+`results.json`, `run-meta.json` и копию canon (`instance/`) в публичный репозиторий
+не класть: в них внутренние данные о биллинге, выручке и рисках.
 
 Создай `experiments/navorina/results.md` по образцу MailAgent.
 
@@ -185,7 +190,7 @@ accuracy_A/B/C, cost_A/B/C, halluc_A/B/C, tokens, compression, router F1 (keywor
 
 1. Обновить `context-os/evaluations/navorina-phase-2.1.md` — убрать `est.*`
 2. Обновить Table 1 в `PHASE-2-RESULTS.md`
-3. Создать `experiments/navorina/runs/run-<id>/` с артефактами
+3. Создать `experiments/navorina/runs/run-<id>/` только с числовыми итогами (см. шаг 5)
 4. Создать `experiments/navorina/results.md`
 
 ---
