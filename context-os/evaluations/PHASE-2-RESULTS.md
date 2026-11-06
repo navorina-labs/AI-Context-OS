@@ -36,7 +36,7 @@ AI Context OS was tested on **3 OSS projects** (129 questions total: 45 + 42 + 4
 
 **MailAgent:** [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) (keyword). Superseded gold: [run-1781075014160](../../experiments/mailagent/runs/run-1781075014160/).
 
-**Navorina:** [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) · commit `413acd41`
+**Navorina:** [run-1781143403051 summary](../../experiments/navorina/runs/run-1781143403051/summary.json) · commit `413acd41`
 
 ---
 
@@ -149,7 +149,7 @@ Navorina                         ●
 |---------|--------|---------|------------|
 | MailAgent | [mailagent-phase-2.1.md](mailagent-phase-2.1.md) | [run-1781319187610](../../experiments/mailagent/runs/run-1781319187610/) | ✅ |
 | Django REST | [django-phase-2.1.md](django-phase-2.1.md) | [run-drf-phase-2.1-aggregate](../../experiments/django-rest-framework/runs/run-drf-phase-2.1-aggregate/) | ⚠️ aggregate only |
-| Navorina | [navorina-phase-2.1.md](navorina-phase-2.1.md) | [run-1781143403051](../../experiments/navorina/runs/run-1781143403051/) | ✅ |
+| Navorina | [navorina-phase-2.1.md](navorina-phase-2.1.md) | [run-1781143403051 summary](../../experiments/navorina/runs/run-1781143403051/summary.json) | ✅ |
 
 ---
 

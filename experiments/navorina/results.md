@@ -28,7 +28,7 @@
 
 | What | Path |
 |------|------|
-| Full run | [runs/run-1781143403051](./runs/run-1781143403051/) |
+| Per-question scores | [paired.csv](./runs/run-1781143403051/paired.csv) · [tokens-paired.csv](./runs/run-1781143403051/tokens-paired.csv) |
 | Metrics | [summary.json](./runs/run-1781143403051/summary.json) |
 | Tokens & cost | [tokens-summary.json](./runs/run-1781143403051/tokens-summary.json) |
 | Phase 2 report | [PHASE-2-RESULTS.md](../../context-os/evaluations/PHASE-2-RESULTS.md) |
@@ -42,7 +42,7 @@
 | Keyword | **0.872** | ≥ 0.75 (always) |
 | Semantic | **0.837** | ≥ 0.75 (optional, `OPENAI_API_KEY`) |
 
-Frozen canon instance: [instance/](./instance/) · `EXPORT_META.json` commit pin.
+The Navorina instance (cores, ops docs, answers) stays private. Only aggregate scores are published.
 
 ---
 
